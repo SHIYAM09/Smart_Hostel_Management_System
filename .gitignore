@@ -1,0 +1,24 @@
+# Dependencies and build outputs
+node_modules/
+dist/
+build/
+target/
+mongodb_data/
+*.log
+
+# IDE files
+.classpath
+.project
+.settings/
+.idea/
+*.iml
+.factorypath
+.vscode/
+
+# Environment files
+.env
+.env.local
+
+# OS generated files
+.DS_Store
+Thumbs.db

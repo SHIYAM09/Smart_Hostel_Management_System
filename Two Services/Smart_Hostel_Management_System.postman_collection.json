@@ -1,0 +1,851 @@
+{
+  "info": {
+    "name": "Smart Hostel Management System - Complete API Collection (75 APIs)",
+    "description": "Enterprise Postman Collection containing all 75 REST API endpoints across Authentication Service (Port 8081 - Oracle XE) and Authorization Service (Port 8082 - MongoDB).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "auth_url", "value": "http://localhost:8081/api/v1", "type": "string" },
+    { "key": "main_url", "value": "http://localhost:8082/api/v1", "type": "string" },
+    { "key": "token", "value": "YOUR_JWT_BEARER_TOKEN_HERE", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication Service (Port 8081 - Oracle XE)",
+      "item": [
+        {
+          "name": "User Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"usernameOrEmail\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": { "raw": "{{auth_url}}/auth/login", "host": ["{{auth_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "User Registration",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"student01\",\n  \"email\": \"student01@hostel.edu\",\n  \"password\": \"student123\",\n  \"fullName\": \"Rahul Verma\",\n  \"phone\": \"9876543210\",\n  \"roles\": [\"STUDENT\"]\n}"
+            },
+            "url": { "raw": "{{auth_url}}/auth/register", "host": ["{{auth_url}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Get Logged-in User Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{auth_url}}/auth/me", "host": ["{{auth_url}}"], "path": ["auth", "me"] }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldPassword\": \"admin123\",\n  \"newPassword\": \"admin456\"\n}"
+            },
+            "url": { "raw": "{{auth_url}}/auth/change-password", "host": ["{{auth_url}}"], "path": ["auth", "change-password"] }
+          }
+        },
+        {
+          "name": "Refresh Access Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"YOUR_REFRESH_TOKEN_HERE\"\n}"
+            },
+            "url": { "raw": "{{auth_url}}/auth/refresh-token", "host": ["{{auth_url}}"], "path": ["auth", "refresh-token"] }
+          }
+        },
+        {
+          "name": "User Logout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{auth_url}}/auth/logout", "host": ["{{auth_url}}"], "path": ["auth", "logout"] }
+          }
+        },
+        {
+          "name": "Get All Roles",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{auth_url}}/roles", "host": ["{{auth_url}}"], "path": ["roles"] }
+          }
+        },
+        {
+          "name": "Create New Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ROLE_WARDEN\",\n  \"description\": \"Warden Role\"\n}"
+            },
+            "url": { "raw": "{{auth_url}}/roles", "host": ["{{auth_url}}"], "path": ["roles"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Dashboards (Port 8082 - MongoDB)",
+      "item": [
+        {
+          "name": "Get Student Dashboard Metrics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/dashboards/student", "host": ["{{main_url}}"], "path": ["dashboards", "student"] }
+          }
+        },
+        {
+          "name": "Get Warden Dashboard Metrics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/dashboards/warden", "host": ["{{main_url}}"], "path": ["dashboards", "warden"] }
+          }
+        },
+        {
+          "name": "Get Admin Dashboard Metrics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/dashboards/admin", "host": ["{{main_url}}"], "path": ["dashboards", "admin"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Students Management (Port 8082)",
+      "item": [
+        {
+          "name": "Get All Students",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/students", "host": ["{{main_url}}"], "path": ["students"] }
+          }
+        },
+        {
+          "name": "Create Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Arjun Sharma\",\n  \"rollNumber\": \"22CS001\",\n  \"department\": \"CSE\",\n  \"yearOfStudy\": 2,\n  \"hostelBlock\": \"Block A\",\n  \"roomNumber\": \"A-101\",\n  \"guardianName\": \"Ramesh Sharma\",\n  \"guardianPhone\": \"9876543210\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/students", "host": ["{{main_url}}"], "path": ["students"] }
+          }
+        },
+        {
+          "name": "Get Student by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/students/1", "host": ["{{main_url}}"], "path": ["students", "1"] }
+          }
+        },
+        {
+          "name": "Get Logged-in Student Info",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/students/me", "host": ["{{main_url}}"], "path": ["students", "me"] }
+          }
+        },
+        {
+          "name": "Update Student Details",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Arjun Sharma Updated\",\n  \"roomNumber\": \"A-102\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/students/1", "host": ["{{main_url}}"], "path": ["students", "1"] }
+          }
+        },
+        {
+          "name": "Delete Student",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/students/1", "host": ["{{main_url}}"], "path": ["students", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Wardens & Admins Management (Port 8082)",
+      "item": [
+        {
+          "name": "Get All Wardens",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/wardens", "host": ["{{main_url}}"], "path": ["wardens"] }
+          }
+        },
+        {
+          "name": "Create Warden",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Dr. Suresh Kumar\",\n  \"email\": \"warden@hostel.edu\",\n  \"phone\": \"9800000001\",\n  \"hostelBlock\": \"Block A & B\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/wardens", "host": ["{{main_url}}"], "path": ["wardens"] }
+          }
+        },
+        {
+          "name": "Get Warden by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/wardens/1", "host": ["{{main_url}}"], "path": ["wardens", "1"] }
+          }
+        },
+        {
+          "name": "Update Warden",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Dr. Suresh Kumar Updated\",\n  \"phone\": \"9800000099\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/wardens/1", "host": ["{{main_url}}"], "path": ["wardens", "1"] }
+          }
+        },
+        {
+          "name": "Delete Warden",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/wardens/1", "host": ["{{main_url}}"], "path": ["wardens", "1"] }
+          }
+        },
+        {
+          "name": "Get All Admins",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/admins", "host": ["{{main_url}}"], "path": ["admins"] }
+          }
+        },
+        {
+          "name": "Get Admin by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/admins/1", "host": ["{{main_url}}"], "path": ["admins", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Hostel Blocks, Rooms & Allocations (Port 8082)",
+      "item": [
+        {
+          "name": "Get All Hostel Blocks",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/hostel-blocks", "host": ["{{main_url}}"], "path": ["hostel-blocks"] }
+          }
+        },
+        {
+          "name": "Create Hostel Block",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Block G\",\n  \"type\": \"Boys\",\n  \"floors\": 4,\n  \"rooms\": 40,\n  \"occupied\": 20,\n  \"students\": 40,\n  \"warden\": \"Dr. Suresh Kumar\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/hostel-blocks", "host": ["{{main_url}}"], "path": ["hostel-blocks"] }
+          }
+        },
+        {
+          "name": "Update Hostel Block",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Block G Updated\",\n  \"floors\": 5\n}"
+            },
+            "url": { "raw": "{{main_url}}/hostel-blocks/1", "host": ["{{main_url}}"], "path": ["hostel-blocks", "1"] }
+          }
+        },
+        {
+          "name": "Delete Hostel Block",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/hostel-blocks/1", "host": ["{{main_url}}"], "path": ["hostel-blocks", "1"] }
+          }
+        },
+        {
+          "name": "Get All Rooms",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/rooms", "host": ["{{main_url}}"], "path": ["rooms"] }
+          }
+        },
+        {
+          "name": "Create Room",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": \"A-105\",\n  \"hostelBlock\": \"Block A\",\n  \"capacity\": 2,\n  \"occupiedBeds\": 1,\n  \"status\": \"PARTIAL\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/rooms", "host": ["{{main_url}}"], "path": ["rooms"] }
+          }
+        },
+        {
+          "name": "Allocate Room",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{main_url}}/rooms/allocate?studentId=1&roomId=1",
+              "host": ["{{main_url}}"],
+              "path": ["rooms", "allocate"],
+              "query": [
+                { "key": "studentId", "value": "1" },
+                { "key": "roomId", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Vacate Room Allocation",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/rooms/vacate/1", "host": ["{{main_url}}"], "path": ["rooms", "vacate", "1"] }
+          }
+        },
+        {
+          "name": "Get All Room Allocations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/rooms/allocations", "host": ["{{main_url}}"], "path": ["rooms", "allocations"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Attendance & Complaints (Port 8082)",
+      "item": [
+        {
+          "name": "Get Student Attendance History",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/attendance/student/1", "host": ["{{main_url}}"], "path": ["attendance", "student", "1"] }
+          }
+        },
+        {
+          "name": "Get Attendance by Date",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/attendance/date/2026-08-06", "host": ["{{main_url}}"], "path": ["attendance", "date", "2026-08-06"] }
+          }
+        },
+        {
+          "name": "Mark Single Attendance",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": 1,\n  \"studentName\": \"Arjun Sharma\",\n  \"rollNumber\": \"22CS001\",\n  \"roomNumber\": \"A-101\",\n  \"attendanceDate\": \"2026-08-06\",\n  \"status\": \"PRESENT\",\n  \"time\": \"10:00 PM\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/attendance", "host": ["{{main_url}}"], "path": ["attendance"] }
+          }
+        },
+        {
+          "name": "Mark Bulk Attendance",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"studentId\": 1,\n    \"studentName\": \"Arjun Sharma\",\n    \"rollNumber\": \"22CS001\",\n    \"roomNumber\": \"A-101\",\n    \"attendanceDate\": \"2026-08-06\",\n    \"status\": \"PRESENT\",\n    \"time\": \"10:00 PM\"\n  }\n]"
+            },
+            "url": { "raw": "{{main_url}}/attendance/bulk", "host": ["{{main_url}}"], "path": ["attendance", "bulk"] }
+          }
+        },
+        {
+          "name": "Get All Complaints",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/complaints", "host": ["{{main_url}}"], "path": ["complaints"] }
+          }
+        },
+        {
+          "name": "Get Complaints by Student ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/complaints/student/1", "host": ["{{main_url}}"], "path": ["complaints", "student", "1"] }
+          }
+        },
+        {
+          "name": "File New Complaint",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": 1,\n  \"title\": \"Water Leakage in A-101\",\n  \"description\": \"Bathroom pipe leaking continuously\",\n  \"category\": \"Plumbing\",\n  \"priority\": \"HIGH\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/complaints", "host": ["{{main_url}}"], "path": ["complaints"] }
+          }
+        },
+        {
+          "name": "Update Complaint Status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{main_url}}/complaints/1/status?status=RESOLVED",
+              "host": ["{{main_url}}"],
+              "path": ["complaints", "1", "status"],
+              "query": [{ "key": "status", "value": "RESOLVED" }]
+            }
+          }
+        },
+        {
+          "name": "Submit Complaint Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"complaintId\": \"1\",\n  \"rating\": 5,\n  \"comments\": \"Quick resolution!\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/complaints/1/feedback", "host": ["{{main_url}}"], "path": ["complaints", "1", "feedback"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Leave Requests & Visitor Logs (Port 8082)",
+      "item": [
+        {
+          "name": "Get All Leave Requests",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/leave-requests", "host": ["{{main_url}}"], "path": ["leave-requests"] }
+          }
+        },
+        {
+          "name": "Get Leave Requests by Student ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/leave-requests/student/1", "host": ["{{main_url}}"], "path": ["leave-requests", "student", "1"] }
+          }
+        },
+        {
+          "name": "Apply for Leave",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": 1,\n  \"startDate\": \"2026-08-10\",\n  \"endDate\": \"2026-08-15\",\n  \"reason\": \"Family Function\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/leave-requests", "host": ["{{main_url}}"], "path": ["leave-requests"] }
+          }
+        },
+        {
+          "name": "Update Leave Request Status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{main_url}}/leave-requests/1/status?status=APPROVED&remarks=Approved",
+              "host": ["{{main_url}}"],
+              "path": ["leave-requests", "1", "status"],
+              "query": [
+                { "key": "status", "value": "APPROVED" },
+                { "key": "remarks", "value": "Approved" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Register Visitor",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"visitorName\": \"Ramesh Sharma\",\n  \"phone\": \"9876543210\",\n  \"relationship\": \"Parent\",\n  \"purpose\": \"Visiting Son\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/visitors", "host": ["{{main_url}}"], "path": ["visitors"] }
+          }
+        },
+        {
+          "name": "Get All Visitor Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/visitors/logs", "host": ["{{main_url}}"], "path": ["visitors", "logs"] }
+          }
+        },
+        {
+          "name": "Log Visitor Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"visitorId\": 1,\n  \"checkInTime\": \"2026-08-06T10:00:00\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/visitors/logs/entry", "host": ["{{main_url}}"], "path": ["visitors", "logs", "entry"] }
+          }
+        },
+        {
+          "name": "Log Visitor Checkout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/visitors/logs/checkout/1", "host": ["{{main_url}}"], "path": ["visitors", "logs", "checkout", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Mess Menu & Analytics (Port 8082)",
+      "item": [
+        {
+          "name": "Get Weekly Mess Menu",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/mess/menu", "host": ["{{main_url}}"], "path": ["mess", "menu"] }
+          }
+        },
+        {
+          "name": "Create / Update Mess Menu Schedule",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dayOfWeek\": \"MONDAY\",\n  \"breakfast\": \"Idli, Sambar, Tea\",\n  \"lunch\": \"Rice, Dal, Paneer Butter Masala\",\n  \"snacks\": \"Samosa, Coffee\",\n  \"dinner\": \"Roti, Mix Veg, Curd\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/mess/menu", "host": ["{{main_url}}"], "path": ["mess", "menu"] }
+          }
+        },
+        {
+          "name": "Get All Food Ratings",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/mess/feedback", "host": ["{{main_url}}"], "path": ["mess", "feedback"] }
+          }
+        },
+        {
+          "name": "Submit Food Feedback Rating",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mealType\": \"LUNCH\",\n  \"rating\": 5,\n  \"remarks\": \"Food was delicious and fresh!\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/mess/feedback", "host": ["{{main_url}}"], "path": ["mess", "feedback"] }
+          }
+        },
+        {
+          "name": "Get Food Wastage Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/mess/food-wastage", "host": ["{{main_url}}"], "path": ["mess", "food-wastage"] }
+          }
+        },
+        {
+          "name": "Record Daily Food Wastage",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"wastageKg\": 12.5,\n  \"logDate\": \"2026-08-06\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/mess/food-wastage", "host": ["{{main_url}}"], "path": ["mess", "food-wastage"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Resources, Utilities, Audit Logs & AI (Port 8082)",
+      "item": [
+        {
+          "name": "Get All Resources",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/resources", "host": ["{{main_url}}"], "path": ["resources"] }
+          }
+        },
+        {
+          "name": "Create Resource",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"itemName\": \"Study Chair\",\n  \"category\": \"Furniture\",\n  \"quantity\": 50,\n  \"condition\": \"Good\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/resources", "host": ["{{main_url}}"], "path": ["resources"] }
+          }
+        },
+        {
+          "name": "Update Resource",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 55\n}"
+            },
+            "url": { "raw": "{{main_url}}/resources/1", "host": ["{{main_url}}"], "path": ["resources", "1"] }
+          }
+        },
+        {
+          "name": "Delete Resource",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/resources/1", "host": ["{{main_url}}"], "path": ["resources", "1"] }
+          }
+        },
+        {
+          "name": "Get Utility Readings",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/utilities", "host": ["{{main_url}}"], "path": ["utilities"] }
+          }
+        },
+        {
+          "name": "Record Utility Readings",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"electricityUsage\": 480,\n  \"waterUsage\": 1350,\n  \"readingDate\": \"2026-08-06\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/utilities", "host": ["{{main_url}}"], "path": ["utilities"] }
+          }
+        },
+        {
+          "name": "Send User Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"1\",\n  \"title\": \"Hostel Notice\",\n  \"message\": \"Water supply maintenance tomorrow.\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/notifications", "host": ["{{main_url}}"], "path": ["notifications"] }
+          }
+        },
+        {
+          "name": "Get User Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/notifications/user/1", "host": ["{{main_url}}"], "path": ["notifications", "user", "1"] }
+          }
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/notifications/1/read", "host": ["{{main_url}}"], "path": ["notifications", "1", "read"] }
+          }
+        },
+        {
+          "name": "Get Operations Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/authz/audit/logs", "host": ["{{main_url}}"], "path": ["authz", "audit", "logs"] }
+          }
+        },
+        {
+          "name": "Get User Login History Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/authz/audit/login-history", "host": ["{{main_url}}"], "path": ["authz", "audit", "login-history"] }
+          }
+        },
+        {
+          "name": "Get REST API Access Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/authz/audit/api-logs", "host": ["{{main_url}}"], "path": ["authz", "audit", "api-logs"] }
+          }
+        },
+        {
+          "name": "Save AI Chat & Telemetry Log",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"student01\",\n  \"prompt\": \"How do I request a room shift?\",\n  \"response\": \"Submit a complaint under Hostel Infrastructure category.\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/authz/ai-history", "host": ["{{main_url}}"], "path": ["authz", "ai-history"] }
+          }
+        },
+        {
+          "name": "Get AI Chat History for User",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/authz/ai-history/student01", "host": ["{{main_url}}"], "path": ["authz", "ai-history", "student01"] }
+          }
+        },
+        {
+          "name": "Get General Hostel Feedback",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/feedback", "host": ["{{main_url}}"], "path": ["feedback"] }
+          }
+        },
+        {
+          "name": "Submit General Hostel Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"1\",\n  \"feedbackText\": \"Library Wi-Fi speeds are awesome!\",\n  \"rating\": 5\n}"
+            },
+            "url": { "raw": "{{main_url}}/feedback", "host": ["{{main_url}}"], "path": ["feedback"] }
+          }
+        },
+        {
+          "name": "Get Feedback by Student ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/feedback/student/1", "host": ["{{main_url}}"], "path": ["feedback", "student", "1"] }
+          }
+        }
+      ]
+    }
+  ]
+}
