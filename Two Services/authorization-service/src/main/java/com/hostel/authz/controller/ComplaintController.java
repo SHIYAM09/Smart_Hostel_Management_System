@@ -56,8 +56,10 @@ public class ComplaintController {
     @GetMapping("/student/{studentId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
     @Operation(summary = "Get Complaints by Student ID", description = "Retrieves complaints filed by a student.")
-    public ResponseEntity<ApiResponse<List<ComplaintDto>>> getComplaintsByStudent(@PathVariable("studentId") Long studentId) {
-        return ResponseEntity.ok(ApiResponse.success("Student complaints retrieved", hostelService.getComplaintsByStudent(studentId)));
+    public ResponseEntity<ApiResponse<List<ComplaintDto>>> getComplaintsByStudent(@PathVariable("studentId") String studentId) {
+        Long numericId = null;
+        try { numericId = Long.parseLong(studentId); } catch (Exception ignored) {}
+        return ResponseEntity.ok(ApiResponse.success("Student complaints retrieved", hostelService.getComplaintsByStudent(numericId)));
     }
 
     @GetMapping

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   CheckCircle,
   Plus,
@@ -18,9 +18,15 @@ import { useAuth } from "../../hooks/useAuth";
 const STUDENT_ID = "S001";
 
 export default function VisitorRequest() {
-  const { visitors, addVisitor, setLoading, loading } = useHostel();
+  const { visitors, addVisitor, refreshVisitors } = useHostel();
+
+  useEffect(() => {
+    refreshVisitors();
+  }, [refreshVisitors]);
+
   const { userName } = useAuth();
   const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ visitorName: "", phone: "", relation: "Parent", purpose: "Family Visit", date: "" });
   const [errors, setErrors] = useState({});
 

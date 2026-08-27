@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   AlertCircle,
   Bell,
@@ -10,7 +11,11 @@ import { useHostel } from "../../context/HostelContext";
 import { cls } from "../../utils/classNames";
 
 export default function SharedNotifications({ role }) {
-  const { notifications, markAsRead, markAllAsRead, deleteNotification, clearNotifications } = useHostel();
+  const { notifications, markAsRead, markAllAsRead, deleteNotification, clearNotifications, refreshNotifications } = useHostel();
+
+  useEffect(() => {
+    refreshNotifications();
+  }, [refreshNotifications]);
   
   const items = notifications.filter(n => n.forRole === "all" || n.forRole === role);
   const unreadCount = items.filter(n => !n.read).length;

@@ -15,7 +15,12 @@ import { getIndianDateStr, getIndianTimeStr } from "../../utils/dateUtils";
 import { exportToCSV } from "../../utils/exportUtils";
 
 export default function WardenAttendance() {
-  const { attendance, students, updateAttendance, showToast } = useHostel();
+  const { attendance, students, updateAttendance, showToast, refreshAttendance, refreshStudents } = useHostel();
+
+  useEffect(() => {
+    refreshAttendance();
+  }, []);
+
   const [selectedDate, setSelectedDate] = useState(getIndianDateStr());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -101,7 +106,7 @@ export default function WardenAttendance() {
       await updateAttendance(localAttendance);
       setSubmitted(true);
       setIsUserEdited(false);
-      showToast("Attendance recorded & stored in database successfully.", "success");
+      showToast("Attendance recorded successfully.", "success");
     } catch (err) {
       showToast(err?.response?.data?.message || err?.message || "Failed to save attendance to database.", "error");
     } finally {
@@ -218,7 +223,7 @@ export default function WardenAttendance() {
             <span className="text-xs text-gray-400">Unchecked = Absent</span>
           </div>
           <div className="text-xs text-gray-500 font-medium">
-            Click checkboxes to mark Present/Absent, then click <strong className="text-emerald-700">Submit Attendance</strong> to store in Database.
+            Click checkboxes to mark Present/Absent, then click <strong className="text-emerald-700">Submit Attendance</strong> to save.
           </div>
         </div>
         <div className="overflow-x-auto">

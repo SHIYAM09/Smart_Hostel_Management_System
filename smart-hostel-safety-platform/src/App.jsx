@@ -14,6 +14,7 @@ const AdminWardens = lazy(() => import("./pages/admin/AdminWardens"));
 const AdminHostels = lazy(() => import("./pages/admin/AdminHostels"));
 const AdminAllStudents = lazy(() => import("./pages/admin/AdminAllStudents"));
 const AdminComplaints = lazy(() => import("./pages/admin/AdminComplaints"));
+const AdminMessUtilityMonitoring = lazy(() => import("./pages/admin/AdminMessUtilityMonitoring"));
 const AdminReports = lazy(() => import("./pages/admin/AdminReports"));
 const AdminProfile = lazy(() => import("./pages/admin/AdminProfile"));
 
@@ -107,6 +108,7 @@ export default function App() {
             {role==="admin" && adminS==="hostels"      && <AdminHostels/>}
             {role==="admin" && adminS==="all-students" && <AdminAllStudents/>}
             {role==="admin" && adminS==="complaints"   && <AdminComplaints/>}
+            {role==="admin" && adminS==="mess-utility" && <AdminMessUtilityMonitoring/>}
             {role==="admin" && adminS==="reports"      && <AdminReports/>}
             {role==="admin" && adminS==="ai-safety"    && <AISafetyMonitor/>}
             {role==="admin" && adminS==="notifications"&& <SharedNotifications role="admin"/>}

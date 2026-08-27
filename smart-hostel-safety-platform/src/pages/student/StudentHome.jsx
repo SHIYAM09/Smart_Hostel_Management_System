@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import {
   Bell,
   CalendarCheck,
@@ -17,7 +18,12 @@ import { AnimatedCounter } from "../../components/common/AnimatedCounter";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function StudentHome({ onNav }) {
-  const { complaints, leaveRequests, attendance, messData, dashboardMetrics, weeklyMessMenu } = useHostel();
+  const { complaints, leaveRequests, attendance, messData, dashboardMetrics, weeklyMessMenu, refreshDashboard } = useHostel();
+
+  useEffect(() => {
+    refreshDashboard();
+  }, [refreshDashboard]);
+
   const { userName } = useAuth();
   const pct = attendance.length ? Math.round((attendance.filter(r => r.status === "present").length / attendance.length) * 100) : (dashboardMetrics?.attendancePercentage || 0);
   const myC = complaints;

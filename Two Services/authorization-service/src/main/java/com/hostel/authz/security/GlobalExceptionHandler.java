@@ -1,4 +1,4 @@
-package com.hostel.authz.security;
+ package com.hostel.authz.security;
 
 import com.hostel.authz.dto.ApiResponse;
 import org.springframework.http.HttpStatus;

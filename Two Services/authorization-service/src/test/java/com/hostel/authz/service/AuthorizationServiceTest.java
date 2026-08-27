@@ -1,8 +1,13 @@
 package com.hostel.authz.service;
 
-import com.hostel.authz.dto.*;
-import com.hostel.authz.repository.*;
-import com.hostel.authz.security.*;
+import com.hostel.authz.dto.JwtValidationResponse;
+import com.hostel.authz.repository.AiChatHistoryRepository;
+import com.hostel.authz.repository.ApiAccessLogRepository;
+import com.hostel.authz.repository.AuditLogRepository;
+import com.hostel.authz.repository.JwtBlacklistRepository;
+import com.hostel.authz.repository.LoginHistoryRepository;
+import com.hostel.authz.repository.RolePermissionRepository;
+import com.hostel.authz.security.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

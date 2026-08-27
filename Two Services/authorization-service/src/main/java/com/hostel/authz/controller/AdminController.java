@@ -39,9 +39,23 @@ public class AdminController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN')")
     @Operation(summary = "Get All Admins", description = "Retrieves a list of all system administrators.")
     public ResponseEntity<ApiResponse<List<AdminDto>>> getAllAdmins() {
         return ResponseEntity.ok(ApiResponse.success("Admins retrieved", hostelService.getAllAdmins()));
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN')")
+    @Operation(summary = "Update Admin Profile by ID")
+    public ResponseEntity<ApiResponse<AdminDto>> updateAdmin(@PathVariable("id") String id, @RequestBody AdminDto dto) {
+        return ResponseEntity.ok(ApiResponse.success("Admin profile updated successfully", hostelService.updateAdmin(id, dto)));
+    }
+
+    @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN')")
+    @Operation(summary = "Update Current Admin Profile")
+    public ResponseEntity<ApiResponse<AdminDto>> updateCurrentAdmin(@RequestBody AdminDto dto) {
+        return ResponseEntity.ok(ApiResponse.success("Admin profile updated successfully", hostelService.updateAdmin("1", dto)));
     }
 }

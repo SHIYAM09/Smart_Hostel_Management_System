@@ -9,6 +9,8 @@ import { Button } from "../../components/common/Button";
 import { cls } from "../../utils/classNames";
 import { authService } from "../../services/api";
 import { studentService } from "../../services/studentService";
+import { adminService } from "../../services/adminService";
+import { wardenService } from "../../services/wardenService";
 
 export default function ProfilePage({ roleKey = "student", gradient = "from-blue-600 to-indigo-700", avatarBg = "bg-blue-600", badgeStatus = "active", initials, onLogout }) {
   const { showToast, wardens, students, logout } = useHostel();
@@ -44,8 +46,6 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
           department: isAdmin ? "Hostel Administration" : (isWarden ? "Warden" : (parsed.department || "B.Tech IT")),
           block: (dbWarden?.block || dbWarden?.hostelBlock) || ((parsed.hostelBlock && parsed.hostelBlock !== "Block A") ? parsed.hostelBlock : ((parsed.block && parsed.block !== "Block A") ? parsed.block : (isWarden ? "Block D" : "Block D"))),
           employeeId: isAdmin ? "ADM-101" : (parsed.employeeId || parsed.rollNumber || parsed.username || (parsed.id ? String(parsed.id) : (isWarden ? "W-102" : "717824F251"))),
-          guardianName: "—",
-          guardianPhone: "—",
           role: (parsed.role || roleKey || "admin").toUpperCase(),
         };
       }
@@ -63,8 +63,6 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
       department: isAdmin ? "Hostel Administration" : (isWarden ? "Warden" : "B.Tech IT"),
       block: isAdmin ? "Block A" : "Block D",
       employeeId: isAdmin ? "ADM-101" : (isWarden ? "W-102" : "717824F251"),
-      guardianName: "—",
-      guardianPhone: "—",
       role: (roleKey || "admin").toUpperCase(),
     };
   };
@@ -133,15 +131,11 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
           const liveRoom = isAdmin ? "—" : (apiData.roomNumber || apiData.room || (matchedStudent ? matchedStudent.room : (isWarden ? "—" : "D-214")));
 
           let liveBlock = "Block D";
-          if (isAdmin) {
-            liveBlock = "Block A";
-          } else if (matchedWarden && (matchedWarden.block || matchedWarden.hostelBlock)) {
+          if (matchedWarden && (matchedWarden.block || matchedWarden.hostelBlock)) {
             liveBlock = matchedWarden.block || matchedWarden.hostelBlock;
-          } else if (liveRoom && String(liveRoom).toUpperCase().startsWith("D")) {
-            liveBlock = "Block D";
-          } else if (apiData.hostelBlock && apiData.hostelBlock !== "Block A") {
+          } else if (apiData.hostelBlock && apiData.hostelBlock !== "unassigned") {
             liveBlock = apiData.hostelBlock;
-          } else if (apiData.block && apiData.block !== "Block A") {
+          } else if (apiData.block && apiData.block !== "unassigned") {
             liveBlock = apiData.block;
           }
 
@@ -154,8 +148,6 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
             department: liveDept,
             block: liveBlock,
             employeeId: liveEmpId,
-            guardianName: "—",
-            guardianPhone: "—",
             role: (apiData.role || roleKey || (isAdmin ? "admin" : "user")).toUpperCase(),
           };
           setProfile(updated);
@@ -200,9 +192,24 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
       setErrors({ form: "Name and email are required" });
       return;
     }
-    setProfile({ ...editForm });
+    const updatedProfile = { ...profile, ...editForm };
+    setProfile(updatedProfile);
     try {
-      if (roleKey === "student") {
+      if (roleKey === "admin") {
+        await adminService.updateAdmin(profile.id || "1", {
+          fullName: editForm.name,
+          email: editForm.email,
+          phone: editForm.phone,
+          department: editForm.department,
+        });
+      } else if (roleKey === "warden") {
+        await adminService.updateWarden(profile.id || "warden", {
+          fullName: editForm.name,
+          email: editForm.email,
+          phone: editForm.phone,
+          hostelBlock: editForm.block,
+        });
+      } else if (roleKey === "student") {
         await studentService.updateProfile(profile.id, {
           fullName: editForm.name,
           email: editForm.email,
@@ -212,20 +219,25 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
           hostelBlock: editForm.block,
         });
       }
+
       const u = localStorage.getItem("user");
       const existing = u ? JSON.parse(u) : {};
-      localStorage.setItem("user", JSON.stringify({
-        ...existing,
-        fullName: editForm.name,
-        email: editForm.email,
-        phone: editForm.phone,
-        department: editForm.department,
-        roomNumber: editForm.room,
-        hostelBlock: editForm.block,
-      }));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...existing,
+          fullName: editForm.name,
+          name: editForm.name,
+          email: editForm.email,
+          phone: editForm.phone,
+          department: editForm.department,
+          roomNumber: editForm.room,
+          hostelBlock: editForm.block,
+        })
+      );
       showToast("Profile updated successfully.");
     } catch (err) {
-      showToast(err.response?.data?.message || "Profile updated.", "info");
+      showToast(err?.response?.data?.message || err?.message || "Profile updated.", "info");
     } finally {
       setEditOpen(false);
     }

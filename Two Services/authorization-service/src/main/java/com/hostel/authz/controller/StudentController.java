@@ -34,11 +34,21 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
     @Operation(summary = "Update Student Profile", description = "Updates student details by ID.")
     public ResponseEntity<ApiResponse<StudentDto>> updateStudent(@PathVariable("id") String id, @RequestBody StudentDto dto) {
         StudentDto updated = hostelService.updateStudent(id, dto);
         return ResponseEntity.ok(ApiResponse.success("Student profile updated successfully", updated));
+    }
+
+    @PutMapping("/me")
+    @PreAuthorize("hasRole('STUDENT')")
+    @Operation(summary = "Update Current Student Profile", description = "Updates profile details for the currently logged-in student.")
+    public ResponseEntity<ApiResponse<StudentDto>> updateMyProfile(@RequestBody StudentDto dto, Authentication authentication) {
+        StudentDto currentStudent = hostelService.getStudentByUsername(authentication.getName());
+        String id = currentStudent != null && currentStudent.getId() != null ? String.valueOf(currentStudent.getId()) : "me";
+        StudentDto updated = hostelService.updateStudent(id, dto);
+        return ResponseEntity.ok(ApiResponse.success("Profile updated successfully", updated));
     }
 
     @DeleteMapping("/{id}")

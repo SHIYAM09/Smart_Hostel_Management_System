@@ -26,6 +26,7 @@ export const ADMIN_NAV = [
   {id:"hostels",      label:"Hostel Blocks",     icon:Building2       },
   {id:"all-students", label:"All Students",      icon:Users           },
   {id:"complaints",   label:"Complaints",        icon:MessageSquareWarning},
+  {id:"mess-utility", label:"Mess & Utility",    icon:Utensils        },
   {id:"reports",      label:"Reports",           icon:FileText        },
   {id:"ai-safety",    label:"AI Safety Monitor", icon:Brain},
   {id:"notifications",label:"Notifications",     icon:Bell            },
@@ -62,7 +63,8 @@ export const STUDENT_NAV = [
 
 export const ADMIN_TITLES = {
   dashboard:"Dashboard", wardens:"Warden Management", hostels:"Hostel Blocks",
-  "all-students":"All Students", complaints:"Complaint Management", reports:"Reports",
+  "all-students":"All Students", complaints:"Complaint Management",
+  "mess-utility":"Mess Feedback & Utility Monitoring", reports:"Reports",
   "ai-safety":"AI Safety Monitor",
   notifications:"Notifications", profile:"Profile",
 };

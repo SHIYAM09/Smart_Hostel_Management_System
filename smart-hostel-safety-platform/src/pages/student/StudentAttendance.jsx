@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Bell,
   CheckCircle,
@@ -13,7 +14,11 @@ import { cls } from "../../utils/classNames";
 import { Badge } from "../../components/common/Badge";
 
 export default function StudentAttendance() {
-  const { attendance } = useHostel();
+  const { attendance, refreshAttendance } = useHostel();
+
+  useEffect(() => {
+    refreshAttendance();
+  }, []);
   const list = attendance;
   const present = list.filter(r=>r.status==="present").length;
   const pct = list.length ? Math.round((present / list.length) * 100) : 0;

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useHostel } from "../../context/HostelContext";
 import { cls } from "../../utils/classNames";
 import { Badge } from "../../components/common/Badge";
@@ -7,7 +8,11 @@ import { Input } from "../../components/common/Input";
 import { Button } from "../../components/common/Button";
 
 export default function AdminComplaints() {
-  const { complaints, students } = useHostel();
+  const { complaints, students, refreshComplaints } = useHostel();
+
+  useEffect(() => {
+    refreshComplaints();
+  }, []);
   const table = useTable(complaints, { searchKeys: ["subject", "studentName", "room", "category"], pageSize: 8, defaultSort: { key: "date", dir: "desc" }, filterKey: "status" });
 
   const withFeedback = complaints.filter((c) => c.feedback).length;

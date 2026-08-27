@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AlertTriangle,
   Edit2,
@@ -30,7 +30,12 @@ const EMPTY_FORM = {
 };
 
 export default function WardenStudents() {
-  const { students, setStudents, addStudent, updateStudent, deleteStudent } = useHostel();
+  const { students, setStudents, addStudent, updateStudent, deleteStudent, refreshStudents } = useHostel();
+
+  useEffect(() => {
+    refreshStudents();
+  }, [refreshStudents]);
+
   const [search, setSearch] = useState("");
   const [importOpen, setImportOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -122,7 +127,7 @@ export default function WardenStudents() {
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-4 py-8 text-center text-gray-500 text-sm">
-                    No student records found in database.
+                    No student records found.
                   </td>
                 </tr>
               ) : (

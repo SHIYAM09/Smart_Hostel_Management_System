@@ -18,4 +18,6 @@ public class DashboardMetricsDto {
     private Long availableBeds;
     private Long pendingComplaints;
     private Long pendingLeaveRequests;
+    private Long activeVisitors;
+    private Double todayAttendanceRate;
 }

@@ -10,13 +10,7 @@ import {
   Activity,
   CheckCircle2,
 } from "lucide-react";
-import { useHostel } from "../../context/HostelContext";
-import {
-  generateSafetyAlerts,
-  predictAttendanceRisks,
-  predictUtilitySpikes,
-  analyzeVisitorRisk,
-} from "../../services/aiService";
+import { studentService } from "../../services/studentService";
 import { isGeminiConfigured } from "../../services/geminiClient";
 import { cls } from "../../utils/classNames";
 import { Button } from "../../components/common/Button";
@@ -24,7 +18,6 @@ import { Button } from "../../components/common/Button";
 const REFRESH_MS = 60000;
 
 export default function AISafetyMonitor() {
-  const { students, attendance, complaints, visitors, utilityData } = useHostel();
   const [alerts, setAlerts] = useState([]);
   const [attendanceRisks, setAttendanceRisks] = useState([]);
   const [utilitySpikes, setUtilitySpikes] = useState(null);
@@ -37,37 +30,23 @@ export default function AISafetyMonitor() {
     setLoading(true);
     setError("");
     try {
-      const contextData = {
-        students: students || [],
-        attendance: attendance || [],
-        complaints: complaints || [],
-        visitors: visitors || [],
-        resources: utilityData || [],
-      };
-
-      const [alertsRes, attRisksRes, utilSpikesRes, visRisksRes] = await Promise.all([
-        generateSafetyAlerts(contextData),
-        predictAttendanceRisks(students || []),
-        predictUtilitySpikes(utilityData || []),
-        analyzeVisitorRisk(visitors || []),
-      ]);
-
-      setAlerts(alertsRes || []);
-      setAttendanceRisks(attRisksRes || []);
-      setUtilitySpikes(utilSpikesRes || null);
-      setVisitorRisks(visRisksRes || []);
+      const data = await studentService.getAISafetyAnalytics();
+      if (data) {
+        setAlerts(data.alerts || []);
+        setAttendanceRisks(data.attendanceRisks || []);
+        setUtilitySpikes(data.utilitySpikes || null);
+        setVisitorRisks(data.visitorRisks || []);
+      }
       setLastRefresh(new Date().toLocaleTimeString());
     } catch (err) {
       setError(err.message || "Failed to generate safety alerts.");
     } finally {
       setLoading(false);
     }
-  }, [students, attendance, complaints, visitors, utilityData]);
+  }, []);
 
   useEffect(() => {
     refresh();
-    const timer = setInterval(refresh, REFRESH_MS);
-    return () => clearInterval(timer);
   }, [refresh]);
 
   const counts = {

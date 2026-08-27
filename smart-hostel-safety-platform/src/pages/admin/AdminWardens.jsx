@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Edit2,
   Plus,
@@ -15,10 +15,15 @@ import { Select } from "../../components/common/Select";
 import { Button } from "../../components/common/Button";
 import { ConfirmDialog } from "../../components/common/ConfirmDialog";
 
-const EMPTY_WARDEN = { name: "", email: "", phone: "", block: "Block A", status: "active" };
+const EMPTY_WARDEN = { name: "", email: "", phone: "", block: "Block D", status: "active" };
 
 export default function AdminWardens() {
-  const { wardens, createWarden, updateWarden, deleteWarden } = useHostel();
+  const { wardens, createWarden, updateWarden, deleteWarden, refreshWardens } = useHostel();
+
+  useEffect(() => {
+    refreshWardens();
+  }, []);
+
   const [modal, setModal] = useState(false);
   const [edit, setEdit] = useState(null);
   const [form, setForm] = useState(EMPTY_WARDEN);
@@ -77,7 +82,7 @@ export default function AdminWardens() {
               {wardens.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-5 py-8 text-center text-gray-500 text-sm">
-                    No warden records found in database.
+                    No warden records found.
                   </td>
                 </tr>
               ) : (

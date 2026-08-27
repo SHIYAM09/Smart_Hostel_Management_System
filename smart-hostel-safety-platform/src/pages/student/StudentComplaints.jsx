@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Plus,
   Send,
@@ -20,9 +20,15 @@ import { analyzeComplaint } from "../../services/aiService";
 const STUDENT_ID = "S001";
 
 export default function StudentComplaints() {
-  const { complaints, addComplaint, submitComplaintFeedback, setLoading, loading } = useHostel();
+  const { complaints, addComplaint, submitComplaintFeedback, refreshComplaints } = useHostel();
   const { userName } = useAuth();
+
+  useEffect(() => {
+    refreshComplaints();
+  }, [refreshComplaints]);
+
   const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(null);
   const [form, setForm] = useState({ subject: "", category: "Plumbing", priority: "medium", description: "" });
   const [feedbackForm, setFeedbackForm] = useState({ rating: 0, comment: "" });

@@ -21,8 +21,6 @@ public class Student {
     private Integer yearOfStudy;
     private String hostelBlock;
     private String roomNumber;
-    private String guardianName;
-    private String guardianPhone;
     private String phone;
     private String email;
     private String status;

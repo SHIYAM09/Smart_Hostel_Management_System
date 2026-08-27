@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import {
   Activity,
   BedDouble,
@@ -32,14 +32,18 @@ import { Card, CardHeader, CardBody } from "../../components/common/Card";
 import { AnimatedCounter } from "../../components/common/AnimatedCounter";
 
 const FALLBACK_RESOURCES = [
-  { id: 1, name: "Water Supply Tank A", current: 8200, max: 10000, unit: "L", threshold: 9000, anomaly: false },
-  { id: 2, name: "Electricity Grid Block A", current: 1420, max: 1500, unit: "kWh", threshold: 1400, anomaly: true },
+  { id: 1, name: "Water Supply Tank D", current: 8200, max: 10000, unit: "L", threshold: 9000, anomaly: false },
+  { id: 2, name: "Electricity Grid Block D", current: 1420, max: 1500, unit: "kWh", threshold: 1400, anomaly: true },
   { id: 3, name: "Generator Diesel Level", current: 450, max: 500, unit: "L", threshold: 400, anomaly: true },
   { id: 4, name: "Wi-Fi Bandwidth Usage", current: 650, max: 1000, unit: "GB", threshold: 850, anomaly: false },
 ];
 
 export default function WardenDashboard({ onNav }) {
-  const { students, rooms, attendance, complaints, visitors, messData, resources, utilityData, dashboardMetrics } = useHostel();
+  const { students, rooms, attendance, complaints, visitors, messData, resources, utilityData, dashboardMetrics, refreshDashboard, refreshStudents, refreshRooms, refreshAttendance, refreshComplaints } = useHostel();
+
+  useEffect(() => {
+    refreshDashboard();
+  }, []);
   const pct = attendance.length ? Math.round((attendance.filter(a => a.status === "present").length / attendance.length) * 100) : (dashboardMetrics?.todayAttendanceRate ? Math.round(dashboardMetrics.todayAttendanceRate) : 0);
 
   const anomalies = useMemo(() => {
@@ -79,8 +83,8 @@ export default function WardenDashboard({ onNav }) {
 
     if (latestUtility) {
       return [
-        { id: "u1", name: "Water Supply Tank A", current: Number(latestUtility.water || 0), max: 10000, unit: "L", threshold: 8500, anomaly: Number(latestUtility.water) > 8500 },
-        { id: "u2", name: "Electricity Grid Block A", current: Number(latestUtility.electricity || 0), max: 2000, unit: "kWh", threshold: 1500, anomaly: Number(latestUtility.electricity) > 1500 },
+        { id: "u1", name: "Water Supply Tank D", current: Number(latestUtility.water || 0), max: 10000, unit: "L", threshold: 8500, anomaly: Number(latestUtility.water) > 8500 },
+        { id: "u2", name: "Electricity Grid Block D", current: Number(latestUtility.electricity || 0), max: 2000, unit: "kWh", threshold: 1500, anomaly: Number(latestUtility.electricity) > 1500 },
         { id: "u3", name: "Generator Diesel Level", current: Number(latestUtility.generator || 0), max: 10, unit: "hrs", threshold: 6, anomaly: Number(latestUtility.generator) > 6 },
         { id: "u4", name: "Wi-Fi Bandwidth Usage", current: Number(latestUtility.internet || 0), max: 1000, unit: "GB", threshold: 800, anomaly: Number(latestUtility.internet) > 800 },
       ];

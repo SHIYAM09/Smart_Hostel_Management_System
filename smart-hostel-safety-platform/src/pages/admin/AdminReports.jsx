@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import {
   AlertCircle,
   Download,
@@ -21,7 +21,14 @@ import { StarDisplay } from "../../components/common/StarRating";
 import { exportToCSV, printReport } from "../../utils/exportUtils";
 
 export default function AdminReports() {
-  const { complaints, messFeedback, utilityData, students, visitors, messData, hostelBlocks } = useHostel();
+  const { complaints, messFeedback, utilityData, students, visitors, messData, hostelBlocks, refreshComplaints, refreshMess, refreshUtilities } = useHostel();
+
+  useEffect(() => {
+    refreshComplaints();
+    refreshMess();
+    refreshUtilities();
+  }, []);
+
   const feedbackComplaints = complaints.filter((c) => c.feedback);
 
   const monthlyReportData = useMemo(() => {
@@ -143,8 +150,6 @@ export default function AdminReports() {
         Room_Number: s.room || s.roomNumber || "Unassigned",
         Phone: s.phone || "—",
         Email: s.email || "—",
-        Guardian_Name: s.guardianName || "—",
-        Guardian_Phone: s.guardianPhone || "—",
         Account_Status: (s.status || "ACTIVE").toUpperCase(),
       }));
       exportToCSV("Student_Demographics_Report", rows);
@@ -189,7 +194,7 @@ export default function AdminReports() {
       <div className="flex items-center justify-between bg-white rounded-2xl border border-blue-50 p-4 shadow-sm">
         <div>
           <h2 className="text-base font-bold text-gray-900">System Analytics & Executive Reports</h2>
-          <p className="text-xs text-gray-500">Live operational data directly synchronized from Oracle & MongoDB backends.</p>
+          <p className="text-xs text-gray-500">Live operational data directly synchronized.</p>
         </div>
         <button
           onClick={handlePrintSummary}

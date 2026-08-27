@@ -64,21 +64,21 @@ export function useAuth() {
   };
 
   const logout = async () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith("hostel_")) {
+        localStorage.removeItem(key);
+      }
+    });
+    setLoggedIn(false);
+    setUserName("");
+
     try {
       await authService.logout();
     } catch {
       // ignore
-    } finally {
-      setLoggedIn(false);
-      setUserName("");
-      localStorage.removeItem("token");
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("user");
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith("hostel_")) {
-          localStorage.removeItem(key);
-        }
-      });
     }
   };
 

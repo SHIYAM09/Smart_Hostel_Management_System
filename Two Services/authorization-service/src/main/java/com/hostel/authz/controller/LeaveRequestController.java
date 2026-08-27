@@ -42,8 +42,10 @@ public class LeaveRequestController {
     @GetMapping("/student/{studentId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
     @Operation(summary = "Get Leave Requests by Student", description = "Retrieves leave requests for a specific student.")
-    public ResponseEntity<ApiResponse<List<LeaveRequestDto>>> getLeaveRequestsByStudent(@PathVariable("studentId") Long studentId) {
-        return ResponseEntity.ok(ApiResponse.success("Student leave requests retrieved", hostelService.getLeaveRequestsByStudent(studentId)));
+    public ResponseEntity<ApiResponse<List<LeaveRequestDto>>> getLeaveRequestsByStudent(@PathVariable("studentId") String studentId) {
+        Long numericId = null;
+        try { numericId = Long.parseLong(studentId); } catch (Exception ignored) {}
+        return ResponseEntity.ok(ApiResponse.success("Student leave requests retrieved", hostelService.getLeaveRequestsByStudent(numericId)));
     }
 
     @GetMapping

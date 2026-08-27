@@ -40,7 +40,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             List<String> roles = jwtUtil.getRolesFromToken(jwt);
 
             List<SimpleGrantedAuthority> authorities = roles.stream()
-                    .map(role -> role.startsWith("ROLE_") ? role : "ROLE_" + role)
+                    .map(String::toUpperCase)
+                    .flatMap(role -> {
+                        String roleWithPrefix = role.startsWith("ROLE_") ? role : "ROLE_" + role;
+                        String roleWithoutPrefix = role.replace("ROLE_", "");
+                        return java.util.stream.Stream.of(roleWithPrefix, roleWithoutPrefix);
+                    })
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
 

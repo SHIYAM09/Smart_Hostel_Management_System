@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Smart Hostel Management System - Complete API Collection",
-    "description": "Comprehensive Postman Collection covering all endpoints for Authentication Service (Port 8081 - Oracle XE) and Authorization Service (Port 8082 - MongoDB).",
+    "description": "Comprehensive Postman Collection for Authentication Service (Port 8081 - Oracle XE / Auth) and Main Hostel Management Service (Port 8082 - MongoDB / Authorization). Includes User Registration, Login, Dashboards, and full CRUD endpoints.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -11,8 +11,20 @@
   ],
   "item": [
     {
-      "name": "1. Authentication Service (Port 8081 - Oracle XE)",
+      "name": "1. Authentication Service (Port 8081)",
       "item": [
+        {
+          "name": "Register New User (Student / Warden / Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newstudent\",\n  \"email\": \"student@hostel.edu\",\n  \"password\": \"password123\",\n  \"fullName\": \"New Student Name\",\n  \"phone\": \"9876543210\",\n  \"roles\": [\"STUDENT\"]\n}"
+            },
+            "url": { "raw": "{{auth_url}}/auth/register", "host": ["{{auth_url}}"], "path": ["auth", "register"] }
+          }
+        },
         {
           "name": "Login (Admin / Warden / Student)",
           "request": {
@@ -26,7 +38,7 @@
           }
         },
         {
-          "name": "Get Current User Profile",
+          "name": "Get Current User Profile (/auth/me)",
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
@@ -59,10 +71,10 @@
       ]
     },
     {
-      "name": "2. Dashboards (Port 8082 - MongoDB)",
+      "name": "2. Dashboards (Port 8082)",
       "item": [
         {
-          "name": "Get Student Dashboard Metrics",
+          "name": "Get Student Dashboard",
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
@@ -70,7 +82,7 @@
           }
         },
         {
-          "name": "Get Warden Dashboard Metrics",
+          "name": "Get Warden Dashboard",
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
@@ -78,7 +90,7 @@
           }
         },
         {
-          "name": "Get Admin Dashboard Metrics",
+          "name": "Get Admin Dashboard",
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
@@ -99,7 +111,15 @@
           }
         },
         {
-          "name": "Create Student",
+          "name": "Get Student Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/students/me", "host": ["{{main_url}}"], "path": ["students", "me"] }
+          }
+        },
+        {
+          "name": "Create Student Record",
           "request": {
             "method": "POST",
             "header": [
@@ -108,7 +128,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Arjun Sharma\",\n  \"rollNumber\": \"22CS001\",\n  \"department\": \"CSE\",\n  \"yearOfStudy\": 2,\n  \"hostelBlock\": \"Block A\",\n  \"roomNumber\": \"A-101\",\n  \"guardianName\": \"Ramesh Sharma\",\n  \"guardianPhone\": \"9876543210\",\n  \"status\": \"ACTIVE\"\n}"
+              "raw": "{\n  \"fullName\": \"Arjun Sharma\",\n  \"rollNumber\": \"22CS001\",\n  \"department\": \"CSE\",\n  \"yearOfStudy\": 2,\n  \"hostelBlock\": \"Block A\",\n  \"roomNumber\": \"A-101\",\n  \"phone\": \"9876543210\",\n  \"email\": \"arjun@student.edu\",\n  \"status\": \"ACTIVE\"\n}"
             },
             "url": { "raw": "{{main_url}}/students", "host": ["{{main_url}}"], "path": ["students"] }
           }
@@ -159,9 +179,24 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Dr. Suresh Kumar\",\n  \"email\": \"warden@hostel.edu\",\n  \"phone\": \"9800000001\",\n  \"hostelBlock\": \"Block A & B\",\n  \"status\": \"ACTIVE\"\n}"
+              "raw": "{\n  \"fullName\": \"Dr. Suresh Kumar\",\n  \"email\": \"warden@hostel.edu\",\n  \"phone\": \"9800000001\",\n  \"hostelBlock\": \"Block A\",\n  \"status\": \"ACTIVE\"\n}"
             },
             "url": { "raw": "{{main_url}}/wardens", "host": ["{{main_url}}"], "path": ["wardens"] }
+          }
+        },
+        {
+          "name": "Update Warden",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Dr. Suresh Kumar Updated\",\n  \"phone\": \"9800000099\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/wardens/1", "host": ["{{main_url}}"], "path": ["wardens", "1"] }
           }
         },
         {
@@ -190,7 +225,7 @@
       ]
     },
     {
-      "name": "5. Rooms & Allocations (Port 8082)",
+      "name": "5. Rooms Management (Port 8082)",
       "item": [
         {
           "name": "Get All Rooms",
@@ -216,7 +251,7 @@
           }
         },
         {
-          "name": "Allocate Room",
+          "name": "Allocate Room to Student",
           "request": {
             "method": "POST",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
@@ -234,18 +269,26 @@
       ]
     },
     {
-      "name": "6. Attendance & Complaints (Port 8082)",
+      "name": "6. Complaints Management (Port 8082)",
       "item": [
         {
-          "name": "Get Student Attendance",
+          "name": "Get All Complaints (Warden / Admin)",
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": { "raw": "{{main_url}}/attendance/student/1", "host": ["{{main_url}}"], "path": ["attendance", "student", "1"] }
+            "url": { "raw": "{{main_url}}/complaints", "host": ["{{main_url}}"], "path": ["complaints"] }
           }
         },
         {
-          "name": "Mark Bulk Attendance",
+          "name": "Get Student Complaints",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/complaints/student/1", "host": ["{{main_url}}"], "path": ["complaints", "student", "1"] }
+          }
+        },
+        {
+          "name": "File New Complaint",
           "request": {
             "method": "POST",
             "header": [
@@ -254,28 +297,13 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "[\n  {\n    \"studentId\": 1,\n    \"studentName\": \"Arjun Sharma\",\n    \"rollNumber\": \"22CS001\",\n    \"roomNumber\": \"A-101\",\n    \"attendanceDate\": \"2026-08-06\",\n    \"status\": \"PRESENT\",\n    \"time\": \"10:00 PM\"\n  }\n]"
-            },
-            "url": { "raw": "{{main_url}}/attendance/bulk", "host": ["{{main_url}}"], "path": ["attendance", "bulk"] }
-          }
-        },
-        {
-          "name": "File Complaint",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{token}}" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"studentId\": 1,\n  \"title\": \"Water Leakage in A-101\",\n  \"description\": \"Bathroom pipe leaking continuously\",\n  \"category\": \"Plumbing\",\n  \"priority\": \"HIGH\"\n}"
+              "raw": "{\n  \"title\": \"Water Leakage in A-101\",\n  \"description\": \"Bathroom pipe leaking continuously\",\n  \"category\": \"Plumbing\",\n  \"priority\": \"HIGH\"\n}"
             },
             "url": { "raw": "{{main_url}}/complaints", "host": ["{{main_url}}"], "path": ["complaints"] }
           }
         },
         {
-          "name": "Update Complaint Status",
+          "name": "Update Complaint Status (Warden)",
           "request": {
             "method": "PUT",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
@@ -286,14 +314,46 @@
               "query": [{ "key": "status", "value": "RESOLVED" }]
             }
           }
+        },
+        {
+          "name": "Submit Complaint Feedback (Student)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{main_url}}/complaints/1/feedback?rating=5&comment=Fixed%20promptly",
+              "host": ["{{main_url}}"],
+              "path": ["complaints", "1", "feedback"],
+              "query": [
+                { "key": "rating", "value": "5" },
+                { "key": "comment", "value": "Fixed promptly" }
+              ]
+            }
+          }
         }
       ]
     },
     {
-      "name": "7. Leave Requests & Visitors (Port 8082)",
+      "name": "7. Leave Requests Management (Port 8082)",
       "item": [
         {
-          "name": "Apply Leave",
+          "name": "Get All Leave Requests",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/leave-requests", "host": ["{{main_url}}"], "path": ["leave-requests"] }
+          }
+        },
+        {
+          "name": "Get Student Leave Requests",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/leave-requests/student/1", "host": ["{{main_url}}"], "path": ["leave-requests", "student", "1"] }
+          }
+        },
+        {
+          "name": "Apply for Leave (Student)",
           "request": {
             "method": "POST",
             "header": [
@@ -302,29 +362,42 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"studentId\": 1,\n  \"startDate\": \"2026-08-10\",\n  \"endDate\": \"2026-08-15\",\n  \"reason\": \"Family Function\"\n}"
+              "raw": "{\n  \"startDate\": \"2026-08-15\",\n  \"endDate\": \"2026-08-18\",\n  \"reason\": \"Family Function\"\n}"
             },
             "url": { "raw": "{{main_url}}/leave-requests", "host": ["{{main_url}}"], "path": ["leave-requests"] }
           }
         },
         {
-          "name": "Approve Leave Request",
+          "name": "Update Leave Status (Warden)",
           "request": {
             "method": "PUT",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": {
-              "raw": "{{main_url}}/leave-requests/1/status?status=APPROVED&remarks=Inform%20security",
+              "raw": "{{main_url}}/leave-requests/1/status?status=APPROVED&remarks=Granted",
               "host": ["{{main_url}}"],
               "path": ["leave-requests", "1", "status"],
               "query": [
                 { "key": "status", "value": "APPROVED" },
-                { "key": "remarks", "value": "Inform security" }
+                { "key": "remarks", "value": "Granted" }
               ]
             }
           }
+        }
+      ]
+    },
+    {
+      "name": "8. Visitors Management (Port 8082)",
+      "item": [
+        {
+          "name": "Get Visitor Logs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/visitors/logs", "host": ["{{main_url}}"], "path": ["visitors", "logs"] }
+          }
         },
         {
-          "name": "Register Visitor",
+          "name": "Register Visitor Pass Request",
           "request": {
             "method": "POST",
             "header": [
@@ -337,11 +410,34 @@
             },
             "url": { "raw": "{{main_url}}/visitors", "host": ["{{main_url}}"], "path": ["visitors"] }
           }
+        },
+        {
+          "name": "Log Visitor Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"visitorName\": \"Ramesh Sharma\",\n  \"studentName\": \"Arjun Sharma\",\n  \"roomNumber\": \"A-101\",\n  \"status\": \"CHECKED_IN\",\n  \"checkInTime\": \"10:30 AM\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/visitors/logs/entry", "host": ["{{main_url}}"], "path": ["visitors", "logs", "entry"] }
+          }
+        },
+        {
+          "name": "Checkout Visitor",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/visitors/logs/checkout/1", "host": ["{{main_url}}"], "path": ["visitors", "logs", "checkout", "1"] }
+          }
         }
       ]
     },
     {
-      "name": "8. Mess Menu & Analytics (Port 8082)",
+      "name": "9. Mess & Food Management (Port 8082)",
       "item": [
         {
           "name": "Get Weekly Mess Menu",
@@ -352,7 +448,7 @@
           }
         },
         {
-          "name": "Submit Food Feedback Rating",
+          "name": "Update Mess Menu (Warden)",
           "request": {
             "method": "POST",
             "header": [
@@ -361,7 +457,30 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"mealType\": \"LUNCH\",\n  \"rating\": 5,\n  \"remarks\": \"Food was delicious and fresh!\"\n}"
+              "raw": "{\n  \"dayOfWeek\": \"Monday\",\n  \"breakfast\": \"Idli, Sambar, Chutney\",\n  \"lunch\": \"Rice, Dal, Paneer Butter Masala\",\n  \"snacks\": \"Tea, Samosa\",\n  \"dinner\": \"Roti, Mixed Veg, Kheer\"\n}"
+            },
+            "url": { "raw": "{{main_url}}/mess/menu", "host": ["{{main_url}}"], "path": ["mess", "menu"] }
+          }
+        },
+        {
+          "name": "Get Mess Feedback",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/mess/feedback", "host": ["{{main_url}}"], "path": ["mess", "feedback"] }
+          }
+        },
+        {
+          "name": "Submit Mess Feedback Rating",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mealType\": \"LUNCH\",\n  \"rating\": 5,\n  \"remarks\": \"Food was delicious!\"\n}"
             },
             "url": { "raw": "{{main_url}}/mess/feedback", "host": ["{{main_url}}"], "path": ["mess", "feedback"] }
           }
@@ -376,7 +495,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"wastageKg\": 12.5,\n  \"logDate\": \"2026-08-06\"\n}"
+              "raw": "{\n  \"breakfastWastage\": 3.5,\n  \"lunchWastage\": 6.0,\n  \"dinnerWastage\": 4.0,\n  \"wastageKg\": 13.5,\n  \"logDate\": \"2026-08-12\",\n  \"remarks\": \"Normal daily log\"\n}"
             },
             "url": { "raw": "{{main_url}}/mess/food-wastage", "host": ["{{main_url}}"], "path": ["mess", "food-wastage"] }
           }
@@ -384,10 +503,34 @@
       ]
     },
     {
-      "name": "9. Resources & Utilities (Port 8082)",
+      "name": "10. Resources & Notifications (Port 8082)",
       "item": [
         {
-          "name": "Record Utility Readings",
+          "name": "Get Resources",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/resources", "host": ["{{main_url}}"], "path": ["resources"] }
+          }
+        },
+        {
+          "name": "Get Utilities",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/utilities", "host": ["{{main_url}}"], "path": ["utilities"] }
+          }
+        },
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{main_url}}/notifications", "host": ["{{main_url}}"], "path": ["notifications"] }
+          }
+        },
+        {
+          "name": "Create Notification",
           "request": {
             "method": "POST",
             "header": [
@@ -396,17 +539,9 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"electricityUsage\": 480,\n  \"waterUsage\": 1350,\n  \"readingDate\": \"2026-08-06\"\n}"
+              "raw": "{\n  \"title\": \"Hostel Maintenance Alert\",\n  \"message\": \"Water supply will be paused tomorrow from 2 PM to 4 PM.\",\n  \"type\": \"warning\",\n  \"forRole\": \"all\"\n}"
             },
-            "url": { "raw": "{{main_url}}/utilities", "host": ["{{main_url}}"], "path": ["utilities"] }
-          }
-        },
-        {
-          "name": "Get Audit Logs",
-          "request": {
-            "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
-            "url": { "raw": "{{main_url}}/authz/audit/logs", "host": ["{{main_url}}"], "path": ["authz", "audit", "logs"] }
+            "url": { "raw": "{{main_url}}/notifications", "host": ["{{main_url}}"], "path": ["notifications"] }
           }
         }
       ]

@@ -189,6 +189,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public ApiResponse<String> logout(String token, String username) {
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);

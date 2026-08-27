@@ -23,23 +23,29 @@ public class DashboardController {
     }
 
     @GetMapping("/student")
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAnyRole('STUDENT', 'WARDEN', 'ADMIN')")
     @Operation(summary = "Get Student Dashboard Metrics", description = "Retrieves student summary metrics (pending complaints, leaves).")
     public ResponseEntity<ApiResponse<DashboardMetricsDto>> getStudentDashboard(Authentication authentication) {
         return ResponseEntity.ok(ApiResponse.success("Student dashboard metrics retrieved", hostelService.getStudentDashboard(authentication.getName())));
     }
 
     @GetMapping("/warden")
-    @PreAuthorize("hasRole('WARDEN')")
+    @PreAuthorize("hasAnyRole('WARDEN', 'ADMIN')")
     @Operation(summary = "Get Warden Dashboard Metrics", description = "Retrieves warden block overview metrics.")
     public ResponseEntity<ApiResponse<DashboardMetricsDto>> getWardenDashboard(Authentication authentication) {
         return ResponseEntity.ok(ApiResponse.success("Warden dashboard metrics retrieved", hostelService.getWardenDashboard(authentication.getName())));
     }
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN')")
     @Operation(summary = "Get Admin Dashboard Metrics", description = "Retrieves system-wide administrative overview metrics.")
     public ResponseEntity<ApiResponse<DashboardMetricsDto>> getAdminDashboard(Authentication authentication) {
         return ResponseEntity.ok(ApiResponse.success("Admin dashboard metrics retrieved", hostelService.getAdminDashboard(authentication.getName())));
+    }
+
+    @GetMapping("/ai-safety")
+    @Operation(summary = "Get AI Safety Analytics & Risk Assessment")
+    public ResponseEntity<ApiResponse<AISafetyAnalyticsDto>> getAISafetyMonitor(Authentication authentication) {
+        return ResponseEntity.ok(ApiResponse.success("AI Safety analytics retrieved", hostelService.getAISafetyAnalytics(authentication)));
     }
 }

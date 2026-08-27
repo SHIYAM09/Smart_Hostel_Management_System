@@ -32,7 +32,7 @@ public class WardenController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN')")
     @Operation(summary = "Update Warden", description = "Updates warden details by ID.")
     public ResponseEntity<ApiResponse<WardenDto>> updateWarden(@PathVariable("id") String id, @RequestBody WardenDto dto) {
         return ResponseEntity.ok(ApiResponse.success("Warden updated successfully", hostelService.updateWarden(id, dto)));

@@ -25,7 +25,8 @@ public class HostelBlockController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
-    @Operation(summary = "Get All Hostel Blocks", description = "Retrieves a list of all hostel blocks")
+    @Operation(summary = "Get All Hostel Blocks"
+    , description = "Retrieves a list of all hostel blocks")
     public ResponseEntity<ApiResponse<List<HostelBlock>>> getAllBlocks() {
         return ResponseEntity.ok(ApiResponse.success("Hostel blocks retrieved", hostelService.getAllHostelBlocks()));
     }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   Activity,
   AlertTriangle,
@@ -48,7 +48,12 @@ const UTILITY_FIELDS = [
 ];
 
 export default function ResourceMonitor() {
-  const { utilityData, resources, addUtilityData, showToast } = useHostel();
+  const { utilityData, resources, addUtilityData, showToast, refreshResources, refreshUtilities } = useHostel();
+
+  useEffect(() => {
+    refreshUtilities();
+  }, []);
+
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState(EMPTY_UTILITY);
 
@@ -86,7 +91,7 @@ export default function ResourceMonitor() {
     const rows = (displayUtilityData || []).map((u) => ({
       Database_ID: u.id || `UT${Date.now()}`,
       Reading_Date: u.date || u.readingDate || new Date().toISOString().slice(0, 10),
-      Hostel_Block: u.hostelBlock || u.block || "Block A",
+      Hostel_Block: u.hostelBlock || u.block || "Block D",
       Electricity_Usage_kWh: u.electricity ?? u.electricityUsage ?? 0,
       Water_Usage_kL: u.water ?? u.waterUsage ?? 0,
       Internet_Usage_GB: u.internet ?? u.internetUsage ?? 0,
@@ -96,6 +101,53 @@ export default function ResourceMonitor() {
     }));
     exportToCSV("Utility_Monitoring_Report", rows);
   };
+
+  const displayResources = useMemo(() => {
+    if (resources && resources.length > 0) {
+      return resources;
+    }
+
+    const latestRec = (displayUtilityData && displayUtilityData.length > 0) ? displayUtilityData[displayUtilityData.length - 1] : null;
+
+    return [
+      {
+        id: "r1",
+        name: "Water Supply Tank D",
+        current: Number(latestRec?.water ?? latestRec?.waterUsage ?? 0),
+        max: 10000,
+        unit: "L",
+        threshold: 9000,
+        anomaly: Number(latestRec?.water ?? 0) > 9000,
+      },
+      {
+        id: "r2",
+        name: "Electricity Grid Block D",
+        current: Number(latestRec?.electricity ?? latestRec?.electricityUsage ?? 0),
+        max: 1500,
+        unit: "kWh",
+        threshold: 1400,
+        anomaly: Number(latestRec?.electricity ?? 0) > 1400,
+      },
+      {
+        id: "r3",
+        name: "Generator Diesel Level",
+        current: Number(latestRec?.generator ?? latestRec?.generatorUsage ?? 0),
+        max: 500,
+        unit: "L",
+        threshold: 400,
+        anomaly: Number(latestRec?.generator ?? 0) > 400,
+      },
+      {
+        id: "r4",
+        name: "Wi-Fi Bandwidth Usage",
+        current: Number(latestRec?.internet ?? latestRec?.internetUsage ?? 0),
+        max: 1000,
+        unit: "GB",
+        threshold: 850,
+        anomaly: Number(latestRec?.internet ?? 0) > 850,
+      },
+    ];
+  }, [displayUtilityData, resources]);
 
   return (
     <div className="space-y-5">
@@ -133,7 +185,7 @@ export default function ResourceMonitor() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {resources.map((r) => {
+        {displayResources.map((r) => {
           const pct = Math.round((r.current / r.max) * 100);
           const over = r.current > r.threshold;
           const Icon = r.name.includes("Water")

@@ -26,6 +26,7 @@ public interface HostelManagementService {
 
     // Admins
     AdminDto createAdmin(AdminDto dto);
+    AdminDto updateAdmin(String id, AdminDto dto);
     AdminDto getAdminById(Long id);
     List<AdminDto> getAllAdmins();
 
@@ -107,8 +108,9 @@ public interface HostelManagementService {
     HostelBlock updateHostelBlock(String id, HostelBlock block);
     void deleteHostelBlock(String id);
 
-    // Dashboards
+    // Dashboards & AI Analytics
     DashboardMetricsDto getStudentDashboard(String username);
     DashboardMetricsDto getWardenDashboard(String username);
     DashboardMetricsDto getAdminDashboard(String username);
+    AISafetyAnalyticsDto getAISafetyAnalytics(org.springframework.security.core.Authentication auth);
 }

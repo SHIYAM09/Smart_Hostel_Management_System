@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CheckCircle, XCircle } from "lucide-react";
 import { useHostel } from "../../context/HostelContext";
 import { cls } from "../../utils/classNames";
@@ -11,7 +11,12 @@ import { Button } from "../../components/common/Button";
 import { useTable } from "../../hooks/useTable";
 
 export default function WardenLeave() {
-  const { leaveRequests, updateLeaveRequest } = useHostel();
+  const { leaveRequests, updateLeaveRequest, refreshLeaveRequests } = useHostel();
+
+  useEffect(() => {
+    refreshLeaveRequests();
+  }, [refreshLeaveRequests]);
+
   const [viewL, setViewL] = useState(null);
   const [note, setNote] = useState("");
 

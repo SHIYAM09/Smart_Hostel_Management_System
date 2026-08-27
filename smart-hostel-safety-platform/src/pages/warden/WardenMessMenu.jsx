@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Edit2, Copy, Send, Utensils, Calendar } from "lucide-react";
 import { useHostel } from "../../context/HostelContext";
 import { cls } from "../../utils/classNames";
@@ -11,7 +11,12 @@ import { Button } from "../../components/common/Button";
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 export default function WardenMessMenu() {
-  const { weeklyMessMenu, updateWeeklyMessMenu, showToast } = useHostel();
+  const { weeklyMessMenu, updateWeeklyMessMenu, showToast, refreshMessMenu } = useHostel();
+
+  useEffect(() => {
+    refreshMessMenu();
+  }, [refreshMessMenu]);
+
   const [selectedDay, setSelectedDay] = useState("Monday");
   const [modalOpen, setModalOpen] = useState(false);
 

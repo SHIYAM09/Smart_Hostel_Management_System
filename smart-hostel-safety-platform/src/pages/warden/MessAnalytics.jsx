@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   AlertCircle,
   Download,
@@ -46,7 +46,12 @@ const EMPTY_WASTAGE = {
 };
 
 export default function MessAnalytics() {
-  const { messData, messFeedback, complaints, updateMessData, setLoading, loading } = useHostel();
+  const { messData, messFeedback, complaints, updateMessData, setLoading, loading, refreshMess } = useHostel();
+
+  useEffect(() => {
+    refreshMess();
+  }, []);
+
   const [modal, setModal] = useState(false);
   const [entry, setEntry] = useState(EMPTY_WASTAGE);
 
@@ -70,10 +75,9 @@ export default function MessAnalytics() {
       const dw = Number(m.dinnerWastage) || 0;
       const totalW = Number(m.wastageKg) || (bw + lw + dw);
 
-      // Derive meal turnout numbers for display if not stored explicitly
-      const breakfastCount = m.breakfast || Math.round(300 + (bw * 8));
-      const lunchCount = m.lunch || Math.round(360 + (lw * 8));
-      const dinnerCount = m.dinner || Math.round(330 + (dw * 8));
+      const breakfastCount = m.breakfast || 0;
+      const lunchCount = m.lunch || 0;
+      const dinnerCount = m.dinner || 0;
 
       return {
         id: m.id || m._id,
@@ -86,7 +90,7 @@ export default function MessAnalytics() {
         lunchWastage: parseFloat(lw.toFixed(1)),
         dinnerWastage: parseFloat(dw.toFixed(1)),
         wastageKg: parseFloat(totalW.toFixed(1)),
-        remarks: m.remarks || "MongoDB Record",
+        remarks: m.remarks || "System Log",
       };
     });
   }, [messData]);
@@ -95,7 +99,7 @@ export default function MessAnalytics() {
   const allRatings = [...messFeedback, ...complaintRatings.map((c) => ({ rating: c.feedback.rating, comment: c.feedback.comment, studentName: c.studentName, source: "complaint" }))];
 
   const overallRating = useMemo(() => {
-    if (!allRatings.length) return "4.2";
+    if (!allRatings.length) return "0.0";
     return (allRatings.reduce((sum, f) => sum + Number(f.rating || 0), 0) / allRatings.length).toFixed(1);
   }, [allRatings]);
 
@@ -104,7 +108,8 @@ export default function MessAnalytics() {
   }, [combinedChartData]);
 
   const avgDailyWastage = useMemo(() => {
-    return (Number(totalW) / Math.max(combinedChartData.length, 1)).toFixed(1);
+    if (!combinedChartData.length) return "0.0";
+    return (Number(totalW) / combinedChartData.length).toFixed(1);
   }, [totalW, combinedChartData]);
 
   const handleSaveWastage = (e) => {
@@ -146,7 +151,7 @@ export default function MessAnalytics() {
         Remarks: m.remarks || "",
       };
     });
-    exportToCSV("MongoDB_Mess_Food_Wastage_Analytics", rows);
+    exportToCSV("Mess_Food_Wastage_Analytics", rows);
   };
 
   const toggleSeries = (key) => {
@@ -162,10 +167,10 @@ export default function MessAnalytics() {
       <div className="bg-gray-900/95 backdrop-blur-md text-white p-4 rounded-xl border border-white/20 shadow-2xl min-w-[210px] text-xs">
         <div className="flex items-center justify-between font-bold border-b border-white/10 pb-2 mb-2">
           <span className="text-blue-400 flex items-center gap-1.5">
-            <Calendar size={13} /> {label} ({item?.date || "MongoDB"})
+            <Calendar size={13} /> {label} ({item?.date || "System"})
           </span>
           <span className="text-emerald-400 font-mono text-[10px] bg-emerald-500/20 px-1.5 py-0.5 rounded border border-emerald-500/30">
-            DB Synced
+            Synced
           </span>
         </div>
 
@@ -236,7 +241,7 @@ export default function MessAnalytics() {
             </h2>
           </div>
           <p className="text-xs text-gray-500 mt-0.5">
-            Monitor turnout, food waste logs, and student ratings live from database records.
+            Monitor turnout, food waste logs, and student ratings live.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -256,7 +261,7 @@ export default function MessAnalytics() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: "Avg Daily Wastage", value: `${avgDailyWastage} kg`, icon: TrendingDown, c: "text-red-600 bg-red-50 border-red-100", sub: "Target < 12 kg" },
-          { label: "Total MongoDB Wastage", value: `${totalW} kg`, icon: Package, c: "text-amber-600 bg-amber-50 border-amber-100", sub: `${combinedChartData.length} records in DB` },
+          { label: "Total Food Wastage", value: `${totalW} kg`, icon: Package, c: "text-amber-600 bg-amber-50 border-amber-100", sub: `${combinedChartData.length} total records` },
           { label: "Overall Mess Rating", value: `${overallRating}/5`, icon: Star, c: "text-yellow-600 bg-yellow-50 border-yellow-100", sub: `${allRatings.length} reviews` },
           { label: "Feedback Records", value: allRatings.length, icon: AlertCircle, c: "text-blue-600 bg-blue-50 border-blue-100", sub: "Student responses" },
         ].map((s) => (
@@ -347,7 +352,7 @@ export default function MessAnalytics() {
               <h3 className="font-bold text-gray-900 text-base flex items-center gap-2">
                 <BarChart3 size={18} className="text-blue-600" /> Meal Participation Turnout
               </h3>
-              <p className="text-xs text-gray-400">Database-driven turnout count per meal</p>
+              <p className="text-xs text-gray-400">Turnout count per meal</p>
             </div>
             {/* Chart Type Selector */}
             <div className="flex items-center bg-gray-100 p-1 rounded-xl text-xs border border-gray-200/60">
@@ -447,7 +452,7 @@ export default function MessAnalytics() {
               <h3 className="font-bold text-gray-900 text-base flex items-center gap-2">
                 <LineChartIcon size={18} className="text-amber-500" /> Food Wastage Trend (kg/day)
               </h3>
-              <p className="text-xs text-gray-400">Database-driven food wastage analytics</p>
+              <p className="text-xs text-gray-400">Food wastage analytics</p>
             </div>
             {/* Wastage View Switcher */}
             <div className="flex items-center bg-gray-100 p-1 rounded-xl text-xs border border-gray-200/60">

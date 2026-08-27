@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   CheckCircle,
   Plus,
@@ -30,7 +30,12 @@ const getNormalizedStatus = (rawStatus) => {
 const EMPTY_VISITOR_FORM = { visitorName: "", phone: "", relation: "Parent", purpose: "Family Visit", studentId: 1 };
 
 export default function VisitorVerification() {
-  const { visitors, students, updateVisitorStatus, addVisitor, addNotification, showToast } = useHostel();
+  const { visitors, students, updateVisitorStatus, addVisitor, addNotification, showToast, refreshVisitors } = useHostel();
+
+  useEffect(() => {
+    refreshVisitors();
+  }, [refreshVisitors]);
+
   const [viewV, setViewV] = useState(null);
   const [modal, setModal] = useState(false);
   const [vForm, setVForm] = useState(EMPTY_VISITOR_FORM);
@@ -94,7 +99,7 @@ export default function VisitorVerification() {
               {table.paginated.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="px-5 py-8 text-center text-gray-500 text-sm">
-                    No visitor logs recorded in database.
+                    No visitor logs recorded.
                   </td>
                 </tr>
               ) : (

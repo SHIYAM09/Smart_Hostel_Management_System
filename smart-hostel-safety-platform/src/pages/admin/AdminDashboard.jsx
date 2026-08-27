@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Activity,
   AlertTriangle,
@@ -23,7 +24,11 @@ import { Card, CardHeader, CardBody } from "../../components/common/Card";
 import { AnimatedCounter } from "../../components/common/AnimatedCounter";
 
 export default function AdminDashboard({ onNav }) {
-  const { students, wardens, rooms, complaints, resources, hostelBlocks, dashboardMetrics } = useHostel();
+  const { students, wardens, rooms, complaints, resources, hostelBlocks, dashboardMetrics, refreshDashboard, refreshStudents, refreshWardens, refreshRooms, refreshComplaints } = useHostel();
+
+  useEffect(() => {
+    refreshDashboard();
+  }, []);
 
   const totalStudentsCount = dashboardMetrics?.totalStudents ?? students.length;
   const totalWardensCount = dashboardMetrics?.totalWardens ?? wardens.length;

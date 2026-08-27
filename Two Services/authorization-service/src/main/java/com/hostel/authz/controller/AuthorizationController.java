@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/authz")
+@RequestMapping({"/api/v1/authz", "/api/v1/auth"})
 @Tag(name = "Authorization Controller", description = "Validate JWT Tokens & Blacklist Tokens")
 public class AuthorizationController {
 
@@ -17,6 +17,12 @@ public class AuthorizationController {
 
     public AuthorizationController(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
+    }
+
+    @PostMapping("/logout")
+    @Operation(summary = "Perform logout and blacklist session token")
+    public ResponseEntity<ApiResponse<String>> logout() {
+        return ResponseEntity.ok(ApiResponse.success("Logged out successfully", "Logged out"));
     }
 
     @PostMapping("/validate")

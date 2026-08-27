@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Send } from "lucide-react";
 import { useHostel } from "../../context/HostelContext";
 import { Badge } from "../../components/common/Badge";
@@ -12,9 +12,15 @@ import { useAuth } from "../../hooks/useAuth";
 const STUDENT_ID = "S001";
 
 export default function StudentLeave() {
-  const { leaveRequests, addLeaveRequest, loading, setLoading } = useHostel();
+  const { leaveRequests, addLeaveRequest, refreshLeaveRequests } = useHostel();
+
+  useEffect(() => {
+    refreshLeaveRequests();
+  }, [refreshLeaveRequests]);
+
   const { userName } = useAuth();
   const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ fromDate: "", toDate: "", reason: "" });
   const [errors, setErrors] = useState({});
 

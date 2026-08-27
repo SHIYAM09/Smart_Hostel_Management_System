@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Edit2, Trash2, Building2 } from "lucide-react";
 import { useHostel } from "../../context/HostelContext";
 import { cls } from "../../utils/classNames";
@@ -19,7 +19,11 @@ const EMPTY_BLOCK = {
 };
 
 export default function AdminHostels() {
-  const { hostelBlocks, addHostelBlock, updateHostelBlock, deleteHostelBlock, wardens, students, rooms } = useHostel();
+  const { hostelBlocks, addHostelBlock, updateHostelBlock, deleteHostelBlock, wardens, students, rooms, refreshHostelBlocks, refreshWardens, refreshStudents, refreshRooms } = useHostel();
+
+  useEffect(() => {
+    refreshHostelBlocks();
+  }, []);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingBlock, setEditingBlock] = useState(null);
   const [form, setForm] = useState(EMPTY_BLOCK);
@@ -175,7 +179,7 @@ export default function AdminHostels() {
       {/* Block Cards Grid */}
       {(!hostelBlocks || hostelBlocks.length === 0) ? (
         <div className="bg-white rounded-2xl border border-blue-50 p-8 text-center text-gray-500">
-          <p className="font-semibold text-base">No hostel blocks found in database.</p>
+          <p className="font-semibold text-base">No hostel blocks found.</p>
           <p className="text-xs text-gray-400 mt-1">Click "Add Hostel Block" above to register block structures.</p>
         </div>
       ) : (

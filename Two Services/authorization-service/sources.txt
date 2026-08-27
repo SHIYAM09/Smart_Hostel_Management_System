@@ -1,113 +1,116 @@
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/AuthorizationServiceApplication.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/AdminController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/AiHistoryController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/AttendanceController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/AuditController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/AuthorizationController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/ComplaintController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/DashboardController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/FeedbackController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/FileUploadController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/HostelBlockController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/LeaveRequestController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/MessController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/NotificationController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/RbacController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/ResourceController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/RoomController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/StudentController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/UtilityMonitoringController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/VisitorController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/controller/WardenController.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/AdminDto.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/ApiResponse.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/AttendanceDto.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/BlacklistRequest.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/ComplaintDto.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/CreateStudentRequest.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/DashboardMetricsDto.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/JwtValidationRequest.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/JwtValidationResponse.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/LeaveRequestDto.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/RolePermissionDto.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/RoomDto.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/StudentDto.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/dto/WardenDto.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/Admin.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/AiChatHistory.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/ApiAccessLog.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/Attendance.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/AuditLog.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/Complaint.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/Feedback.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/FoodWastage.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/HostelBlock.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/JwtBlacklist.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/LeaveRequest.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/LoginHistory.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/MessFeedback.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/MessMenu.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/Notification.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/NotificationLog.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/ResourceItem.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/Role.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/RolePermission.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/Room.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/RoomAllocation.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/Student.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/User.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/UtilityMonitoring.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/Visitor.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/VisitorLog.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/entity/Warden.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/AdminRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/AiChatHistoryRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/ApiAccessLogRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/AttendanceRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/AuditLogRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/ComplaintRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/FeedbackRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/FoodWastageRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/HostelBlockRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/JwtBlacklistRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/LeaveRequestRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/LoginHistoryRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/MessFeedbackRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/MessMenuRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/NotificationLogRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/NotificationRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/ResourceItemRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/RolePermissionRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/RoleRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/RoomAllocationRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/RoomRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/StudentRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/UserRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/UtilityMonitoringRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/VisitorLogRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/VisitorRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/repository/WardenRepository.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/AuthenticationException.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/AuthorizationException.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/BadRequestException.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/DatabaseException.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/DuplicateResourceException.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/FileUploadException.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/GlobalExceptionHandler.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/JwtAuthFilter.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/JwtUtil.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/OpenApiConfig.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/ResourceNotFoundException.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/SecurityConfig.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/security/ValidationException.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/AiAssistantService.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/AttendancePredictorService.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/AuthorizationService.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/AuthorizationServiceImpl.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/ComplaintAnalyzerService.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/FeedbackAnalyzerService.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/HostelManagementService.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/HostelManagementServiceImpl.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/MessAnalyzerService.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/RiskDetectionService.java"
-"d:/full stack/Two Services/authorization-service/src/main/java/com/hostel/authz/service/UtilityAnalyzerService.java"
+.\src\main\java\com\hostel\authz\controller\AdminController.java
+.\src\main\java\com\hostel\authz\controller\AiHistoryController.java
+.\src\main\java\com\hostel\authz\controller\AISafetyController.java
+.\src\main\java\com\hostel\authz\controller\AttendanceController.java
+.\src\main\java\com\hostel\authz\controller\AuditController.java
+.\src\main\java\com\hostel\authz\controller\AuthorizationController.java
+.\src\main\java\com\hostel\authz\controller\ComplaintController.java
+.\src\main\java\com\hostel\authz\controller\DashboardController.java
+.\src\main\java\com\hostel\authz\controller\FeedbackController.java
+.\src\main\java\com\hostel\authz\controller\FileUploadController.java
+.\src\main\java\com\hostel\authz\controller\HostelBlockController.java
+.\src\main\java\com\hostel\authz\controller\LeaveRequestController.java
+.\src\main\java\com\hostel\authz\controller\MessController.java
+.\src\main\java\com\hostel\authz\controller\NotificationController.java
+.\src\main\java\com\hostel\authz\controller\RbacController.java
+.\src\main\java\com\hostel\authz\controller\ResourceController.java
+.\src\main\java\com\hostel\authz\controller\RoomController.java
+.\src\main\java\com\hostel\authz\controller\StudentController.java
+.\src\main\java\com\hostel\authz\controller\UtilityMonitoringController.java
+.\src\main\java\com\hostel\authz\controller\VisitorController.java
+.\src\main\java\com\hostel\authz\controller\WardenController.java
+.\src\main\java\com\hostel\authz\dto\AdminDto.java
+.\src\main\java\com\hostel\authz\dto\AISafetyAnalyticsDto.java
+.\src\main\java\com\hostel\authz\dto\ApiResponse.java
+.\src\main\java\com\hostel\authz\dto\AttendanceDto.java
+.\src\main\java\com\hostel\authz\dto\BlacklistRequest.java
+.\src\main\java\com\hostel\authz\dto\ComplaintDto.java
+.\src\main\java\com\hostel\authz\dto\CreateStudentRequest.java
+.\src\main\java\com\hostel\authz\dto\DashboardMetricsDto.java
+.\src\main\java\com\hostel\authz\dto\JwtValidationRequest.java
+.\src\main\java\com\hostel\authz\dto\JwtValidationResponse.java
+.\src\main\java\com\hostel\authz\dto\LeaveRequestDto.java
+.\src\main\java\com\hostel\authz\dto\RolePermissionDto.java
+.\src\main\java\com\hostel\authz\dto\RoomDto.java
+.\src\main\java\com\hostel\authz\dto\StudentDto.java
+.\src\main\java\com\hostel\authz\dto\WardenDto.java
+.\src\main\java\com\hostel\authz\entity\Admin.java
+.\src\main\java\com\hostel\authz\entity\AiChatHistory.java
+.\src\main\java\com\hostel\authz\entity\ApiAccessLog.java
+.\src\main\java\com\hostel\authz\entity\Attendance.java
+.\src\main\java\com\hostel\authz\entity\AuditLog.java
+.\src\main\java\com\hostel\authz\entity\Complaint.java
+.\src\main\java\com\hostel\authz\entity\Feedback.java
+.\src\main\java\com\hostel\authz\entity\FoodWastage.java
+.\src\main\java\com\hostel\authz\entity\HostelBlock.java
+.\src\main\java\com\hostel\authz\entity\JwtBlacklist.java
+.\src\main\java\com\hostel\authz\entity\LeaveRequest.java
+.\src\main\java\com\hostel\authz\entity\LoginHistory.java
+.\src\main\java\com\hostel\authz\entity\MessFeedback.java
+.\src\main\java\com\hostel\authz\entity\MessMenu.java
+.\src\main\java\com\hostel\authz\entity\Notification.java
+.\src\main\java\com\hostel\authz\entity\NotificationLog.java
+.\src\main\java\com\hostel\authz\entity\ResourceItem.java
+.\src\main\java\com\hostel\authz\entity\Role.java
+.\src\main\java\com\hostel\authz\entity\RolePermission.java
+.\src\main\java\com\hostel\authz\entity\Room.java
+.\src\main\java\com\hostel\authz\entity\RoomAllocation.java
+.\src\main\java\com\hostel\authz\entity\Student.java
+.\src\main\java\com\hostel\authz\entity\User.java
+.\src\main\java\com\hostel\authz\entity\UtilityMonitoring.java
+.\src\main\java\com\hostel\authz\entity\Visitor.java
+.\src\main\java\com\hostel\authz\entity\VisitorLog.java
+.\src\main\java\com\hostel\authz\entity\Warden.java
+.\src\main\java\com\hostel\authz\repository\AdminRepository.java
+.\src\main\java\com\hostel\authz\repository\AiChatHistoryRepository.java
+.\src\main\java\com\hostel\authz\repository\ApiAccessLogRepository.java
+.\src\main\java\com\hostel\authz\repository\AttendanceRepository.java
+.\src\main\java\com\hostel\authz\repository\AuditLogRepository.java
+.\src\main\java\com\hostel\authz\repository\ComplaintRepository.java
+.\src\main\java\com\hostel\authz\repository\FeedbackRepository.java
+.\src\main\java\com\hostel\authz\repository\FoodWastageRepository.java
+.\src\main\java\com\hostel\authz\repository\HostelBlockRepository.java
+.\src\main\java\com\hostel\authz\repository\JwtBlacklistRepository.java
+.\src\main\java\com\hostel\authz\repository\LeaveRequestRepository.java
+.\src\main\java\com\hostel\authz\repository\LoginHistoryRepository.java
+.\src\main\java\com\hostel\authz\repository\MessFeedbackRepository.java
+.\src\main\java\com\hostel\authz\repository\MessMenuRepository.java
+.\src\main\java\com\hostel\authz\repository\NotificationLogRepository.java
+.\src\main\java\com\hostel\authz\repository\NotificationRepository.java
+.\src\main\java\com\hostel\authz\repository\ResourceItemRepository.java
+.\src\main\java\com\hostel\authz\repository\RolePermissionRepository.java
+.\src\main\java\com\hostel\authz\repository\RoleRepository.java
+.\src\main\java\com\hostel\authz\repository\RoomAllocationRepository.java
+.\src\main\java\com\hostel\authz\repository\RoomRepository.java
+.\src\main\java\com\hostel\authz\repository\StudentRepository.java
+.\src\main\java\com\hostel\authz\repository\UserRepository.java
+.\src\main\java\com\hostel\authz\repository\UtilityMonitoringRepository.java
+.\src\main\java\com\hostel\authz\repository\VisitorLogRepository.java
+.\src\main\java\com\hostel\authz\repository\VisitorRepository.java
+.\src\main\java\com\hostel\authz\repository\WardenRepository.java
+.\src\main\java\com\hostel\authz\security\AuthenticationException.java
+.\src\main\java\com\hostel\authz\security\AuthorizationException.java
+.\src\main\java\com\hostel\authz\security\BadRequestException.java
+.\src\main\java\com\hostel\authz\security\DatabaseException.java
+.\src\main\java\com\hostel\authz\security\DuplicateResourceException.java
+.\src\main\java\com\hostel\authz\security\FileUploadException.java
+.\src\main\java\com\hostel\authz\security\GlobalExceptionHandler.java
+.\src\main\java\com\hostel\authz\security\JwtAuthFilter.java
+.\src\main\java\com\hostel\authz\security\JwtUtil.java
+.\src\main\java\com\hostel\authz\security\OpenApiConfig.java
+.\src\main\java\com\hostel\authz\security\ResourceNotFoundException.java
+.\src\main\java\com\hostel\authz\security\SecurityConfig.java
+.\src\main\java\com\hostel\authz\security\ValidationException.java
+.\src\main\java\com\hostel\authz\service\AiAssistantService.java
+.\src\main\java\com\hostel\authz\service\AttendancePredictorService.java
+.\src\main\java\com\hostel\authz\service\AuthorizationService.java
+.\src\main\java\com\hostel\authz\service\AuthorizationServiceImpl.java
+.\src\main\java\com\hostel\authz\service\ComplaintAnalyzerService.java
+.\src\main\java\com\hostel\authz\service\DatabaseSanitizer.java
+.\src\main\java\com\hostel\authz\service\FeedbackAnalyzerService.java
+.\src\main\java\com\hostel\authz\service\HostelManagementService.java
+.\src\main\java\com\hostel\authz\service\HostelManagementServiceImpl.java
+.\src\main\java\com\hostel\authz\service\MessAnalyzerService.java
+.\src\main\java\com\hostel\authz\service\RiskDetectionService.java
+.\src\main\java\com\hostel\authz\service\UtilityAnalyzerService.java
+.\src\main\java\com\hostel\authz\AuthorizationServiceApplication.java

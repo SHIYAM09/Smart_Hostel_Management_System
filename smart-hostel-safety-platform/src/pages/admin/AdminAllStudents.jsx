@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Search } from "lucide-react";
 import { useHostel } from "../../context/HostelContext";
 import { cls } from "../../utils/classNames";
@@ -7,7 +8,11 @@ import { useTable } from "../../hooks/useTable";
 import { Button } from "../../components/common/Button";
 
 export default function AdminAllStudents() {
-  const { students } = useHostel();
+  const { students, refreshStudents } = useHostel();
+
+  useEffect(() => {
+    refreshStudents();
+  }, []);
   const table = useTable(students, { searchKeys: ["name", "rollNo", "room", "course"], pageSize: 8 });
 
   return (

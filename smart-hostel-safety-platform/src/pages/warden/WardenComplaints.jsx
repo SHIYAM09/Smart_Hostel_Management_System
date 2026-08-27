@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Eye,
   Send,
@@ -15,7 +15,12 @@ import { useTable } from "../../hooks/useTable";
 import { Input } from "../../components/common/Input";
 
 export default function WardenComplaints() {
-  const { complaints, students, updateComplaint } = useHostel();
+  const { complaints, students, updateComplaint, refreshComplaints } = useHostel();
+
+  useEffect(() => {
+    refreshComplaints();
+  }, [refreshComplaints]);
+
   const [viewC, setViewC] = useState(null);
   const [status, setStatus] = useState("");
   const [reply, setReply] = useState("");

@@ -21,7 +21,5 @@ public class StudentDto {
     private Integer yearOfStudy;
     private String hostelBlock;
     private String roomNumber;
-    private String guardianName;
-    private String guardianPhone;
     private String status;
 }

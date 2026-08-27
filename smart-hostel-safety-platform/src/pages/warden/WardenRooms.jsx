@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { useHostel } from "../../context/HostelContext";
 import { cls } from "../../utils/classNames";
@@ -12,7 +12,12 @@ import { Button } from "../../components/common/Button";
 const EMPTY_ROOM = { number: "", floor: 1, type: "double", capacity: 2 };
 
 export default function WardenRooms() {
-  const { rooms, students, addRoom } = useHostel();
+  const { rooms, students, addRoom, refreshRooms, refreshStudents } = useHostel();
+
+  useEffect(() => {
+    refreshRooms();
+  }, []);
+
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState(EMPTY_ROOM);
 
@@ -69,7 +74,7 @@ export default function WardenRooms() {
       <div className="flex justify-end"><Button onClick={()=>setModal(true)}><Plus size={17}/>Add Room</Button></div>
       {displayRooms.length === 0 ? (
         <div className="bg-white rounded-2xl border border-blue-50 p-8 text-center text-gray-500">
-          <p className="font-semibold text-base">No room records found in database.</p>
+          <p className="font-semibold text-base">No room records found.</p>
           <p className="text-xs text-gray-400 mt-1">Click "Add Room" above to register hostel rooms.</p>
         </div>
       ) : (

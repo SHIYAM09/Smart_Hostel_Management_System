@@ -33,6 +33,11 @@ export const adminService = {
     }
   },
 
+  updateAdmin: async (id, adminData) => {
+    const res = await mainApi.put(`/admins/${id || "1"}`, adminData);
+    return res.data?.data || res.data;
+  },
+
   // Wardens Management
   getAllWardens: async () => {
     try {

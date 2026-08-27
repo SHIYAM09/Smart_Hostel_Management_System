@@ -18,8 +18,25 @@ public class MessFeedback {
 
     private String studentId;
     private String studentName;
-    private String mealType; // BREAKFAST, LUNCH, SNACKS, DINNER
+    private String date;
+
+    private Integer breakfastRating;
+    private Integer lunchRating;
+    private Integer snacksRating;
+    private Integer dinnerRating;
+
+    private String breakfastComment;
+    private String lunchComment;
+    private String snacksComment;
+    private String dinnerComment;
+
+    private Double overallRating;
+
+    // Legacy fields for backwards compatibility
+    private String mealType;
     private Integer rating;
     private String comments;
+
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
