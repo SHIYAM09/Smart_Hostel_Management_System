@@ -1107,7 +1107,7 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                         .riskLevel(v.getRiskLevel() != null ? v.getRiskLevel() : "LOW")
                         .idVerified(v.getIdVerified() != null ? v.getIdVerified() : false)
                         .build();
-                mergedMap.put(vKey, logEntry);
+                mergedMap.put(v.getId(), logEntry);
             }
         } catch (Exception e) {
             log.warn("Failed to fetch registered visitors from repository: {}", e.getMessage());
