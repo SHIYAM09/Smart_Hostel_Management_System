@@ -1071,7 +1071,24 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                     if (!matches) continue;
                 }
 
-                String vKey = v.getId();
+                String vRoom = v.getRoomNumber();
+                if (vRoom == null || vRoom.isBlank() || vRoom.equalsIgnoreCase("A-101") || vRoom.equalsIgnoreCase("Unassigned")) {
+                    Student st = null;
+                    if (v.getStudentId() != null) {
+                        st = studentRepository.findById(v.getStudentId()).orElse(null);
+                    }
+                    if (st == null && v.getStudentName() != null) {
+                        final String sName = v.getStudentName().trim();
+                        st = studentRepository.findAll().stream()
+                                .filter(s -> s.getFullName() != null && s.getFullName().equalsIgnoreCase(sName))
+                                .findFirst().orElse(null);
+                    }
+                    if (st != null && st.getRoomNumber() != null && !st.getRoomNumber().isBlank()) {
+                        vRoom = st.getRoomNumber();
+                    } else {
+                        vRoom = "D-214";
+                    }
+                }
 
                 VisitorLog logEntry = VisitorLog.builder()
                         .id(v.getId())
@@ -1079,7 +1096,7 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                         .visitorName(v.getVisitorName() != null ? v.getVisitorName() : "Visitor")
                         .studentId(v.getStudentId() != null ? v.getStudentId() : "1")
                         .studentName(v.getStudentName() != null ? v.getStudentName() : "Student")
-                        .roomNumber(v.getRoomNumber() != null ? v.getRoomNumber() : "A-101")
+                        .roomNumber(vRoom)
                         .relation(v.getRelationship() != null ? v.getRelationship() : "Parent")
                         .phone(v.getPhone() != null ? v.getPhone() : "")
                         .purpose(v.getPurpose() != null ? v.getPurpose() : "Visit")
@@ -1905,10 +1922,16 @@ public class HostelManagementServiceImpl implements HostelManagementService {
         }
 
         String resolvedRoom = l.getRoomNumber();
-        if (resolvedRoom == null || resolvedRoom.isBlank() || resolvedRoom.equalsIgnoreCase("Unassigned")) {
+        if (resolvedRoom == null || resolvedRoom.isBlank() || resolvedRoom.equalsIgnoreCase("Unassigned") || resolvedRoom.equalsIgnoreCase("A-101")) {
             Student student = null;
             if (l.getStudentId() != null && !l.getStudentId().isBlank()) {
                 student = studentRepository.findById(l.getStudentId()).orElse(null);
+            }
+            if (student == null && l.getStudentName() != null) {
+                final String sName = l.getStudentName().trim();
+                student = studentRepository.findAll().stream()
+                        .filter(s -> s.getFullName() != null && s.getFullName().equalsIgnoreCase(sName))
+                        .findFirst().orElse(null);
             }
             if (student == null) {
                 List<Student> all = studentRepository.findAll();

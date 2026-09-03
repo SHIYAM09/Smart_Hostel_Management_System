@@ -18,16 +18,40 @@ import { AnimatedCounter } from "../../components/common/AnimatedCounter";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function StudentHome({ onNav }) {
-  const { complaints, leaveRequests, attendance, messData, dashboardMetrics, weeklyMessMenu, refreshDashboard } = useHostel();
+  const {
+    complaints,
+    leaveRequests,
+    attendance,
+    messData,
+    dashboardMetrics,
+    weeklyMessMenu,
+    refreshDashboard,
+    refreshAttendance,
+    refreshComplaints,
+    refreshLeaveRequests,
+    refreshMessMenu,
+  } = useHostel();
 
   useEffect(() => {
     refreshDashboard();
-  }, [refreshDashboard]);
+    refreshAttendance();
+    refreshComplaints();
+    refreshLeaveRequests();
+    refreshMessMenu();
+  }, [refreshDashboard, refreshAttendance, refreshComplaints, refreshLeaveRequests, refreshMessMenu]);
 
   const { userName } = useAuth();
-  const pct = attendance.length ? Math.round((attendance.filter(r => r.status === "present").length / attendance.length) * 100) : (dashboardMetrics?.attendancePercentage || 0);
-  const myC = complaints;
-  const myLeave = leaveRequests.filter(l => l.status === "pending").length || dashboardMetrics?.pendingLeaveRequests || 0;
+  const pct = attendance.length
+    ? Math.round((attendance.filter((r) => String(r.status).toLowerCase() === "present").length / attendance.length) * 100)
+    : (dashboardMetrics?.todayAttendanceRate ?? dashboardMetrics?.attendancePercentage ?? 100);
+
+  const openComplaintsCount = complaints.length
+    ? complaints.filter((c) => String(c.status).toLowerCase() !== "resolved").length
+    : (dashboardMetrics?.pendingComplaints ?? 0);
+
+  const pendingLeaveCount = leaveRequests.length
+    ? leaveRequests.filter((l) => String(l.status).toLowerCase() === "pending").length
+    : (dashboardMetrics?.pendingLeaveRequests ?? 0);
 
   return (
     <div className="space-y-5">
@@ -38,7 +62,7 @@ export default function StudentHome({ onNav }) {
           <h2 className="text-2xl font-extrabold">{userName || "Student User"}</h2>
           <div className="text-blue-200 text-sm mt-0.5">Hostel Resident · Smart Hostel Safety Platform</div>
           <div className="flex gap-4 mt-5">
-            {[{ value: pct, label: "Attendance" }, { value: myC.filter(c => c.status !== "resolved").length, label: "Open Complaints" }, { value: myLeave, label: "Pending Leave" }].map(s => (
+            {[{ value: pct, label: "Attendance" }, { value: openComplaintsCount, label: "Open Complaints" }, { value: pendingLeaveCount, label: "Pending Leave" }].map(s => (
               <div key={s.label} className="bg-white/15 backdrop-blur-sm rounded-xl px-4 py-3 text-center transition-all hover:bg-white/20 hover:scale-105"><div className="text-xl font-bold">{typeof s.value === 'number' ? <AnimatedCounter value={s.value} suffix={s.label === "Attendance" ? "%" : ""} /> : s.value}</div><div className="text-xs text-blue-200">{s.label}</div></div>
             ))}
           </div>

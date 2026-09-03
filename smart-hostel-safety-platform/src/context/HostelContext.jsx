@@ -210,9 +210,12 @@ export function HostelProvider({ children }) {
           if (!name || name === "Student") {
             name = match ? match.name || match.fullName : students && students[0]?.name ? students[0].name : "SHIYAM M";
           }
-          let room = l.roomNumber || l.room;
+          let room = match ? match.room || match.roomNumber : null;
           if (!room || room === "Unassigned") {
-            room = match ? match.room : students && students[0]?.room ? students[0].room : "D-214";
+            room = l.roomNumber || l.room;
+          }
+          if (!room || room === "Unassigned" || room === "A-101") {
+            room = students && students[0]?.room ? students[0].room : "D-214";
           }
           return {
             id: l.id ? String(l.id) : `LR${Date.now()}`,
@@ -329,29 +332,49 @@ export function HostelProvider({ children }) {
       const userRole = getUserRole();
       const res = userRole === "student" ? await studentService.getVisitors() : await wardenService.getVisitorLogs();
       if (Array.isArray(res)) {
-        const fetched = res.map((v) => ({
-          id: v.id ? String(v.id) : `V${Date.now()}`,
-          rawId: v.id || v.visitorId,
-          visitorName: v.visitorName || "Visitor",
-          studentName: v.studentName || "Student",
-          room: v.roomNumber || v.room || "A-101",
-          relation: v.relation || v.relationship || "Parent",
-          phone: v.phone || "",
-          purpose: v.purpose || "",
-          status: (v.status || "pending").toLowerCase().replace(/_/g, "-"),
-          checkIn: v.checkInTime || v.checkIn || "—",
-          checkOut: v.checkOutTime || v.checkOut || "—",
-          date: v.logDate || v.date || new Date().toISOString().slice(0, 10),
-          riskLevel: v.riskLevel?.toLowerCase() || "low",
-          idVerified: v.idVerified ?? false,
-        }));
+        const fetched = res.map((v) => {
+          const match = (students || []).find(
+            (s) =>
+              String(s.id) === String(v.studentId) ||
+              String(s.rawId) === String(v.studentId) ||
+              (s.rollNo && String(s.rollNo).toLowerCase() === String(v.studentId).toLowerCase()) ||
+              (s.name && String(s.name).toLowerCase() === String(v.studentName).toLowerCase())
+          );
+          let studentName = v.studentName;
+          if (!studentName || studentName === "Student") {
+            studentName = match ? match.name || match.fullName : students && students[0]?.name ? students[0].name : "SHIYAM M";
+          }
+          let room = match ? match.room || match.roomNumber : null;
+          if (!room || room === "Unassigned") {
+            room = v.roomNumber || v.room;
+          }
+          if (!room || room === "Unassigned" || room === "A-101") {
+            room = students && students[0]?.room ? students[0].room : "D-214";
+          }
+          return {
+            id: v.id ? String(v.id) : `V${Date.now()}`,
+            rawId: v.id || v.visitorId,
+            visitorName: v.visitorName || "Visitor",
+            studentName: studentName,
+            room: room,
+            relation: v.relation || v.relationship || "Parent",
+            phone: v.phone || "",
+            purpose: v.purpose || "",
+            status: (v.status || "pending").toLowerCase().replace(/_/g, "-"),
+            checkIn: v.checkInTime || v.checkIn || "—",
+            checkOut: v.checkOutTime || v.checkOut || "—",
+            date: v.logDate || v.date || new Date().toISOString().slice(0, 10),
+            riskLevel: v.riskLevel?.toLowerCase() || "low",
+            idVerified: v.idVerified ?? false,
+          };
+        });
         setVisitors(fetched);
         localStorage.setItem("hostel_visitors", JSON.stringify(fetched));
       }
     } catch (err) {
       console.warn("Failed to fetch visitors:", err);
     }
-  }, []);
+  }, [students]);
 
   const refreshAttendance = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -927,6 +950,54 @@ export function HostelProvider({ children }) {
     }
   }, [visitors, showToast]);
 
+  const toggleVisitorIdVerification = useCallback(async (id, overrideVerified, idProofType) => {
+    let updatedTarget = null;
+    setVisitors((prev) => {
+      const next = prev.map((v) => {
+        const match = String(v.id) === String(id) || String(v.rawId) === String(id);
+        if (!match) return v;
+        const newVerified = overrideVerified !== undefined ? Boolean(overrideVerified) : !v.idVerified;
+        const newRisk = newVerified ? "low" : (v.riskLevel === "high" ? "high" : "medium");
+        const proof = idProofType || v.idProofType || "Aadhaar Card";
+        updatedTarget = {
+          ...v,
+          idVerified: newVerified,
+          riskLevel: newRisk,
+          idProofType: proof,
+        };
+        return updatedTarget;
+      });
+      localStorage.setItem("hostel_visitors", JSON.stringify(next));
+      return next;
+    });
+
+    if (updatedTarget) {
+      showToast(
+        `Visitor ID for ${updatedTarget.visitorName} ${updatedTarget.idVerified ? "verified successfully" : "marked as unverified"}.`
+      );
+      try {
+        const rawId = updatedTarget.rawId || updatedTarget.id;
+        await wardenService.logVisitorEntry({
+          id: String(rawId),
+          visitorId: String(rawId),
+          visitorName: updatedTarget.visitorName || "",
+          studentName: updatedTarget.studentName || "",
+          roomNumber: updatedTarget.room || "A-101",
+          relation: updatedTarget.relation || "Parent",
+          phone: updatedTarget.phone || "",
+          purpose: updatedTarget.purpose || "Visit",
+          status: (updatedTarget.status || "APPROVED").toUpperCase().replace(/-/g, "_"),
+          checkInTime: updatedTarget.checkIn || "—",
+          checkOutTime: updatedTarget.checkOut || "—",
+          riskLevel: (updatedTarget.riskLevel || "LOW").toUpperCase(),
+          idVerified: Boolean(updatedTarget.idVerified),
+        });
+      } catch (err) {
+        // Silently handle backend sync if offline
+      }
+    }
+  }, [showToast]);
+
   const updateVisitors = useCallback(async (updater) => {
     setVisitors((prev) => {
       return typeof updater === "function" ? updater(prev) : updater;
@@ -937,6 +1008,7 @@ export function HostelProvider({ children }) {
   const addVisitor = useCallback(async (visitor) => {
     try {
       const saved = await studentService.registerVisitor(visitor);
+      const isVerified = Boolean(visitor.idVerified);
       const newVisitorItem = {
         id: saved?.id ? String(saved.id) : `V${Date.now()}`,
         rawId: saved?.id,
@@ -946,11 +1018,12 @@ export function HostelProvider({ children }) {
         phone: visitor.phone || "",
         purpose: visitor.purpose || "Visit",
         status: (saved?.status || visitor.status || "pending").toLowerCase(),
-        checkIn: "—",
+        checkIn: isVerified ? new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—",
         checkOut: "—",
         date: visitor.logDate || new Date().toISOString().slice(0, 10),
-        riskLevel: (visitor.riskLevel || "low").toLowerCase(),
-        idVerified: false,
+        riskLevel: isVerified ? "low" : (visitor.riskLevel || "medium").toLowerCase(),
+        idVerified: isVerified,
+        idProofType: visitor.idProofType || "Aadhaar Card",
       };
 
       setVisitors((prev) => {
@@ -1417,7 +1490,7 @@ export function HostelProvider({ children }) {
       refreshAttendance, refreshMess, refreshMessMenu, refreshNotifications, refreshDashboard, refreshResources, refreshUtilities, refreshHostelBlocks,
       setComplaints, setLeaveRequests, setStudents, setWardens, setNotifications, setMessFeedback,
       setLoading, showToast, removeToast, addComplaint, updateComplaint, submitComplaintFeedback,
-      addLeaveRequest, updateLeaveRequest, updateAttendance, updateVisitors, updateVisitorStatus, addVisitor,
+      addLeaveRequest, updateLeaveRequest, updateAttendance, updateVisitors, updateVisitorStatus, toggleVisitorIdVerification, addVisitor,
       updateMessData, addUtilityData, updateResources, addNotification, markAsRead, markAllAsRead, deleteNotification, clearNotifications, addRoom, addStudent,
       updateStudent, deleteStudent, createWarden, updateWarden, deleteWarden, updateWeeklyMessMenu, submitMessRating,
       addHostelBlock, updateHostelBlock, deleteHostelBlock,
@@ -1428,7 +1501,7 @@ export function HostelProvider({ children }) {
       refreshData, refreshAISafetyData, refreshComplaints, refreshLeaveRequests, refreshRooms, refreshStudents, refreshWardens, refreshVisitors,
       refreshAttendance, refreshMess, refreshMessMenu, refreshNotifications, refreshDashboard, refreshResources, refreshUtilities, refreshHostelBlocks,
       showToast, removeToast, addComplaint, updateComplaint, submitComplaintFeedback,
-      addLeaveRequest, updateLeaveRequest, updateAttendance, updateVisitors, updateVisitorStatus, addVisitor,
+      addLeaveRequest, updateLeaveRequest, updateAttendance, updateVisitors, updateVisitorStatus, toggleVisitorIdVerification, addVisitor,
       updateMessData, addUtilityData, updateResources, addNotification, markAsRead, markAllAsRead, deleteNotification, clearNotifications, addRoom, addStudent,
       updateStudent, deleteStudent, createWarden, updateWarden, deleteWarden, updateWeeklyMessMenu, submitMessRating,
       addHostelBlock, updateHostelBlock, deleteHostelBlock,

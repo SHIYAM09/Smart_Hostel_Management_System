@@ -11,7 +11,7 @@ import { Button } from "../../components/common/Button";
 import { useTable } from "../../hooks/useTable";
 
 export default function WardenLeave() {
-  const { leaveRequests, updateLeaveRequest, refreshLeaveRequests } = useHostel();
+  const { leaveRequests, students, updateLeaveRequest, refreshLeaveRequests } = useHostel();
 
   useEffect(() => {
     refreshLeaveRequests();
@@ -50,10 +50,13 @@ export default function WardenLeave() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {table.paginated.map((l) => (
+              {table.paginated.map((l) => {
+                const sMatch = (students || []).find((s) => s.name === l.studentName || String(s.id) === String(l.studentId) || (s.fullName && s.fullName === l.studentName));
+                const roomDisplay = sMatch?.room && sMatch.room !== "Unassigned" ? sMatch.room : l.room;
+                return (
                 <tr key={l.id} className="hover:bg-blue-50/30 transition-colors">
                   <td className="px-5 py-4"><div className="flex items-center gap-3"><Avatar name={l.studentName} size="sm" /><span className="font-semibold text-gray-900">{l.studentName}</span></div></td>
-                  <td className="px-5 py-4 font-bold text-blue-700">{l.room}</td>
+                  <td className="px-5 py-4 font-bold text-blue-700">{roomDisplay}</td>
                   <td className="px-5 py-4 text-sm text-gray-600">{l.fromDate}</td>
                   <td className="px-5 py-4 text-sm text-gray-600">{l.toDate}</td>
                   <td className="px-5 py-4 text-sm text-gray-600 max-w-[180px] truncate">{l.reason}</td>
@@ -68,7 +71,8 @@ export default function WardenLeave() {
                     )}
                   </td>
                 </tr>
-              ))}
+              );
+              })}
             </tbody>
           </table>
         </div>

@@ -206,7 +206,7 @@ export const studentService = {
       visitorName: visitorData.visitorName,
       studentName: visitorData.studentName || "SHIYAM M",
       studentId: String(parsedId),
-      roomNumber: visitorData.room || visitorData.roomNumber || "A-101",
+      roomNumber: visitorData.room || visitorData.roomNumber || "D-214",
       phone: visitorData.phone || "9876543210",
       relationship: visitorData.relation || visitorData.relationship || "Parent",
       purpose: visitorData.purpose || "Visit",

@@ -12,7 +12,7 @@ import { useAuth } from "../../hooks/useAuth";
 const STUDENT_ID = "S001";
 
 export default function StudentLeave() {
-  const { leaveRequests, addLeaveRequest, refreshLeaveRequests } = useHostel();
+  const { leaveRequests, students, addLeaveRequest, refreshLeaveRequests } = useHostel();
 
   useEffect(() => {
     refreshLeaveRequests();
@@ -39,11 +39,13 @@ export default function StudentLeave() {
   const handleSubmit = () => {
     if (!validate()) return;
     setLoading(true);
+    const activeStudent = (students || []).find((s) => s.name === userName || s.fullName === userName) || (students && students[0]);
+    const studentRoom = activeStudent?.room || activeStudent?.roomNumber || "D-214";
     setTimeout(() => {
       addLeaveRequest({
         studentId: STUDENT_ID,
         studentName: userName || "Student User",
-        room: "A-101",
+        room: studentRoom,
         fromDate: form.fromDate,
         toDate: form.toDate,
         reason: form.reason.trim(),
