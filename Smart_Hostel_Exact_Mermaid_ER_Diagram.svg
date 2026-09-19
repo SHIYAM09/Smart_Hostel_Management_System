@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1240" height="1754" viewBox="0 0 1240 1754" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1240" height="1754" fill="#F6F3EB" />
+
+  <!-- Header Title matching screenshot -->
+  <text x="50" y="45" fill="#374151" font-family="sans-serif" font-size="22" font-weight="700">3. UNIFIED MERMAID ER DIAGRAM</text>
+
+  <!-- Relationships -->
+  
+  <!-- 1. roles -> user_roles (assigned) -->
+  
+    <g>
+      <path d="M 110 200 L 110 340" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="110" cy="200" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="110" cy="340" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="79" y="260" width="62" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="110" y="273" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">assigned</text>
+    </g>
+  
+
+  <!-- 2. user_roles -> users (has) -->
+  
+    <g>
+      <path d="M 170 370 L 270 200" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="170" cy="370" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="270" cy="200" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="205.25" y="275" width="29.5" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="220" y="288" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">has</text>
+    </g>
+  
+
+  <!-- 3. users -> admins (1:1 identity) -->
+  
+    <g>
+      <path d="M 380 270 L 380 300" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="380" cy="270" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="380" cy="300" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="336" y="275" width="88" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="380" y="288" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">1:1 identity</text>
+    </g>
+  
+
+  <!-- 4. users -> wardens (1:1 identity) -->
+  
+    <g>
+      <path d="M 490 180 C 490 304, 595 366, 595 490" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="490" cy="180" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="595" cy="490" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="509" y="356" width="88" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="553" y="369" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">1:1 identity</text>
+    </g>
+  
+
+  <!-- 5. users -> students (1:1 identity curve right) -->
+  
+    <g>
+      <path d="M 490 120 C 490 384, 970 516, 970 780" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="490" cy="120" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="970" cy="780" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="782" y="572" width="88" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="826" y="585" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">1:1 identity</text>
+    </g>
+  
+
+  <!-- 6. admins -> wardens (provisions_account) -->
+  
+    <g>
+      <path d="M 380 440 L 480 530" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="380" cy="440" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="480" cy="530" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="366.5" y="475" width="127" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="430" y="488" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">provisions_account</text>
+    </g>
+  
+
+  <!-- 7. admins -> audit_logs (inspects_logs) -->
+  
+    <g>
+      <path d="M 340 440 L 340 530" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="340" cy="440" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="340" cy="530" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="292.75" y="475" width="94.5" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="340" y="488" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">inspects_logs</text>
+    </g>
+  
+
+  <!-- 8. wardens -> utility_monitoring (logs_utilities) -->
+  
+    <g>
+      <path d="M 480 620 C 378 620, 327 770, 225 770" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="480" cy="620" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="225" cy="770" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="302" y="685" width="101" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="352.5" y="698" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">logs_utilities</text>
+    </g>
+  
+
+  <!-- 9. wardens -> food_wastage (logs_wastage_kg) -->
+  
+    <g>
+      <path d="M 535 665 L 535 770" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="535" cy="665" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="535" cy="770" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="481.25" y="707.5" width="107.5" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="535" y="720.5" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">logs_wastage_kg</text>
+    </g>
+  
+
+  <!-- 10. wardens -> students (manages_block) -->
+  
+    <g>
+      <path d="M 710 580 L 740 760" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="710" cy="580" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="740" cy="760" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="677.75" y="660" width="94.5" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="725" y="673" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">manages_block</text>
+    </g>
+  
+
+  <!-- 11. rooms -> students (1:M allocates) -->
+  
+    <g>
+      <path d="M 885 630 L 885 740" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="885" cy="630" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="885" cy="740" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="837.75" y="675" width="94.5" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="885" y="688" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">1:M allocates</text>
+    </g>
+  
+
+  <!-- 12. students -> visitors (1:M gate_visitor) -->
+  
+    <g>
+      <path d="M 740 890 C 580 890, 500 1100, 340 1100" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="740" cy="890" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="340" cy="1100" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="483" y="985" width="114" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="540" y="998" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">1:M gate_visitor</text>
+    </g>
+  
+
+  <!-- 13. students -> leave_requests (1:M applies_leave) -->
+  
+    <g>
+      <path d="M 780 920 C 704 920, 666 1100, 590 1100" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="780" cy="920" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="590" cy="1100" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="624.75" y="1000" width="120.5" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="685" y="1013" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">1:M applies_leave</text>
+    </g>
+  
+
+  <!-- 14. students -> complaints (1:M files_ticket) -->
+  
+    <g>
+      <path d="M 855 920 L 840 1100" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="855" cy="920" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="840" cy="1100" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="790.5" y="1000" width="114" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="847.5" y="1013" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">1:M files_ticket</text>
+    </g>
+  
+
+  <!-- 15. students -> attendance (1:M roll_call) -->
+  
+    <g>
+      <path d="M 920 900 C 920 980, 1090 1020, 1090 1100" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Relationship End Markers (Crowfoot / Double Bar) -->
+      <circle cx="920" cy="900" r="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5" />
+      <circle cx="1090" cy="1100" r="3" fill="#7C3AED" />
+
+      <!-- Label pill -->
+      <rect x="957.75" y="990" width="94.5" height="18" rx="9" fill="#F6F3EB" stroke="#E9D5FF" stroke-width="1" />
+      <text x="1005" y="1003" fill="#4B5563" font-family="sans-serif" font-size="10" font-weight="500" text-anchor="middle">1:M roll_call</text>
+    </g>
+  
+
+
+  <!-- Tables -->
+  
+        <g transform="translate(50, 140)">
+          <rect x="0" y="0" width="120" height="60" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+          <text x="60" y="36" fill="#4C1D95" font-family="sans-serif" font-size="14" font-weight="600" text-anchor="middle">roles</text>
+        </g>
+      
+    <g transform="translate(270, 80)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="220" height="144" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 216 0 Q 220 0 220 4 L 220 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="220" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="110" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">users</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">user_id</text>
+      
+      <rect x="180" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="60" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">username</text>
+      
+      <rect x="180" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="88" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">email</text>
+      
+      <rect x="180" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 3 -->
+      <rect x="0" y="116" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="134" fill="#5B21B6" font-family="sans-serif" font-size="12">boolean</text>
+      
+      <rect x="65" y="116" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="134" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">enabled</text>
+      
+      <rect x="180" y="116" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="134" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+    </g>
+  
+        <g transform="translate(50, 340)">
+          <rect x="0" y="0" width="120" height="60" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+          <text x="60" y="36" fill="#4C1D95" font-family="sans-serif" font-size="14" font-weight="600" text-anchor="middle">user_roles</text>
+        </g>
+      
+    <g transform="translate(270, 300)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="220" height="116" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 216 0 Q 220 0 220 4 L 220 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="220" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="110" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">admins</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">admin_id</text>
+      
+      <rect x="180" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="60" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">user_id</text>
+      
+      <rect x="180" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">FK</text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="88" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">full_name</text>
+      
+      <rect x="180" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+    </g>
+  
+    <g transform="translate(480, 490)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="230" height="144" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 226 0 Q 230 0 230 4 L 230 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="230" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="115" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">wardens</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">warden_id</text>
+      
+      <rect x="190" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="60" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">user_id</text>
+      
+      <rect x="190" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">FK</text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="88" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">full_name</text>
+      
+      <rect x="190" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 3 -->
+      <rect x="0" y="116" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="134" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="116" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="134" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">assigned_block</text>
+      
+      <rect x="190" y="116" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="134" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+    </g>
+  
+        <g transform="translate(270, 530)">
+          <rect x="0" y="0" width="140" height="60" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+          <text x="70" y="36" fill="#4C1D95" font-family="sans-serif" font-size="14" font-weight="600" text-anchor="middle">audit_logs</text>
+        </g>
+      
+    <g transform="translate(770, 490)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="230" height="144" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 226 0 Q 230 0 230 4 L 230 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="230" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="115" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">rooms</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">room_id</text>
+      
+      <rect x="190" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="60" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">room_number</text>
+      
+      <rect x="190" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="88" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">block</text>
+      
+      <rect x="190" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 3 -->
+      <rect x="0" y="116" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="134" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="116" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="134" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">capacity</text>
+      
+      <rect x="190" y="116" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="134" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+    </g>
+  
+    <g transform="translate(100, 770)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="250" height="144" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 246 0 Q 250 0 250 4 L 250 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="250" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="125" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">utility_monitoring</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="145" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">reading_id</text>
+      
+      <rect x="210" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="230" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="60" width="145" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">block</text>
+      
+      <rect x="210" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="230" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">decimal</text>
+      
+      <rect x="65" y="88" width="145" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">electricity_kwh</text>
+      
+      <rect x="210" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="230" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 3 -->
+      <rect x="0" y="116" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="134" fill="#5B21B6" font-family="sans-serif" font-size="12">decimal</text>
+      
+      <rect x="65" y="116" width="145" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="134" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">water_liters</text>
+      
+      <rect x="210" y="116" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="230" y="134" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+    </g>
+  
+    <g transform="translate(420, 770)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="230" height="144" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 226 0 Q 230 0 230 4 L 230 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="230" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="115" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">food_wastage</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">log_id</text>
+      
+      <rect x="190" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="60" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">warden_id</text>
+      
+      <rect x="190" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">FK</text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">date</text>
+      
+      <rect x="65" y="88" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">log_date</text>
+      
+      <rect x="190" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 3 -->
+      <rect x="0" y="116" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="134" fill="#5B21B6" font-family="sans-serif" font-size="12">decimal</text>
+      
+      <rect x="65" y="116" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="134" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">wastage_kg</text>
+      
+      <rect x="190" y="116" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="134" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+    </g>
+  
+    <g transform="translate(740, 740)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="230" height="172" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 226 0 Q 230 0 230 4 L 230 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="230" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="115" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">students</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">student_id</text>
+      
+      <rect x="190" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="60" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">user_id</text>
+      
+      <rect x="190" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">FK</text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="88" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">roll_number</text>
+      
+      <rect x="190" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 3 -->
+      <rect x="0" y="116" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="134" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="116" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="134" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">full_name</text>
+      
+      <rect x="190" y="116" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="134" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 4 -->
+      <rect x="0" y="144" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="162" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="144" width="125" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="162" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">room_id</text>
+      
+      <rect x="190" y="144" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="210" y="162" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">FK</text>
+    
+    </g>
+  
+    <g transform="translate(230, 1100)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="220" height="144" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 216 0 Q 220 0 220 4 L 220 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="220" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="110" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">visitors</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">visitor_id</text>
+      
+      <rect x="180" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="60" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">student_id</text>
+      
+      <rect x="180" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">FK</text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="88" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">visitor_name</text>
+      
+      <rect x="180" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 3 -->
+      <rect x="0" y="116" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="134" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="116" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="134" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">status</text>
+      
+      <rect x="180" y="116" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="134" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+    </g>
+  
+    <g transform="translate(480, 1100)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="220" height="172" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 216 0 Q 220 0 220 4 L 220 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="220" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="110" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">leave_requests</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">leave_id</text>
+      
+      <rect x="180" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="60" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">student_id</text>
+      
+      <rect x="180" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">FK</text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">date</text>
+      
+      <rect x="65" y="88" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">start_date</text>
+      
+      <rect x="180" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 3 -->
+      <rect x="0" y="116" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="134" fill="#5B21B6" font-family="sans-serif" font-size="12">date</text>
+      
+      <rect x="65" y="116" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="134" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">end_date</text>
+      
+      <rect x="180" y="116" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="134" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 4 -->
+      <rect x="0" y="144" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="162" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="144" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="162" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">status</text>
+      
+      <rect x="180" y="144" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="162" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+    </g>
+  
+    <g transform="translate(730, 1100)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="220" height="172" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 216 0 Q 220 0 220 4 L 220 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="220" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="110" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">complaints</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">complaint_id</text>
+      
+      <rect x="180" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="60" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">student_id</text>
+      
+      <rect x="180" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">FK</text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="88" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">title</text>
+      
+      <rect x="180" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 3 -->
+      <rect x="0" y="116" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="134" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="116" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="134" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">status</text>
+      
+      <rect x="180" y="116" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="134" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 4 -->
+      <rect x="0" y="144" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="162" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="144" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="162" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">rating</text>
+      
+      <rect x="180" y="144" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="162" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+    </g>
+  
+    <g transform="translate(980, 1100)">
+      <!-- Outer Shadow & Border -->
+      <rect x="0" y="0" width="220" height="144" rx="4" fill="#FFFFFF" stroke="#A78BFA" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+      
+      <!-- Header -->
+      <path d="M 0 4 Q 0 0 4 0 L 216 0 Q 220 0 220 4 L 220 32 L 0 32 Z" fill="#DDD6FE" />
+      <rect x="0" y="0" width="220" height="32" rx="4" fill="#DDD6FE" stroke="#A78BFA" stroke-width="1.5" />
+      <text x="110" y="21" fill="#4C1D95" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">attendance</text>
+      
+      <!-- Grid Rows -->
+      
+      <!-- Row 0 -->
+      <rect x="0" y="32" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="50" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="32" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="50" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">attendance_id</text>
+      
+      <rect x="180" y="32" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="50" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">PK</text>
+    
+      <!-- Row 1 -->
+      <rect x="0" y="60" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="78" fill="#5B21B6" font-family="sans-serif" font-size="12">int</text>
+      
+      <rect x="65" y="60" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="78" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">student_id</text>
+      
+      <rect x="180" y="60" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="78" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle">FK</text>
+    
+      <!-- Row 2 -->
+      <rect x="0" y="88" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="106" fill="#5B21B6" font-family="sans-serif" font-size="12">date</text>
+      
+      <rect x="65" y="88" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="106" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">attendance_date</text>
+      
+      <rect x="180" y="88" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="106" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+      <!-- Row 3 -->
+      <rect x="0" y="116" width="65" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="10" y="134" fill="#5B21B6" font-family="sans-serif" font-size="12">string</text>
+      
+      <rect x="65" y="116" width="115" height="28" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="75" y="134" fill="#1E1B4B" font-family="sans-serif" font-size="12" font-weight="500">status</text>
+      
+      <rect x="180" y="116" width="40" height="28" fill="#F3E8FF" stroke="#E9D5FF" stroke-width="1" />
+      <text x="200" y="134" fill="#5B21B6" font-family="sans-serif" font-size="11" font-weight="700" text-anchor="middle"></text>
+    
+    </g>
+  
+</svg>
