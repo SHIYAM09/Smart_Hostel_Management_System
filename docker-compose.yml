@@ -50,7 +50,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@oracle-db:1521/XEPDB1
       - SPRING_DATASOURCE_USERNAME=system
       - SPRING_DATASOURCE_PASSWORD=swathi_02
-      - SPRING_DATA_MONGODB_URI=mongodb+srv://shiyam:swathi_02@cluster0.sj3qxrt.mongodb.net/smarthostel_auth?retryWrites=true&w=majority
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://shiyam:swathi_02@cluster0.sj3qxrt.mongodb.net/smarthostel_auth?retryWrites=true&w=majority&ssl=true
       - JWT_SECRET=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
     depends_on:
       oracle-db:
@@ -73,7 +73,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@oracle-db:1521/XEPDB1
       - SPRING_DATASOURCE_USERNAME=system
       - SPRING_DATASOURCE_PASSWORD=swathi_02
-      - SPRING_DATA_MONGODB_URI=mongodb+srv://shiyam:swathi_02@cluster0.sj3qxrt.mongodb.net/smarthostel_authz?retryWrites=true&w=majority
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://shiyam:swathi_02@cluster0.sj3qxrt.mongodb.net/smarthostel_authz?retryWrites=true&w=majority&ssl=true
       - JWT_SECRET=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
     depends_on:
       oracle-db:

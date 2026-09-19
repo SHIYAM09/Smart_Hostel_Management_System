@@ -11,7 +11,7 @@ spring:
     time-zone: Asia/Kolkata
   data:
     mongodb:
-      uri: ${SPRING_DATA_MONGODB_URI:mongodb+srv://shiyam:swathi_02@cluster0.sj3qxrt.mongodb.net/smarthostel_authz?retryWrites=true&w=majority}
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb+srv://shiyam:swathi_02@cluster0.sj3qxrt.mongodb.net/smarthostel_authz?retryWrites=true&w=majority&ssl=true}
 
 jwt:
   secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
