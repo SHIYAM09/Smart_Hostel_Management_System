@@ -1,7 +1,9 @@
 import axios from "axios";
 
-const AUTH_BASE_URL = "http://localhost:8081/api/v1";
-const MAIN_BASE_URL = "http://localhost:8082/api/v1";
+const LIVE_BACKEND_URL = "https://smart-hostel-management-system-8cdx.onrender.com/api/v1";
+
+const AUTH_BASE_URL = import.meta.env.VITE_AUTH_API_URL || LIVE_BACKEND_URL;
+const MAIN_BASE_URL = import.meta.env.VITE_MAIN_API_URL || LIVE_BACKEND_URL;
 
 export const authApi = axios.create({
   baseURL: AUTH_BASE_URL,
