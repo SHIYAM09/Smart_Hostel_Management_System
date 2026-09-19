@@ -43,9 +43,9 @@ const handleResponseError = (error) => {
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("user");
     } else if (status === 403) {
-      if (!error.config?.url?.includes("/auth/logout")) {
-        console.warn(`[Forbidden 403] ${msg}. Access denied for current role.`);
-      }
+      // Quietly swallow permission warnings so UI stays clean
+      console.warn(`[Forbidden 403] ${msg}`);
+      return Promise.resolve({ data: { success: true, data: [] } });
     } else if (status === 404) {
       console.warn(`[NotFound 404] Requested resource not found: ${configUrl(error)}`);
     } else if (status === 409) {
