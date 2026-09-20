@@ -62,8 +62,21 @@ export default function StudentHome({ onNav }) {
           <h2 className="text-2xl font-extrabold">{userName || "Student User"}</h2>
           <div className="text-blue-200 text-sm mt-0.5">Hostel Resident · Smart Hostel Safety Platform</div>
           <div className="flex gap-4 mt-5">
-            {[{ value: pct, label: "Attendance" }, { value: openComplaintsCount, label: "Open Complaints" }, { value: pendingLeaveCount, label: "Pending Leave" }].map(s => (
-              <div key={s.label} className="bg-white/15 backdrop-blur-sm rounded-xl px-4 py-3 text-center transition-all hover:bg-white/20 hover:scale-105"><div className="text-xl font-bold">{typeof s.value === 'number' ? <AnimatedCounter value={s.value} suffix={s.label === "Attendance" ? "%" : ""} /> : s.value}</div><div className="text-xs text-blue-200">{s.label}</div></div>
+            {[
+              { value: pct, label: "Attendance", screen: "my-attendance" },
+              { value: openComplaintsCount, label: "Open Complaints", screen: "my-complaint" },
+              { value: pendingLeaveCount, label: "Pending Leave", screen: "leave-requests" }
+            ].map(s => (
+              <div
+                key={s.label}
+                onClick={() => onNav(s.screen)}
+                className="bg-white/15 backdrop-blur-sm rounded-xl px-4 py-3 text-center transition-all hover:bg-white/20 hover:scale-105 cursor-pointer"
+              >
+                <div className="text-xl font-bold">
+                  {typeof s.value === 'number' ? <AnimatedCounter value={s.value} suffix={s.label === "Attendance" ? "%" : ""} /> : s.value}
+                </div>
+                <div className="text-xs text-blue-200">{s.label}</div>
+              </div>
             ))}
           </div>
         </div>
