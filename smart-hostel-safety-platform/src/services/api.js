@@ -77,6 +77,18 @@ export const authService = {
     });
     return res.data;
   },
+  forgotPassword: async (email) => {
+    const res = await authApi.post("/auth/forgot-password", { email });
+    return res.data;
+  },
+  verifyOtp: async (email, otpCode) => {
+    const res = await authApi.post("/auth/verify-otp", { email, otpCode, otp: otpCode });
+    return res.data;
+  },
+  resetPassword: async (token, newPassword) => {
+    const res = await authApi.post("/auth/reset-password", { token, newPassword });
+    return res.data;
+  },
   logout: async () => {
     try {
       await authApi.post("/auth/logout");

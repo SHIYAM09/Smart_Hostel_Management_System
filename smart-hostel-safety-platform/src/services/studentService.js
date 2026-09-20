@@ -1,20 +1,22 @@
 import { mainApi } from "./api";
 
-const getCurrentStudentId = (providedId) => {
-  if (providedId && providedId !== 1) return providedId;
+const getActiveUser = () => {
   try {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      const parsed = JSON.parse(savedUser);
-      if (parsed.id) return parsed.id;
-      if (parsed.studentId) return parsed.studentId;
-    }
-  } catch {}
-  return providedId || 1;
+    const savedUserStr = localStorage.getItem("user");
+    return savedUserStr ? JSON.parse(savedUserStr) : {};
+  } catch {
+    return {};
+  }
+};
+
+const getCurrentStudentId = (providedId) => {
+  if (providedId) return providedId;
+  const user = getActiveUser();
+  return user.id || user.studentId || user.userId || user.username || "";
 };
 
 export const studentService = {
-  // Get student dashboard metrics
+  // Get student dashboard metrics from live backend
   getDashboard: async () => {
     try {
       const res = await mainApi.get("/dashboards/student");
@@ -43,18 +45,14 @@ export const studentService = {
     return res.data?.data || res.data;
   },
 
-  // Student Attendance - 100% MongoDB Driven
+  // Student Attendance
   getAttendance: async (studentId) => {
     const targetId = getCurrentStudentId(studentId);
-    let activeUser = {};
-    try {
-      const savedUserStr = localStorage.getItem("user");
-      if (savedUserStr) activeUser = JSON.parse(savedUserStr);
-    } catch {}
+    const activeUser = getActiveUser();
 
-    const currentUserFullName = activeUser.fullName || activeUser.name || activeUser.username || "SHIYAM M";
-    const currentUserRoll = activeUser.rollNumber || activeUser.rollNo || activeUser.username || "717824F251";
-    const currentUserRoom = activeUser.roomNumber || activeUser.room || "D-214";
+    const currentUserFullName = activeUser.fullName || activeUser.name || activeUser.username || "Student";
+    const currentUserRoll = activeUser.rollNumber || activeUser.rollNo || activeUser.username || "";
+    const currentUserRoom = activeUser.roomNumber || activeUser.room || "";
 
     try {
       const res = await mainApi.get(`/attendance/student/${targetId}`);
@@ -68,7 +66,7 @@ export const studentService = {
           date: dateStr,
           status: (item.status || "PRESENT").toLowerCase(),
           time: item.remarks || item.time || "Logged",
-          studentName: item.studentName && item.studentName !== "Student" && item.studentName !== "SURYA" ? item.studentName : currentUserFullName,
+          studentName: item.studentName || currentUserFullName,
           rollNo: item.rollNumber || item.rollNo || currentUserRoll,
           room: item.roomNumber || item.room || currentUserRoom,
         });
@@ -103,19 +101,15 @@ export const studentService = {
   },
 
   createComplaint: async (complaintData) => {
-    let activeUser = {};
-    try {
-      const savedUserStr = localStorage.getItem("user");
-      if (savedUserStr) activeUser = JSON.parse(savedUserStr);
-    } catch {}
+    const activeUser = getActiveUser();
 
-    const studentName = complaintData.studentName || activeUser.fullName || activeUser.name || activeUser.username || "SHIYAM M";
-    const roomNumber = complaintData.roomNumber || complaintData.room || activeUser.roomNumber || activeUser.room || "D-214";
+    const studentName = complaintData.studentName || activeUser.fullName || activeUser.name || activeUser.username || "Student";
+    const roomNumber = complaintData.roomNumber || complaintData.room || activeUser.roomNumber || activeUser.room || "";
 
     const targetId = getCurrentStudentId(complaintData.studentId);
     const parsedId = typeof targetId === "number" 
       ? targetId 
-      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || 1;
+      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || activeUser.id || 1;
     const payload = {
       title: complaintData.subject || complaintData.title,
       subject: complaintData.subject || complaintData.title,
@@ -158,19 +152,15 @@ export const studentService = {
   },
 
   applyLeave: async (leaveData) => {
-    let activeUser = {};
-    try {
-      const savedUserStr = localStorage.getItem("user");
-      if (savedUserStr) activeUser = JSON.parse(savedUserStr);
-    } catch {}
+    const activeUser = getActiveUser();
 
-    const studentName = leaveData.studentName || activeUser.fullName || activeUser.name || activeUser.username || "SHIYAM M";
-    const roomNumber = leaveData.roomNumber || leaveData.room || activeUser.roomNumber || activeUser.room || "D-214";
+    const studentName = leaveData.studentName || activeUser.fullName || activeUser.name || activeUser.username || "Student";
+    const roomNumber = leaveData.roomNumber || leaveData.room || activeUser.roomNumber || activeUser.room || "";
 
     const targetId = getCurrentStudentId(leaveData.studentId);
     const parsedId = typeof targetId === "number" 
       ? targetId 
-      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || 1;
+      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || activeUser.id || 1;
 
     const payload = {
       studentId: parsedId,
@@ -198,16 +188,18 @@ export const studentService = {
   },
 
   registerVisitor: async (visitorData) => {
+    const activeUser = getActiveUser();
     const targetId = getCurrentStudentId(visitorData.studentId);
     const parsedId = typeof targetId === "number" 
       ? targetId 
-      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || 1;
+      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || activeUser.id || 1;
+
     const payload = {
       visitorName: visitorData.visitorName,
-      studentName: visitorData.studentName || "SHIYAM M",
+      studentName: visitorData.studentName || activeUser.fullName || activeUser.name || "Student",
       studentId: String(parsedId),
-      roomNumber: visitorData.room || visitorData.roomNumber || "D-214",
-      phone: visitorData.phone || "9876543210",
+      roomNumber: visitorData.room || visitorData.roomNumber || activeUser.roomNumber || "",
+      phone: visitorData.phone || "",
       relationship: visitorData.relation || visitorData.relationship || "Parent",
       purpose: visitorData.purpose || "Visit",
       status: visitorData.status || "PENDING",
@@ -231,14 +223,10 @@ export const studentService = {
   },
 
   submitMessFeedback: async (feedbackData) => {
-    let activeUser = {};
-    try {
-      const savedUserStr = localStorage.getItem("user");
-      if (savedUserStr) activeUser = JSON.parse(savedUserStr);
-    } catch {}
+    const activeUser = getActiveUser();
 
-    const studentName = feedbackData.studentName || activeUser.fullName || activeUser.name || activeUser.username || "SHIYAM M";
-    const studentId = String(feedbackData.studentId || activeUser.id || activeUser.studentId || "1");
+    const studentName = feedbackData.studentName || activeUser.fullName || activeUser.name || activeUser.username || "Student";
+    const studentId = String(feedbackData.studentId || activeUser.id || activeUser.studentId || "");
 
     const payload = {
       studentId,

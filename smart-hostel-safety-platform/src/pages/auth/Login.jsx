@@ -10,12 +10,14 @@ import {
   Utensils,
 } from "lucide-react";
 import { authService } from "../../services/api";
+import ForgotPasswordModal from "../../components/auth/ForgotPasswordModal";
 
 export default function Login({ onLogin }) {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,13 +30,16 @@ export default function Login({ onLogin }) {
 
     try {
       const response = await authService.login(usernameOrEmail.trim(), password);
-      if (response && response.success && response.data) {
-        const authData = response.data;
-        const rawRole = (authData.roles && authData.roles.length > 0) ? authData.roles[0] : "student";
-        const role = rawRole.toLowerCase().replace("role_", "");
+      if (response && (response.success || response.data)) {
+        const authData = response.data || response;
+        const rawRoles = authData.roles || (authData.role ? [authData.role] : []);
+        const rawRole = (Array.isArray(rawRoles) && rawRoles.length > 0) ? rawRoles[0] : "student";
+        const role = String(rawRole).toLowerCase().replace("role_", "");
         const name = authData.fullName || authData.username || usernameOrEmail.split("@")[0];
 
-        localStorage.setItem("token", authData.accessToken || "demo_token");
+        if (authData.accessToken) {
+          localStorage.setItem("token", authData.accessToken);
+        }
         if (authData.refreshToken) {
           localStorage.setItem("refreshToken", authData.refreshToken);
         }
@@ -43,53 +48,15 @@ export default function Login({ onLogin }) {
         onLogin(role, name, authData.accessToken, authData.refreshToken, authData);
         setLoading(false);
         return;
-      }
-    } catch {
-      // Smooth live deployment fallback if standalone auth container is waking up
-      let role = "student";
-      let name = usernameOrEmail.split("@")[0] || "Student User";
-      const lower = usernameOrEmail.toLowerCase();
-      if (lower.includes("admin")) {
-        role = "admin";
-        name = "System Administrator";
-      } else if (lower.includes("warden") || lower.includes("john")) {
-        role = "warden";
-        name = "John Warden (Block A)";
       } else {
-        role = "student";
-        name = "Alex Johnson";
+        setError(response?.message || "Invalid credentials. Please verify your username/email and password.");
       }
-
-      const mockUser = {
-        username: usernameOrEmail,
-        fullName: name,
-        role: role,
-        roles: [`ROLE_${role.toUpperCase()}`],
-        accessToken: "live_token_" + Date.now()
-      };
-
-      localStorage.setItem("token", mockUser.accessToken);
-      localStorage.setItem("user", JSON.stringify(mockUser));
-
-      onLogin(role, name, mockUser.accessToken, null, mockUser);
-      setLoading(false);
-      return;
+    } catch (err) {
+      const msg = err.response?.data?.message || err.response?.data?.errors?.[0] || "Invalid username/email or password.";
+      setError(msg);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleQuickLogin = (role, name, username) => {
-    const mockUser = {
-      username: username,
-      fullName: name,
-      role: role,
-      roles: [`ROLE_${role.toUpperCase()}`],
-      accessToken: "quick_token_" + Date.now()
-    };
-    localStorage.setItem("token", mockUser.accessToken);
-    localStorage.setItem("user", JSON.stringify(mockUser));
-    onLogin(role, name, mockUser.accessToken, null, mockUser);
   };
 
   return (
@@ -173,8 +140,18 @@ export default function Login({ onLogin }) {
                   />
                 </div>
               </div>
+
               <div>
-                <label className="text-sm font-bold text-gray-700 block mb-2">Password</label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-bold text-gray-700">Password</label>
+                  <button
+                    type="button"
+                    onClick={() => setIsForgotModalOpen(true)}
+                    className="text-xs font-semibold text-blue-600 hover:text-blue-800 transition-all"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
                 <div className="relative">
                   <Lock size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
@@ -192,7 +169,7 @@ export default function Login({ onLogin }) {
               </div>
 
               {error && (
-                <div className="flex items-center gap-2 p-3 bg-red-50 rounded-xl border border-red-100 text-sm text-red-700">
+                <div className="flex items-center gap-2 p-3 bg-red-50 rounded-xl border border-red-100 text-sm text-red-700 font-medium">
                   <AlertCircle size={16} className="shrink-0" />
                   <span>{error}</span>
                 </div>
@@ -213,39 +190,16 @@ export default function Login({ onLogin }) {
                 )}
               </button>
             </form>
-
-            {/* Quick Demo Login Badges */}
-            <div className="mt-6 pt-5 border-t border-gray-100">
-              <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 text-center">
-                Instant Demo Access
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin("student", "Alex Johnson", "student_alex")}
-                  className="py-2 px-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold text-center transition-all border border-blue-200"
-                >
-                  🎓 Student
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin("warden", "John Warden", "warden_john")}
-                  className="py-2 px-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold text-center transition-all border border-indigo-200"
-                >
-                  🛡️ Warden
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin("admin", "System Administrator", "admin_user")}
-                  className="py-2 px-2 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold text-center transition-all border border-purple-200"
-                >
-                  ⚡ Admin
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
+      <ForgotPasswordModal
+        isOpen={isForgotModalOpen}
+        onClose={() => setIsForgotModalOpen(false)}
+        onSuccess={() => setIsForgotModalOpen(false)}
+      />
     </div>
   );
 }
