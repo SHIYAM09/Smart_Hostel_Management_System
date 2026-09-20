@@ -98,7 +98,7 @@ export default function App() {
       {role==="student"&& (() => {
         const sRoom = activeUser.roomNumber || activeUser.room || "D-214";
         const sRoll = activeUser.rollNumber || activeUser.rollNo || activeUser.username || "717824F251";
-        return <Sidebar nav={getNavWithBadge(STUDENT_NAV)} current={studentS} onNav={setStudentS} open={sidebarOpen} onClose={()=>setStudentS("profile")} accentClass="bg-cyan-500" tagLabel="Student Portal" footerName={activeName} footerSub={`Room ${sRoom} · ${sRoll}`} onProfile={()=>setStudentS("profile")}/>;
+        return <Sidebar nav={getNavWithBadge(STUDENT_NAV)} current={studentS} onNav={setStudentS} open={sidebarOpen} onClose={()=>setSidebarOpen(false)} accentClass="bg-cyan-500" tagLabel="Student Portal" footerName={activeName} footerSub={`Room ${sRoom} · ${sRoll}`} onProfile={()=>setStudentS("profile")}/>;
       })()}
 
       <div className="flex-1 lg:ml-72 flex flex-col min-h-screen">
