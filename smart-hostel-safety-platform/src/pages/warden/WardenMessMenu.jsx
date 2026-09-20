@@ -20,6 +20,16 @@ export default function WardenMessMenu() {
   const [selectedDay, setSelectedDay] = useState("Monday");
   const [modalOpen, setModalOpen] = useState(false);
 
+  const DEFAULT_WEEKLY_MENU = useMemo(() => [
+    { id: 1, dayOfWeek: "Monday", day: "Monday", breakfast: "Idli, Vada, Sambhar, Chutney", lunch: "South Indian Thali, Rice, Sambar, Rasam, Curd", snacks: "Samosa, Tea/Coffee", dinner: "Chapati, Paneer Butter Masala, Veg Biryani, Sweet" },
+    { id: 2, dayOfWeek: "Tuesday", day: "Tuesday", breakfast: "Puri Bhaji, Masala Tea", lunch: "North Indian Thali, Roti, Dal Tadka, Jeera Rice", snacks: "Mirchi Bajji, Tea/Coffee", dinner: "Roti, Kadhai Paneer / Chicken Curry, Rice, Ice Cream" },
+    { id: 3, dayOfWeek: "Wednesday", day: "Wednesday", breakfast: "Dosa, Coconut Chutney, Sambhar", lunch: "Veg Fried Rice, Manchurian, Curd Rice", snacks: "Biscuits, Tea/Coffee", dinner: "Roti, Mix Veg Curry, Puliyogare, Fruit Salad" },
+    { id: 4, dayOfWeek: "Thursday", day: "Thursday", breakfast: "Uttapam, Tomato Chutney", lunch: "Lemon Rice, Potato Fry, Sambar, Curd", snacks: "Pani Puri, Tea/Coffee", dinner: "Naan, Dal Makhani, Veg Pulao, Gulab Jamun" },
+    { id: 5, dayOfWeek: "Friday", day: "Friday", breakfast: "Upma, Kesari, Chutney", lunch: "Bisibelebath, Potato Chips, Curd", snacks: "Pakora, Masala Tea", dinner: "Roti, Paneer Tikka Masala / Egg Curry, Ghee Rice" },
+    { id: 6, dayOfWeek: "Saturday", day: "Saturday", breakfast: "Pongal, Vada, Sambhar", lunch: "Curd Rice, Tomato Rice, Papad", snacks: "Bread Omelette / Veg Sandwich, Tea", dinner: "Special Hyderabadi Biryani (Veg/Non-Veg), Raita, Kheer" },
+    { id: 7, dayOfWeek: "Sunday", day: "Sunday", breakfast: "Aloo Paratha, Curd, Pickle", lunch: "Special Sunday Feast, Veg/Chicken Pulao, Sweet", snacks: "Pastry, Coffee", dinner: "Roti, Malai Kofta, Jeera Rice, Fruit Custard" }
+  ], []);
+
   const activeMenu = useMemo(() => {
     return (
       (weeklyMessMenu || []).find(
@@ -27,9 +37,9 @@ export default function WardenMessMenu() {
           m.dayOfWeek?.toLowerCase() === selectedDay.toLowerCase() ||
           m.day?.toLowerCase() === selectedDay.toLowerCase() ||
           m.dayOfWeek?.toLowerCase() === selectedDay.slice(0, 3).toLowerCase()
-      ) || null
+      ) || DEFAULT_WEEKLY_MENU.find((m) => m.dayOfWeek?.toLowerCase() === selectedDay.toLowerCase()) || null
     );
-  }, [weeklyMessMenu, selectedDay]);
+  }, [weeklyMessMenu, selectedDay, DEFAULT_WEEKLY_MENU]);
 
   const [form, setForm] = useState({ ...activeMenu });
   const [errors, setErrors] = useState({});

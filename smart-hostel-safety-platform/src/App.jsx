@@ -88,15 +88,17 @@ export default function App() {
 
   if(!loggedIn) return <Login onLogin={handleLogin}/>;
 
+  const activeUser = (() => { try { return JSON.parse(localStorage.getItem("user")) || {}; } catch { return {}; } })();
+  const activeName = activeUser.fullName || activeUser.name || userName || "User";
+
   return (
     <div className="min-h-screen bg-[#f0f4f8] flex">
-      {role==="admin"  && <Sidebar nav={getNavWithBadge(ADMIN_NAV)}   current={adminS}   onNav={setAdminS}   onProfile={()=>setAdminS("profile")}   open={sidebarOpen} onClose={()=>setSidebarOpen(false)} accentClass="bg-violet-600" tagLabel="Admin Portal"   footerName={userName} footerSub="System Administrator"/>}
-      {role==="warden" && <Sidebar nav={getNavWithBadge(WARDEN_NAV)}  current={wardenS}  onNav={setWardenS}  onProfile={()=>setWardenS("profile")}  open={sidebarOpen} onClose={()=>setSidebarOpen(false)} accentClass="bg-blue-500"   tagLabel="Warden Portal"  footerName={userName} footerSub="Chief Warden"/>}
+      {role==="admin"  && <Sidebar nav={getNavWithBadge(ADMIN_NAV)}   current={adminS}   onNav={setAdminS}   onProfile={()=>setAdminS("profile")}   open={sidebarOpen} onClose={()=>setSidebarOpen(false)} accentClass="bg-violet-600" tagLabel="Admin Portal"   footerName={activeName} footerSub="System Administrator"/>}
+      {role==="warden" && <Sidebar nav={getNavWithBadge(WARDEN_NAV)}  current={wardenS}  onNav={setWardenS}  onProfile={()=>setWardenS("profile")}  open={sidebarOpen} onClose={()=>setSidebarOpen(false)} accentClass="bg-blue-500"   tagLabel="Warden Portal"  footerName={activeName} footerSub="Chief Warden"/>}
       {role==="student"&& (() => {
-        const u = (() => { try { return JSON.parse(localStorage.getItem("user")) || {}; } catch { return {}; } })();
-        const sRoom = u.roomNumber || u.room || "D-214";
-        const sRoll = u.rollNumber || u.rollNo || u.username || "717824F251";
-        return <Sidebar nav={getNavWithBadge(STUDENT_NAV)} current={studentS} onNav={setStudentS} open={sidebarOpen} onClose={()=>setSidebarOpen(false)} accentClass="bg-cyan-500" tagLabel="Student Portal" footerName={userName} footerSub={`Room ${sRoom} · ${sRoll}`} onProfile={()=>setStudentS("profile")}/>;
+        const sRoom = activeUser.roomNumber || activeUser.room || "D-214";
+        const sRoll = activeUser.rollNumber || activeUser.rollNo || activeUser.username || "717824F251";
+        return <Sidebar nav={getNavWithBadge(STUDENT_NAV)} current={studentS} onNav={setStudentS} open={sidebarOpen} onClose={()=>setStudentS("profile")} accentClass="bg-cyan-500" tagLabel="Student Portal" footerName={activeName} footerSub={`Room ${sRoom} · ${sRoll}`} onProfile={()=>setStudentS("profile")}/>;
       })()}
 
       <div className="flex-1 lg:ml-72 flex flex-col min-h-screen">

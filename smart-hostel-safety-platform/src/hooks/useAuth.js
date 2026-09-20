@@ -38,10 +38,24 @@ export function useAuth() {
       if (!token) {
         setLoggedIn(false);
         setUserName("");
+      } else {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) {
+          try {
+            const parsed = JSON.parse(savedUser);
+            if (parsed.fullName || parsed.name) {
+              setUserName(parsed.fullName || parsed.name);
+            }
+          } catch {}
+        }
       }
     };
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    window.addEventListener("userProfileUpdated", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("userProfileUpdated", handleStorageChange);
+    };
   }, []);
 
   const login = (userRole, name, accessToken, refreshToken = null, userObj = null) => {

@@ -235,6 +235,7 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
           hostelBlock: editForm.block,
         })
       );
+      window.dispatchEvent(new Event("userProfileUpdated"));
       showToast("Profile updated successfully.");
     } catch (err) {
       showToast(err?.response?.data?.message || err?.message || "Profile updated.", "info");
