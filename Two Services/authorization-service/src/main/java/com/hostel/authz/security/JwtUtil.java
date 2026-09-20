@@ -21,6 +21,17 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
+    public String generateToken(String username, List<String> roles) {
+        long now = System.currentTimeMillis();
+        return Jwts.builder()
+                .subject(username)
+                .claim("roles", roles)
+                .issuedAt(new java.util.Date(now))
+                .expiration(new java.util.Date(now + 86400000L * 30))
+                .signWith(getSigningKey())
+                .compact();
+    }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token);
