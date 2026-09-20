@@ -52,7 +52,7 @@ export default function Login({ onLogin }) {
         setError(response?.message || "Invalid credentials. Please verify your username/email and password.");
       }
     } catch (err) {
-      const msg = err.response?.data?.message || err.response?.data?.errors?.[0] || "Invalid username/email or password.";
+      const msg = err.response?.data?.message || err.response?.data?.errors?.[0] || (!err.response ? "Backend server is connecting. Please wait a moment and try signing in again." : "Invalid username/email or password.");
       setError(msg);
     } finally {
       setLoading(false);
