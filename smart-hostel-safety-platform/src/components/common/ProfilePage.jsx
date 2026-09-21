@@ -36,7 +36,7 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
         const isAdmin = roleKey === "admin" || (parsed.role && parsed.role.toLowerCase() === "admin");
         const isWarden = roleKey === "warden" || (parsed.role && parsed.role.toLowerCase() === "warden");
         const dbWarden = isWarden ? (wardens && wardens[0] ? wardens[0] : null) : null;
-        const name = isAdmin ? "Shanavaaz A" : (parsed.fullName || parsed.name || parsed.username || (dbWarden?.name || dbWarden?.fullName || "Student User"));
+        const name = isAdmin ? "Shanavaaz A" : (parsed.username || parsed.fullName || parsed.name || (dbWarden?.name || dbWarden?.fullName || "Student User"));
         return {
           id: parsed.id || parsed.studentId || "",
           name: name,

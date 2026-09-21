@@ -24,7 +24,7 @@ export function useAuth() {
     if (savedUser) {
       try {
         const parsed = JSON.parse(savedUser);
-        return parsed.fullName || parsed.username || "";
+        return parsed.username || parsed.fullName || parsed.name || "";
       } catch {
         // ignore
       }
@@ -43,8 +43,9 @@ export function useAuth() {
         if (savedUser) {
           try {
             const parsed = JSON.parse(savedUser);
-            if (parsed.fullName || parsed.name) {
-              setUserName(parsed.fullName || parsed.name);
+            const disp = parsed.username || parsed.fullName || parsed.name;
+            if (disp) {
+              setUserName(disp);
             }
           } catch {}
         }

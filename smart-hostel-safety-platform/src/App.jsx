@@ -96,7 +96,7 @@ export default function App() {
   }
 
   const activeUser = (() => { try { return JSON.parse(localStorage.getItem("user")) || {}; } catch { return {}; } })();
-  const activeName = activeUser.fullName || activeUser.name || userName || "User";
+  const activeName = activeUser.username || activeUser.fullName || activeUser.name || userName || "User";
 
   return (
     <div className="min-h-screen bg-[#f0f4f8] flex">

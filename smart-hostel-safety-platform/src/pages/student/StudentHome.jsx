@@ -41,9 +41,12 @@ export default function StudentHome({ onNav }) {
   }, [refreshDashboard, refreshAttendance, refreshComplaints, refreshLeaveRequests, refreshMessMenu]);
 
   const { userName } = useAuth();
-  const pct = attendance.length
+  const activeUser = (() => { try { return JSON.parse(localStorage.getItem("user")) || {}; } catch { return {}; } })();
+  const displayUsername = activeUser.username || userName || "Student User";
+
+  const pct = attendance && attendance.length > 0
     ? Math.round((attendance.filter((r) => String(r.status).toLowerCase() === "present").length / attendance.length) * 100)
-    : (dashboardMetrics?.todayAttendanceRate ?? dashboardMetrics?.attendancePercentage ?? 100);
+    : 0;
 
   const openComplaintsCount = complaints.length
     ? complaints.filter((c) => String(c.status).toLowerCase() !== "resolved").length
@@ -59,7 +62,7 @@ export default function StudentHome({ onNav }) {
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
         <div className="relative">
           <div className="text-white/70 text-sm mb-1">Welcome back,</div>
-          <h2 className="text-2xl font-extrabold">{userName || "Student User"}</h2>
+          <h2 className="text-2xl font-extrabold">{displayUsername}</h2>
           <div className="text-blue-200 text-sm mt-0.5">Hostel Resident · Smart Hostel Safety Platform</div>
           <div className="flex gap-4 mt-5">
             {[
