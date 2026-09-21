@@ -208,7 +208,7 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                 .fullName(finalName)
                 .email(finalEmail)
                 .phone(finalPhone)
-                .rollNumber(safeUsername)
+                .rollNumber("")
                 .roomNumber("Unassigned")
                 .hostelBlock("Unassigned")
                 .department("General")

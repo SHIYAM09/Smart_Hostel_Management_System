@@ -90,7 +90,7 @@ public class AuthorizationController {
                         .fullName(fullName)
                         .phone(phone)
                         .active(true)
-                        .roles(Set.of(Role.builder().name("ROLE_STUDENT").build()))
+                        .roles(Set.of(Role.builder().id("ROLE_STUDENT").name("ROLE_STUDENT").build()))
                         .build();
                 user = userRepository.save(user);
             } catch (Exception e) {
@@ -105,7 +105,7 @@ public class AuthorizationController {
                 student = Student.builder()
                         .userId(studentUserId)
                         .fullName(fullName)
-                        .rollNumber(username)
+                        .rollNumber("")
                         .email(email)
                         .phone(phone)
                         .yearOfStudy(yearOfStudy)

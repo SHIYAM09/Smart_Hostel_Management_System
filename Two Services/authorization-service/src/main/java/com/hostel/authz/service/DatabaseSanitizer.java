@@ -11,6 +11,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import com.hostel.authz.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
 @Component
 public class DatabaseSanitizer implements CommandLineRunner {
 
@@ -19,11 +28,16 @@ public class DatabaseSanitizer implements CommandLineRunner {
     private final RoomRepository roomRepository;
     private final StudentRepository studentRepository;
     private final com.hostel.authz.repository.FoodWastageRepository foodWastageRepository;
+    private final UserRepository userRepository;
 
-    public DatabaseSanitizer(RoomRepository roomRepository, StudentRepository studentRepository, com.hostel.authz.repository.FoodWastageRepository foodWastageRepository) {
+    public DatabaseSanitizer(RoomRepository roomRepository, 
+                             StudentRepository studentRepository, 
+                             com.hostel.authz.repository.FoodWastageRepository foodWastageRepository,
+                             @Autowired(required = false) UserRepository userRepository) {
         this.roomRepository = roomRepository;
         this.studentRepository = studentRepository;
         this.foodWastageRepository = foodWastageRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -61,12 +75,48 @@ public class DatabaseSanitizer implements CommandLineRunner {
                 }
             }
 
+            if (s.getRollNumber() != null && !s.getRollNumber().isBlank()) {
+                s.setRollNumber("");
+                studentRepository.save(s);
+                log.info("Sanitized Student {} -> cleared rollNumber", s.getFullName());
+            }
+
             String rm = s.getRoomNumber() != null ? s.getRoomNumber().trim().toUpperCase() : "";
             String targetBlock = resolveBlock(rm, s.getHostelBlock());
             if (!targetBlock.equalsIgnoreCase(s.getHostelBlock())) {
                 s.setHostelBlock(targetBlock);
                 studentRepository.save(s);
                 log.info("Sanitized Student {} ({}) block -> {}", s.getFullName(), rm, targetBlock);
+            }
+        }
+
+        if (userRepository != null) {
+            try {
+                List<com.hostel.authz.entity.User> users = userRepository.findAll();
+                for (com.hostel.authz.entity.User u : users) {
+                    boolean dirty = false;
+                    java.util.Set<com.hostel.authz.entity.Role> updatedRoles = new java.util.HashSet<>();
+                    if (u.getRoles() == null || u.getRoles().isEmpty()) {
+                        updatedRoles.add(com.hostel.authz.entity.Role.builder().id("ROLE_STUDENT").name("ROLE_STUDENT").build());
+                        dirty = true;
+                    } else {
+                        for (com.hostel.authz.entity.Role r : u.getRoles()) {
+                            String rName = (r != null && r.getName() != null && !r.getName().isBlank()) ? r.getName() : "ROLE_STUDENT";
+                            String rId = (r != null && r.getId() != null && !r.getId().isBlank()) ? r.getId() : rName;
+                            if (r == null || r.getId() == null || r.getName() == null) {
+                                dirty = true;
+                            }
+                            updatedRoles.add(com.hostel.authz.entity.Role.builder().id(rId).name(rName).build());
+                        }
+                    }
+                    if (dirty) {
+                        u.setRoles(updatedRoles);
+                        userRepository.save(u);
+                        log.info("Sanitized User {} roles -> {}", u.getUsername(), updatedRoles);
+                    }
+                }
+            } catch (Exception e) {
+                log.warn("DatabaseSanitizer user roles sanitization skipped: {}", e.getMessage());
             }
         }
 
