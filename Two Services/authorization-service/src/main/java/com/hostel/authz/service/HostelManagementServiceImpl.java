@@ -832,7 +832,7 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                         for (String alias : studentAliases) {
                             if (!alias.isEmpty() && (sName.contains(alias) || alias.contains(sName))) return true;
                         }
-                        return allComplaints.size() <= 10;
+                        return false;
                     })
                     .map(this::mapToComplaintDto)
                     .collect(Collectors.toList());
@@ -1051,10 +1051,6 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                                 break;
                             }
                         }
-                    }
-                    if (!matches && registeredVisitors.size() <= 10) {
-                        matches = true;
-                    }
                     if (!matches) continue;
                 }
 
@@ -1217,7 +1213,7 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                         for (String alias : studentAliases) {
                             if (!alias.isEmpty() && (sName.contains(alias) || alias.contains(sName))) return true;
                         }
-                        return allLeaves.size() <= 10;
+                        return false;
                     })
                     .map(this::mapToLeaveRequestDto)
                     .collect(Collectors.toList());

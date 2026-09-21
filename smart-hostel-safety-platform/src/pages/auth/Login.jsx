@@ -35,7 +35,10 @@ export default function Login({ onLogin, onRegister }) {
         const rawRoles = authData.roles || (authData.role ? [authData.role] : []);
         const rawRole = (Array.isArray(rawRoles) && rawRoles.length > 0) ? rawRoles[0] : "student";
         const role = String(rawRole).toLowerCase().replace("role_", "");
-        const name = authData.fullName || authData.username || usernameOrEmail.split("@")[0];
+        const name = authData.fullName || authData.name || authData.username || (usernameOrEmail.includes("@") ? usernameOrEmail.split("@")[0] : usernameOrEmail);
+        const username = authData.username || name;
+        const phone = authData.phone || "";
+        const email = authData.email || (usernameOrEmail.includes("@") ? usernameOrEmail : "");
 
         if (authData.accessToken) {
           localStorage.setItem("token", authData.accessToken);
@@ -43,9 +46,9 @@ export default function Login({ onLogin, onRegister }) {
         if (authData.refreshToken) {
           localStorage.setItem("refreshToken", authData.refreshToken);
         }
-        localStorage.setItem("user", JSON.stringify({ ...authData, role, fullName: name }));
+        localStorage.setItem("user", JSON.stringify({ ...authData, role, fullName: name, name: name, username: username, email: email, phone: phone }));
 
-        onLogin(role, name, authData.accessToken, authData.refreshToken, authData);
+        onLogin(role, name, authData.accessToken, authData.refreshToken, { ...authData, role, fullName: name, name: name, username: username, email: email, phone: phone });
         setLoading(false);
         return;
       } else {

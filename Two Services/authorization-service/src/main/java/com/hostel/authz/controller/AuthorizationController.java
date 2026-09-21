@@ -115,6 +115,7 @@ public class AuthorizationController {
         data.put("username", username);
         data.put("email", email);
         data.put("fullName", fullName);
+        data.put("phone", phone);
         data.put("role", roleStr);
         data.put("roles", List.of(roleName));
         data.put("userId", user != null && user.getId() != null ? user.getId() : Math.abs(username.hashCode()));
@@ -135,8 +136,11 @@ public class AuthorizationController {
 
         String lower = usernameOrEmail.toLowerCase().trim();
         String roleName = "ROLE_STUDENT";
-        String fullName = "Alex Johnson";
         String roleStr = "student";
+        String username = lower.contains("@") ? lower.split("@")[0] : usernameOrEmail;
+        String fullName = username;
+        String email = lower.contains("@") ? lower : lower + "@smart-hostel.com";
+        String phone = "";
 
         if (userRepository != null) {
             try {
@@ -146,7 +150,11 @@ public class AuthorizationController {
                 }
                 if (uOpt.isPresent()) {
                     User u = uOpt.get();
-                    fullName = u.getFullName() != null ? u.getFullName() : usernameOrEmail;
+                    if (u.getUsername() != null && !u.getUsername().isBlank()) username = u.getUsername();
+                    if (u.getFullName() != null && !u.getFullName().isBlank()) fullName = u.getFullName();
+                    if (u.getEmail() != null && !u.getEmail().isBlank()) email = u.getEmail();
+                    if (u.getPhone() != null && !u.getPhone().isBlank()) phone = u.getPhone();
+
                     if (u.getRoles() != null && !u.getRoles().isEmpty()) {
                         Role r = u.getRoles().iterator().next();
                         roleName = r.name();
@@ -158,7 +166,7 @@ public class AuthorizationController {
             }
         }
 
-        if (fullName.equals("Alex Johnson")) {
+        if (fullName.equals(username) && !lower.contains("@")) {
             if (lower.contains("admin")) {
                 roleName = "ROLE_ADMIN";
                 fullName = "System Administrator";
@@ -170,15 +178,16 @@ public class AuthorizationController {
             }
         }
 
-        String accessToken = jwtUtil.generateToken(usernameOrEmail, List.of(roleName));
+        String accessToken = jwtUtil.generateToken(username, List.of(roleName));
 
         Map<String, Object> data = new HashMap<>();
         data.put("accessToken", accessToken);
         data.put("refreshToken", accessToken);
         data.put("tokenType", "Bearer");
-        data.put("username", usernameOrEmail);
-        data.put("email", lower.contains("@") ? lower : lower + "@smart-hostel.com");
+        data.put("username", username);
+        data.put("email", email);
         data.put("fullName", fullName);
+        data.put("phone", phone);
         data.put("role", roleStr);
         data.put("roles", List.of(roleName));
         data.put("userId", 1);
