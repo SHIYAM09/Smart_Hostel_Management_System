@@ -178,51 +178,42 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                                 .findFirst()
                                 .orElse(null)));
 
-        Long numericUserId = System.currentTimeMillis();
-        if (user != null && user.getId() != null) {
-            try {
-                numericUserId = Long.parseLong(user.getId().replaceAll("\\D+", "1"));
-            } catch (Exception e) {}
-        }
-
         String finalName = user != null && user.getFullName() != null && !user.getFullName().isBlank() ? user.getFullName() : safeUsername;
         String finalEmail = user != null && user.getEmail() != null && !user.getEmail().isBlank() ? user.getEmail() : (safeUsername.contains("@") ? safeUsername : "");
         String finalPhone = user != null && user.getPhone() != null && !user.getPhone().isBlank() ? user.getPhone() : "";
 
-        Long targetUserId = numericUserId;
-        Student student = studentRepository.findByUserId(targetUserId)
-                .orElseGet(() -> studentRepository.findAll().stream()
-                        .filter(s -> (s.getRollNumber() != null && s.getRollNumber().equalsIgnoreCase(safeUsername)) ||
-                                     (!finalEmail.isBlank() && s.getEmail() != null && s.getEmail().equalsIgnoreCase(finalEmail)) ||
-                                     (!finalName.isBlank() && s.getFullName() != null && s.getFullName().equalsIgnoreCase(finalName)))
-                        .findFirst()
-                        .orElseGet(() -> {
-                            Student newStudent = Student.builder()
-                                    .userId(targetUserId)
-                                    .rollNumber(safeUsername)
-                                    .fullName(finalName)
-                                    .email(finalEmail)
-                                    .phone(finalPhone)
-                                    .department("General")
-                                    .yearOfStudy(1)
-                                    .hostelBlock("Unassigned")
-                                    .roomNumber("Unassigned")
-                                    .status("ACTIVE")
-                                    .build();
-                            return studentRepository.save(newStudent);
-                        }));
+        // Flexible lookup for an existing registered Student document in DB
+        Student student = studentRepository.findAll().stream()
+                .filter(s -> (!finalEmail.isBlank() && s.getEmail() != null && s.getEmail().equalsIgnoreCase(finalEmail)) ||
+                             (!finalPhone.isBlank() && s.getPhone() != null && s.getPhone().equalsIgnoreCase(finalPhone)) ||
+                             (s.getRollNumber() != null && (s.getRollNumber().equalsIgnoreCase(safeUsername) || s.getRollNumber().equalsIgnoreCase(finalName))) ||
+                             (s.getFullName() != null && (s.getFullName().equalsIgnoreCase(finalName) || s.getFullName().equalsIgnoreCase(safeUsername) || s.getFullName().toLowerCase().contains(safeUsername.toLowerCase()))))
+                .findFirst()
+                .orElse(null);
 
-        // Fill missing fields on existing student document if any
-        boolean dirty = false;
-        if ((student.getFullName() == null || student.getFullName().isBlank()) && !finalName.isBlank()) { student.setFullName(finalName); dirty = true; }
-        if ((student.getEmail() == null || student.getEmail().isBlank()) && !finalEmail.isBlank()) { student.setEmail(finalEmail); dirty = true; }
-        if ((student.getPhone() == null || student.getPhone().isBlank()) && !finalPhone.isBlank()) { student.setPhone(finalPhone); dirty = true; }
-
-        if (dirty) {
-            student = studentRepository.save(student);
+        if (student != null) {
+            boolean dirty = false;
+            if ((student.getFullName() == null || student.getFullName().isBlank()) && !finalName.isBlank()) { student.setFullName(finalName); dirty = true; }
+            if ((student.getEmail() == null || student.getEmail().isBlank()) && !finalEmail.isBlank()) { student.setEmail(finalEmail); dirty = true; }
+            if ((student.getPhone() == null || student.getPhone().isBlank()) && !finalPhone.isBlank()) { student.setPhone(finalPhone); dirty = true; }
+            if (dirty) {
+                student = studentRepository.save(student);
+            }
+            return mapToStudentDto(student);
         }
 
-        return mapToStudentDto(student);
+        // If no student record exists in MongoDB, return transient DTO WITHOUT inserting dummy documents
+        return StudentDto.builder()
+                .userId(user != null && user.getId() != null ? (long) Math.abs(user.getId().hashCode()) : (long) Math.abs(safeUsername.hashCode()))
+                .fullName(finalName)
+                .email(finalEmail)
+                .phone(finalPhone)
+                .rollNumber(safeUsername)
+                .roomNumber("Unassigned")
+                .hostelBlock("Unassigned")
+                .department("General")
+                .status("ACTIVE")
+                .build();
     }
 
     @Override

@@ -44,6 +44,23 @@ public class DatabaseSanitizer implements CommandLineRunner {
 
         List<Student> students = studentRepository.findAll();
         for (Student s : students) {
+            boolean isDummy = (s.getEmail() == null || s.getEmail().isBlank()) &&
+                              (s.getPhone() == null || s.getPhone().isBlank()) &&
+                              "Unassigned".equalsIgnoreCase(s.getHostelBlock()) &&
+                              "Unassigned".equalsIgnoreCase(s.getRoomNumber());
+            
+            if (isDummy) {
+                boolean hasRealStudent = students.stream().anyMatch(other -> 
+                    !other.getId().equals(s.getId()) && 
+                    ((other.getEmail() != null && !other.getEmail().isBlank()) || (other.getPhone() != null && !other.getPhone().isBlank()))
+                );
+                if (hasRealStudent) {
+                    studentRepository.delete(s);
+                    log.info("Sanitized & purged duplicate dummy Student record ID: {}, name: {}", s.getId(), s.getFullName());
+                    continue;
+                }
+            }
+
             String rm = s.getRoomNumber() != null ? s.getRoomNumber().trim().toUpperCase() : "";
             String targetBlock = resolveBlock(rm, s.getHostelBlock());
             if (!targetBlock.equalsIgnoreCase(s.getHostelBlock())) {
