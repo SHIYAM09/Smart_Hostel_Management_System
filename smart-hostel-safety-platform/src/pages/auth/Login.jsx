@@ -12,7 +12,7 @@ import {
 import { authService } from "../../services/api";
 import ForgotPasswordModal from "../../components/auth/ForgotPasswordModal";
 
-export default function Login({ onLogin }) {
+export default function Login({ onLogin, onRegister }) {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -190,6 +190,17 @@ export default function Login({ onLogin }) {
                 )}
               </button>
             </form>
+
+            <div className="mt-6 text-center text-xs text-gray-500">
+              Don't have an account?{" "}
+              <button
+                type="button"
+                onClick={onRegister}
+                className="font-bold text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                Register
+              </button>
+            </div>
           </div>
         </div>
       </div>

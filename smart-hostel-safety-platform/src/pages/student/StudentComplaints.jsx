@@ -108,41 +108,50 @@ export default function StudentComplaints() {
         <Button onClick={() => setModal(true)}><Plus size={17} />New Complaint</Button>
       </div>
       <div className="space-y-4">
-        {myC.map((c) => (
-          <div key={c.id} className="bg-white rounded-2xl border border-blue-50 shadow-sm p-6">
-            <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <Badge status={c.status} />
-              <Badge status={c.priority} />
-              <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{c.category}</span>
-            </div>
-            <h4 className="font-bold text-gray-900 text-base">{c.subject}</h4>
-            <p className="text-sm text-gray-500 mt-1">{c.description}</p>
-            <div className="text-sm text-gray-400 mt-2">{c.date}</div>
-            {c.wardenReply && (
-              <div className="mt-4 p-4 bg-blue-50 border border-blue-100 rounded-xl">
-                <div className="text-xs font-bold text-blue-700 mb-1">Warden Reply</div>
-                <p className="text-sm text-blue-800">{c.wardenReply}</p>
-              </div>
-            )}
-            {c.status === "resolved" && !c.feedback && (
-              <div className="mt-4">
-                <Button variant="secondary" onClick={() => { setFeedbackModal(c); setFeedbackForm({ rating: 0, comment: "" }); setErrors({}); }}>
-                  <MessageSquare size={16} />Give Feedback
-                </Button>
-              </div>
-            )}
-            {c.feedback && (
-              <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-emerald-700">Feedback Submitted</span>
-                  <StarDisplay rating={c.feedback.rating} />
-                </div>
-                <p className="text-sm text-emerald-800">{c.feedback.comment}</p>
-                <div className="text-xs text-emerald-600 mt-1">{c.feedback.submittedAt}</div>
-              </div>
-            )}
+        {myC.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center space-y-2">
+            <div className="text-gray-600 font-semibold text-base">No complaints submitted.</div>
+            <p className="text-sm text-gray-500 max-w-md mx-auto">
+              You have not submitted any complaints yet. Click "+ New Complaint" above to file a complaint.
+            </p>
           </div>
-        ))}
+        ) : (
+          myC.map((c) => (
+            <div key={c.id} className="bg-white rounded-2xl border border-blue-50 shadow-sm p-6">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <Badge status={c.status} />
+                <Badge status={c.priority} />
+                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{c.category}</span>
+              </div>
+              <h4 className="font-bold text-gray-900 text-base">{c.subject}</h4>
+              <p className="text-sm text-gray-500 mt-1">{c.description}</p>
+              <div className="text-sm text-gray-400 mt-2">{c.date}</div>
+              {c.wardenReply && (
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+                  <div className="text-xs font-bold text-blue-700 mb-1">Warden Reply</div>
+                  <p className="text-sm text-blue-800">{c.wardenReply}</p>
+                </div>
+              )}
+              {c.status === "resolved" && !c.feedback && (
+                <div className="mt-4">
+                  <Button variant="secondary" onClick={() => { setFeedbackModal(c); setFeedbackForm({ rating: 0, comment: "" }); setErrors({}); }}>
+                    <MessageSquare size={16} />Give Feedback
+                  </Button>
+                </div>
+              )}
+              {c.feedback && (
+                <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold text-emerald-700">Feedback Submitted</span>
+                    <StarDisplay rating={c.feedback.rating} />
+                  </div>
+                  <p className="text-sm text-emerald-800">{c.feedback.comment}</p>
+                  <div className="text-xs text-emerald-600 mt-1">{c.feedback.submittedAt}</div>
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </div>
 
       <Modal open={modal} onClose={() => setModal(false)} title="File New Complaint">

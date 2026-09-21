@@ -69,6 +69,10 @@ authApi.interceptors.response.use((res) => res, handleResponseError);
 mainApi.interceptors.response.use((res) => res, handleResponseError);
 
 export const authService = {
+  register: async (userData) => {
+    const res = await authApi.post("/auth/register", userData);
+    return res.data;
+  },
   login: async (usernameOrEmail, password) => {
     const res = await authApi.post("/auth/login", { 
       username: usernameOrEmail, 

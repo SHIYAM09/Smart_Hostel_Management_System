@@ -36,17 +36,17 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
         const isAdmin = roleKey === "admin" || (parsed.role && parsed.role.toLowerCase() === "admin");
         const isWarden = roleKey === "warden" || (parsed.role && parsed.role.toLowerCase() === "warden");
         const dbWarden = isWarden ? (wardens && wardens[0] ? wardens[0] : null) : null;
-        const name = isAdmin ? "Shanavaaz A" : (parsed.fullName || parsed.name || parsed.username || (dbWarden?.name || dbWarden?.fullName || "Surya R"));
+        const name = isAdmin ? "Shanavaaz A" : (parsed.fullName || parsed.name || parsed.username || (dbWarden?.name || dbWarden?.fullName || "Student User"));
         return {
           id: parsed.id || parsed.studentId || "",
           name: name,
-          email: isAdmin ? "admin@kce.ac.in" : ((dbWarden?.email) || (parsed.email && parsed.email !== "—" && parsed.email.trim() !== "" ? parsed.email : (isWarden ? "warden@kce.ac.in" : "717824F251@kce.ac.in"))),
-          phone: isAdmin ? "9876543934" : ((dbWarden?.phone) || (parsed.phone && parsed.phone !== "—" && parsed.phone.trim() !== "" ? parsed.phone : (isWarden ? "6912587432" : "06379331743"))),
-          room: parsed.roomNumber || parsed.room || "—",
-          department: isAdmin ? "Hostel Administration" : (isWarden ? "Warden" : (parsed.department || "B.Tech IT")),
-          block: (dbWarden?.block || dbWarden?.hostelBlock) || ((parsed.hostelBlock && parsed.hostelBlock !== "Block A") ? parsed.hostelBlock : ((parsed.block && parsed.block !== "Block A") ? parsed.block : (isWarden ? "Block D" : "Block D"))),
-          employeeId: isAdmin ? "ADM-101" : (parsed.employeeId || parsed.rollNumber || parsed.username || (parsed.id ? String(parsed.id) : (isWarden ? "W-102" : "717824F251"))),
-          role: (parsed.role || roleKey || "admin").toUpperCase(),
+          email: isAdmin ? "admin@kce.ac.in" : ((dbWarden?.email) || (parsed.email && parsed.email !== "—" && parsed.email.trim() !== "" ? parsed.email : (isWarden ? "warden@kce.ac.in" : ""))),
+          phone: isAdmin ? "9876543934" : ((dbWarden?.phone) || (parsed.phone && parsed.phone !== "—" && parsed.phone.trim() !== "" ? parsed.phone : (isWarden ? "6912587432" : ""))),
+          room: parsed.roomNumber || parsed.room || (isAdmin || isWarden ? "—" : "Unassigned"),
+          department: isAdmin ? "Hostel Administration" : (isWarden ? "Warden" : (parsed.department || "General")),
+          block: (dbWarden?.block || dbWarden?.hostelBlock) || (parsed.hostelBlock || parsed.block || (isWarden ? "Block D" : "Unassigned")),
+          employeeId: isAdmin ? "ADM-101" : (parsed.employeeId || parsed.rollNumber || parsed.username || (parsed.id ? String(parsed.id) : (isWarden ? "W-102" : ""))),
+          role: (parsed.role || roleKey || "student").toUpperCase(),
         };
       }
     } catch {
@@ -56,14 +56,14 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
     const isWarden = roleKey === "warden";
     const dbWarden = isWarden ? (wardens && wardens[0] ? wardens[0] : null) : null;
     return {
-      name: isAdmin ? "Shanavaaz A" : (isWarden ? (dbWarden?.name || dbWarden?.fullName || "Surya R") : "SHIYAM M"),
-      email: isAdmin ? "admin@kce.ac.in" : (isWarden ? (dbWarden?.email || "warden@kce.ac.in") : "717824F251@kce.ac.in"),
-      phone: isAdmin ? "9876543934" : (isWarden ? (dbWarden?.phone || "6912587432") : "06379331743"),
-      room: isAdmin || isWarden ? "—" : "D-214",
-      department: isAdmin ? "Hostel Administration" : (isWarden ? "Warden" : "B.Tech IT"),
-      block: isAdmin ? "Block A" : "Block D",
-      employeeId: isAdmin ? "ADM-101" : (isWarden ? "W-102" : "717824F251"),
-      role: (roleKey || "admin").toUpperCase(),
+      name: isAdmin ? "Shanavaaz A" : (isWarden ? (dbWarden?.name || dbWarden?.fullName || "Surya R") : "Student User"),
+      email: isAdmin ? "admin@kce.ac.in" : (isWarden ? (dbWarden?.email || "warden@kce.ac.in") : ""),
+      phone: isAdmin ? "9876543934" : (isWarden ? (dbWarden?.phone || "6912587432") : ""),
+      room: isAdmin || isWarden ? "—" : "Unassigned",
+      department: isAdmin ? "Hostel Administration" : (isWarden ? "Warden" : "General"),
+      block: isAdmin ? "Block A" : (isWarden ? "Block D" : "Unassigned"),
+      employeeId: isAdmin ? "ADM-101" : (isWarden ? "W-102" : ""),
+      role: (roleKey || "student").toUpperCase(),
     };
   };
 
@@ -100,37 +100,35 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
             (s.name && currentLoggedName && s.name.toLowerCase() === currentLoggedName)
           );
 
-          const liveName = isAdmin ? (apiData.fullName || apiData.name || "Shanavaaz A") : (apiData.fullName || apiData.name || apiData.username || (matchedWarden ? (matchedWarden.name || matchedWarden.fullName) : (isWarden ? "Surya R" : "SHIYAM M")));
+          const liveName = isAdmin ? (apiData.fullName || apiData.name || "Shanavaaz A") : (apiData.fullName || apiData.name || apiData.username || (matchedWarden ? (matchedWarden.name || matchedWarden.fullName) : (isWarden ? "Surya R" : "Student User")));
 
           const liveEmail = isAdmin
             ? (apiData.email && apiData.email.includes("@kce.ac.in") ? apiData.email : "admin@kce.ac.in")
             : ((matchedWarden && matchedWarden.email && matchedWarden.email.trim() !== "")
               ? matchedWarden.email
-              : ((apiData.email && apiData.email.trim() !== "" && apiData.email !== "—" && !apiData.email.includes("surya.r@smarthostel") && !apiData.email.includes("shiyam.m"))
+              : ((apiData.email && apiData.email.trim() !== "" && apiData.email !== "—")
                 ? apiData.email
-                : (isWarden ? "warden@kce.ac.in" : "717824F251@kce.ac.in")));
+                : (isWarden ? "warden@kce.ac.in" : "")));
 
           const livePhone = isAdmin
             ? (apiData.phone && apiData.phone.length >= 10 && !apiData.phone.includes("43210") ? apiData.phone : "9876543934")
             : ((matchedWarden && matchedWarden.phone && matchedWarden.phone.trim() !== "")
               ? matchedWarden.phone
-              : ((apiData.phone && apiData.phone.trim() !== "" && apiData.phone !== "—" && !apiData.phone.includes("98765"))
+              : ((apiData.phone && apiData.phone.trim() !== "" && apiData.phone !== "—")
                 ? apiData.phone
-                : (isWarden ? "6912587432" : "06379331743")));
+                : (isWarden ? "6912587432" : "")));
 
           const liveEmpId = isAdmin
             ? (apiData.employeeId || "ADM-101")
-            : ((apiData.employeeId && apiData.employeeId !== "ADM-101")
-              ? apiData.employeeId
-              : (matchedWarden ? (matchedWarden.id || matchedWarden.rawId || "W-102") : (isWarden ? "W-102" : "717824F251")));
+            : (apiData.rollNumber || apiData.employeeId || (matchedWarden ? (matchedWarden.id || matchedWarden.rawId || "W-102") : (isWarden ? "W-102" : apiData.username || "")));
 
           const liveDept = isAdmin
             ? "Hostel Administration"
-            : (isWarden ? "Warden" : (apiData.department || (matchedWarden ? matchedWarden.department : "B.Tech IT")));
+            : (isWarden ? "Warden" : (apiData.department || (matchedWarden ? matchedWarden.department : "General")));
 
-          const liveRoom = isAdmin ? "—" : (apiData.roomNumber || apiData.room || (matchedStudent ? matchedStudent.room : (isWarden ? "—" : "D-214")));
+          const liveRoom = isAdmin ? "—" : (apiData.roomNumber || apiData.room || (matchedStudent ? matchedStudent.room : (isWarden ? "—" : "Unassigned")));
 
-          let liveBlock = "Block D";
+          let liveBlock = "Unassigned";
           if (matchedWarden && (matchedWarden.block || matchedWarden.hostelBlock)) {
             liveBlock = matchedWarden.block || matchedWarden.hostelBlock;
           } else if (apiData.hostelBlock && apiData.hostelBlock !== "unassigned") {

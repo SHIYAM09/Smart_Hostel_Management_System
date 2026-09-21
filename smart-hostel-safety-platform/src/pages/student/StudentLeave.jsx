@@ -66,21 +66,30 @@ export default function StudentLeave() {
         <Button onClick={() => setModal(true)}><Plus size={17} />Request Leave</Button>
       </div>
       <div className="space-y-4">
-        {myLeaves.map((l) => (
-          <div key={l.id} className="bg-white rounded-2xl border border-blue-50 shadow-sm p-5">
-            <div className="flex items-center justify-between mb-2">
-              <Badge status={l.status} />
-              <span className="text-xs text-gray-400">Submitted {l.submittedAt}</span>
-            </div>
-            <div className="font-bold text-gray-900">{l.fromDate} → {l.toDate}</div>
-            <p className="text-sm text-gray-600 mt-1">{l.reason}</p>
-            {l.wardenNote && (
-              <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-xl text-sm text-blue-800">
-                <span className="font-bold">Warden Note:</span> {l.wardenNote}
-              </div>
-            )}
+        {myLeaves.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center space-y-2">
+            <div className="text-gray-600 font-semibold text-base">No leave requests.</div>
+            <p className="text-sm text-gray-500 max-w-md mx-auto">
+              You have not submitted any leave requests yet. Click "+ Request Leave" above to apply for leave.
+            </p>
           </div>
-        ))}
+        ) : (
+          myLeaves.map((l) => (
+            <div key={l.id} className="bg-white rounded-2xl border border-blue-50 shadow-sm p-5">
+              <div className="flex items-center justify-between mb-2">
+                <Badge status={l.status} />
+                <span className="text-xs text-gray-400">Submitted {l.submittedAt}</span>
+              </div>
+              <div className="font-bold text-gray-900">{l.fromDate} → {l.toDate}</div>
+              <p className="text-sm text-gray-600 mt-1">{l.reason}</p>
+              {l.wardenNote && (
+                <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-xl text-sm text-blue-800">
+                  <span className="font-bold">Warden Note:</span> {l.wardenNote}
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </div>
       <Modal open={modal} onClose={() => setModal(false)} title="Request Leave">
         <div className="space-y-4">

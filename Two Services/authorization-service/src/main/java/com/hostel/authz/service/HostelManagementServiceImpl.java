@@ -157,13 +157,13 @@ public class HostelManagementServiceImpl implements HostelManagementService {
         if (username == null || username.isBlank()) {
             return StudentDto.builder()
                     .userId(1L)
-                    .fullName("SHIYAM M")
-                    .email("shiyam@kce.ac.in")
-                    .phone("6379331743")
-                    .rollNumber("717824F251")
-                    .roomNumber("D-214")
-                    .hostelBlock("Block D")
-                    .department("Computer Science Engineering")
+                    .fullName("Student User")
+                    .email("")
+                    .phone("")
+                    .rollNumber("")
+                    .roomNumber("Unassigned")
+                    .hostelBlock("Unassigned")
+                    .department("General")
                     .status("ACTIVE")
                     .build();
         }
@@ -178,35 +178,35 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                                 .findFirst()
                                 .orElse(null)));
 
-        Long numericUserId = 1L;
+        Long numericUserId = System.currentTimeMillis();
         if (user != null && user.getId() != null) {
             try {
                 numericUserId = Long.parseLong(user.getId().replaceAll("\\D+", "1"));
             } catch (Exception e) {}
         }
 
-        String finalName = user != null && user.getFullName() != null && !user.getFullName().isBlank() ? user.getFullName() : (safeUsername.equalsIgnoreCase("shiyam") ? "SHIYAM M" : safeUsername);
-        String finalEmail = user != null && user.getEmail() != null && !user.getEmail().isBlank() ? user.getEmail() : "shiyam@kce.ac.in";
-        String finalPhone = user != null && user.getPhone() != null && !user.getPhone().isBlank() ? user.getPhone() : "6379331743";
+        String finalName = user != null && user.getFullName() != null && !user.getFullName().isBlank() ? user.getFullName() : safeUsername;
+        String finalEmail = user != null && user.getEmail() != null && !user.getEmail().isBlank() ? user.getEmail() : (safeUsername.contains("@") ? safeUsername : "");
+        String finalPhone = user != null && user.getPhone() != null && !user.getPhone().isBlank() ? user.getPhone() : "";
 
         Long targetUserId = numericUserId;
         Student student = studentRepository.findByUserId(targetUserId)
                 .orElseGet(() -> studentRepository.findAll().stream()
-                        .filter(s -> (s.getRollNumber() != null && (s.getRollNumber().equalsIgnoreCase(safeUsername) || s.getRollNumber().equalsIgnoreCase("22CS001"))) ||
-                                     (s.getEmail() != null && s.getEmail().equalsIgnoreCase(finalEmail)) ||
-                                     (s.getFullName() != null && s.getFullName().equalsIgnoreCase(finalName)))
+                        .filter(s -> (s.getRollNumber() != null && s.getRollNumber().equalsIgnoreCase(safeUsername)) ||
+                                     (!finalEmail.isBlank() && s.getEmail() != null && s.getEmail().equalsIgnoreCase(finalEmail)) ||
+                                     (!finalName.isBlank() && s.getFullName() != null && s.getFullName().equalsIgnoreCase(finalName)))
                         .findFirst()
                         .orElseGet(() -> {
                             Student newStudent = Student.builder()
                                     .userId(targetUserId)
-                                    .rollNumber(safeUsername.equalsIgnoreCase("shiyam") ? "22CS001" : safeUsername)
+                                    .rollNumber(safeUsername)
                                     .fullName(finalName)
                                     .email(finalEmail)
                                     .phone(finalPhone)
-                                    .department("Computer Science Engineering")
-                                    .yearOfStudy(3)
-                                    .hostelBlock("Block D")
-                                    .roomNumber("D-214")
+                                    .department("General")
+                                    .yearOfStudy(1)
+                                    .hostelBlock("Unassigned")
+                                    .roomNumber("Unassigned")
                                     .status("ACTIVE")
                                     .build();
                             return studentRepository.save(newStudent);
@@ -214,13 +214,9 @@ public class HostelManagementServiceImpl implements HostelManagementService {
 
         // Fill missing fields on existing student document if any
         boolean dirty = false;
-        if (student.getFullName() == null || student.getFullName().isBlank() || student.getFullName().equalsIgnoreCase("shiyam")) { student.setFullName(finalName); dirty = true; }
-        if (student.getEmail() == null || student.getEmail().isBlank() || student.getEmail().contains("student@smarthostel.edu")) { student.setEmail(finalEmail); dirty = true; }
-        if (student.getPhone() == null || student.getPhone().isBlank()) { student.setPhone(finalPhone); dirty = true; }
-        if (student.getRoomNumber() == null || student.getRoomNumber().isBlank() || student.getRoomNumber().equalsIgnoreCase("unassigned")) { student.setRoomNumber("D-214"); dirty = true; }
-        if (student.getHostelBlock() == null || student.getHostelBlock().isBlank() || student.getHostelBlock().equalsIgnoreCase("unassigned")) { student.setHostelBlock("Block D"); dirty = true; }
-        if (student.getDepartment() == null || student.getDepartment().isBlank() || student.getDepartment().equalsIgnoreCase("general")) { student.setDepartment("Computer Science Engineering"); dirty = true; }
-        if (student.getRollNumber() == null || student.getRollNumber().isBlank() || student.getRollNumber().equalsIgnoreCase("shiyam")) { student.setRollNumber("22CS001"); dirty = true; }
+        if ((student.getFullName() == null || student.getFullName().isBlank()) && !finalName.isBlank()) { student.setFullName(finalName); dirty = true; }
+        if ((student.getEmail() == null || student.getEmail().isBlank()) && !finalEmail.isBlank()) { student.setEmail(finalEmail); dirty = true; }
+        if ((student.getPhone() == null || student.getPhone().isBlank()) && !finalPhone.isBlank()) { student.setPhone(finalPhone); dirty = true; }
 
         if (dirty) {
             student = studentRepository.save(student);
@@ -663,16 +659,7 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                 .collect(Collectors.toList());
 
         if (matched.isEmpty()) {
-            Attendance fallback = new Attendance();
-            fallback.setId(String.valueOf(System.currentTimeMillis()));
-            fallback.setStudentId(studentId != null ? String.valueOf(studentId) : "1");
-            fallback.setStudentName(currentStudentName);
-            fallback.setRollNumber(currentRoll.isEmpty() ? "717824F251" : currentRoll);
-            fallback.setRoomNumber("D-214");
-            fallback.setAttendanceDate(LocalDate.now(java.time.ZoneId.of("Asia/Kolkata")));
-            fallback.setStatus("PRESENT");
-            fallback.setRemarks("-");
-            matched = java.util.Collections.singletonList(fallback);
+            return java.util.Collections.emptyList();
         }
 
         java.util.Map<LocalDate, Attendance> deduplicatedMap = new java.util.LinkedHashMap<>();

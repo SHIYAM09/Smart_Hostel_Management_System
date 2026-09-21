@@ -65,26 +65,16 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new BadRequestException("Username is already taken!");
+            throw new BadRequestException("Username already exists.");
         }
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new BadRequestException("Email is already in use!");
+            throw new BadRequestException("Email is already registered.");
         }
 
-        Set<Role> roles = new HashSet<>();
-        if (request.getRoles() == null || request.getRoles().isEmpty()) {
-            Role userRole = roleRepository.findByName("ROLE_STUDENT")
-                    .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_STUDENT").description("Student Role").build()));
-            roles.add(userRole);
-        } else {
-            request.getRoles().forEach(roleStr -> {
-                String formattedRole = roleStr.startsWith("ROLE_") ? roleStr : "ROLE_" + roleStr.toUpperCase();
-                Role role = roleRepository.findByName(formattedRole)
-                        .orElseGet(() -> roleRepository.save(Role.builder().name(formattedRole).description(formattedRole + " Role").build()));
-                roles.add(role);
-            });
-        }
+        Role studentRole = roleRepository.findByName("ROLE_STUDENT")
+                .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_STUDENT").description("Student Role").build()));
+        Set<Role> roles = Collections.singleton(studentRole);
 
         User user = User.builder()
                 .username(request.getUsername())

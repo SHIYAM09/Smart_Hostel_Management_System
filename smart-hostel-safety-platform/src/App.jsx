@@ -8,6 +8,7 @@ import { Topbar } from "./layouts/Topbar";
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
 import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminWardens = lazy(() => import("./pages/admin/AdminWardens"));
@@ -70,6 +71,7 @@ function PageTransition({ children }) {
 export default function App() {
   const { loggedIn, role, userName, login, logout } = useAuth();
   const { notifications } = useHostel();
+  const [authMode, setAuthMode] = useState("login");
   const [adminS,      setAdminS]      = useState("dashboard");
   const [wardenS,     setWardenS]     = useState("dashboard");
   const [studentS,    setStudentS]    = useState("home");
@@ -86,7 +88,12 @@ export default function App() {
   const getNavWithBadge = (baseNav) =>
     baseNav.map((item) => (item.id === "notifications" ? { ...item, badge: unread > 0 ? unread : undefined } : item));
 
-  if(!loggedIn) return <Login onLogin={handleLogin}/>;
+  if (!loggedIn) {
+    if (authMode === "register") {
+      return <Register onGoToLogin={() => setAuthMode("login")} />;
+    }
+    return <Login onLogin={handleLogin} onRegister={() => setAuthMode("register")} />;
+  }
 
   const activeUser = (() => { try { return JSON.parse(localStorage.getItem("user")) || {}; } catch { return {}; } })();
   const activeName = activeUser.fullName || activeUser.name || userName || "User";

@@ -30,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    @Operation(summary = "Register a new user", description = "Creates a new user account (Student, Warden, or Admin) and returns JWT access/refresh tokens.")
+    @Operation(summary = "Register a new student", description = "Creates a new student user account (ROLE_STUDENT) and returns JWT access/refresh tokens.")
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "User registered successfully",
             content = @Content(schema = @Schema(implementation = ApiResponse.class))),

@@ -92,14 +92,12 @@ export default function StudentHome({ onNav }) {
           <button onClick={() => onNav("my-attendance")} className="text-sm text-blue-600 font-semibold hover:text-blue-700 transition-colors">View all</button>
         </div>
         <div className="divide-y divide-gray-50">
-          {(() => {
-            const list = (attendance && attendance.length > 0) ? attendance : [
-              { date: "2026-09-20", time: "08:30 AM", status: "present" },
-              { date: "2026-09-19", time: "08:32 AM", status: "present" },
-              { date: "2026-09-18", time: "08:28 AM", status: "present" },
-              { date: "2026-09-17", time: "08:31 AM", status: "present" },
-            ];
-            return list.slice(0, 4).map((r) => {
+          {(!attendance || attendance.length === 0) ? (
+            <div className="p-6 text-center text-sm font-semibold text-gray-500">
+              No attendance records yet.
+            </div>
+          ) : (
+            attendance.slice(0, 4).map((r) => {
               const st = String(r.status).toLowerCase();
               return (
                 <div key={r.date} className="flex items-center gap-4 px-6 py-4 transition-colors hover:bg-gray-50">
@@ -113,8 +111,8 @@ export default function StudentHome({ onNav }) {
                   <Badge status={r.status} />
                 </div>
               );
-            });
-          })()}
+            })
+          )}
         </div>
       </Card>
       <Card>

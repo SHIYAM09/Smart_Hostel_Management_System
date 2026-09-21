@@ -94,4 +94,72 @@ class AuthServiceTest {
         verify(loginHistoryRepository, times(1)).save(any());
         verify(userSessionRepository, times(1)).save(any());
     }
+
+    @Test
+    void testRegisterSuccess() {
+        RegisterRequest request = RegisterRequest.builder()
+                .username("new_student_unique")
+                .email("new_student@example.com")
+                .password("securePass123")
+                .fullName("New Student")
+                .phone("9876543210")
+                .build();
+
+        Role studentRole = Role.builder().id(1L).name("ROLE_STUDENT").description("Student Role").build();
+        when(userRepository.existsByUsername("new_student_unique")).thenReturn(false);
+        when(userRepository.existsByEmail("new_student@example.com")).thenReturn(false);
+        when(roleRepository.findByName("ROLE_STUDENT")).thenReturn(Optional.of(studentRole));
+        when(passwordEncoder.encode("securePass123")).thenReturn("encoded_secure_pass");
+
+        Authentication authMock = mock(Authentication.class);
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authMock);
+        when(jwtUtil.generateAccessToken(authMock)).thenReturn("mock_access_token");
+        when(jwtUtil.generateRefreshToken("new_student_unique")).thenReturn("mock_refresh_token");
+
+        AuthResponse response = authService.register(request);
+
+        assertNotNull(response);
+        assertEquals("new_student_unique", response.getUsername());
+        assertEquals("new_student@example.com", response.getEmail());
+        assertTrue(response.getRoles().contains("ROLE_STUDENT"));
+        assertEquals(1, response.getRoles().size());
+        verify(userRepository, times(1)).save(any());
+    }
+
+    @Test
+    void testRegisterDuplicateUsername() {
+        RegisterRequest request = RegisterRequest.builder()
+                .username("existing_user")
+                .email("new@example.com")
+                .password("password123")
+                .build();
+
+        when(userRepository.existsByUsername("existing_user")).thenReturn(true);
+
+        com.hostel.auth.security.BadRequestException ex = assertThrows(
+                com.hostel.auth.security.BadRequestException.class,
+                () -> authService.register(request)
+        );
+
+        assertEquals("Username already exists.", ex.getMessage());
+    }
+
+    @Test
+    void testRegisterDuplicateEmail() {
+        RegisterRequest request = RegisterRequest.builder()
+                .username("new_user")
+                .email("existing@example.com")
+                .password("password123")
+                .build();
+
+        when(userRepository.existsByUsername("new_user")).thenReturn(false);
+        when(userRepository.existsByEmail("existing@example.com")).thenReturn(true);
+
+        com.hostel.auth.security.BadRequestException ex = assertThrows(
+                com.hostel.auth.security.BadRequestException.class,
+                () -> authService.register(request)
+        );
+
+        assertEquals("Email is already registered.", ex.getMessage());
+    }
 }

@@ -17,19 +17,22 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     private final LoginHistoryRepository loginHistoryRepository;
     private final ApiAccessLogRepository apiAccessLogRepository;
     private final AiChatHistoryRepository aiChatHistoryRepository;
+    private final com.hostel.authz.security.JwtUtil jwtUtil;
 
     public AuthorizationServiceImpl(JwtBlacklistRepository blacklistRepository,
                                     RolePermissionRepository permissionRepository,
                                     AuditLogRepository auditLogRepository,
                                     LoginHistoryRepository loginHistoryRepository,
                                     ApiAccessLogRepository apiAccessLogRepository,
-                                    AiChatHistoryRepository aiChatHistoryRepository) {
+                                    AiChatHistoryRepository aiChatHistoryRepository,
+                                    @org.springframework.beans.factory.annotation.Autowired(required = false) com.hostel.authz.security.JwtUtil jwtUtil) {
         this.blacklistRepository = blacklistRepository;
         this.permissionRepository = permissionRepository;
         this.auditLogRepository = auditLogRepository;
         this.loginHistoryRepository = loginHistoryRepository;
         this.apiAccessLogRepository = apiAccessLogRepository;
         this.aiChatHistoryRepository = aiChatHistoryRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -38,12 +41,20 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         if (isBlacklisted) {
             return JwtValidationResponse.builder()
                     .valid(false)
+                    .blacklisted(true)
                     .message("Token has been blacklisted")
                     .build();
         }
+        boolean isValid = jwtUtil != null && jwtUtil.validateToken(token);
+        String username = (isValid && jwtUtil != null) ? jwtUtil.getUsernameFromToken(token) : null;
+        List<String> roles = (isValid && jwtUtil != null) ? jwtUtil.getRolesFromToken(token) : null;
+
         return JwtValidationResponse.builder()
-                .valid(true)
-                .message("Token is valid")
+                .valid(isValid)
+                .blacklisted(false)
+                .username(username)
+                .roles(roles)
+                .message(isValid ? "Token is valid" : "Invalid token")
                 .build();
     }
 

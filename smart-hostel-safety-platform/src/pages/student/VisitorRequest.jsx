@@ -71,7 +71,7 @@ export default function VisitorRequest() {
       <div className="space-y-4">
         {myV.length === 0 ? (
           <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center space-y-2">
-            <div className="text-gray-600 font-semibold text-base">No Visitor Requests Found</div>
+            <div className="text-gray-600 font-semibold text-base">No visitor requests.</div>
             <p className="text-sm text-gray-500 max-w-md mx-auto">You have not submitted any visitor pass requests yet. Click "+ Request Visitor" above to register a visitor.</p>
           </div>
         ) : (
