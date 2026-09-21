@@ -10,6 +10,7 @@ import {
   Utensils,
 } from "lucide-react";
 import { authService } from "../../services/api";
+import { getSanitizedUsername } from "../../utils/userUtils";
 import ForgotPasswordModal from "../../components/auth/ForgotPasswordModal";
 
 export default function Login({ onLogin, onRegister }) {
@@ -35,10 +36,13 @@ export default function Login({ onLogin, onRegister }) {
         const rawRoles = authData.roles || (authData.role ? [authData.role] : []);
         const rawRole = (Array.isArray(rawRoles) && rawRoles.length > 0) ? rawRoles[0] : "student";
         const role = String(rawRole).toLowerCase().replace("role_", "");
-        const name = authData.fullName || authData.name || authData.username || (usernameOrEmail.includes("@") ? usernameOrEmail.split("@")[0] : usernameOrEmail);
-        const username = authData.username || name;
+        const rawUsername = authData.username || (usernameOrEmail.includes("@") ? usernameOrEmail.split("@")[0] : usernameOrEmail);
+        const username = getSanitizedUsername(rawUsername, "User");
+        const name = getSanitizedUsername(authData.fullName || authData.name || username, username);
         const phone = authData.phone || "";
         const email = authData.email || (usernameOrEmail.includes("@") ? usernameOrEmail : "");
+
+        const userPayload = { ...authData, role, fullName: name, name: name, username: username, email: email, phone: phone };
 
         if (authData.accessToken) {
           localStorage.setItem("token", authData.accessToken);
@@ -46,9 +50,9 @@ export default function Login({ onLogin, onRegister }) {
         if (authData.refreshToken) {
           localStorage.setItem("refreshToken", authData.refreshToken);
         }
-        localStorage.setItem("user", JSON.stringify({ ...authData, role, fullName: name, name: name, username: username, email: email, phone: phone }));
+        localStorage.setItem("user", JSON.stringify(userPayload));
 
-        onLogin(role, name, authData.accessToken, authData.refreshToken, { ...authData, role, fullName: name, name: name, username: username, email: email, phone: phone });
+        onLogin(role, name, authData.accessToken, authData.refreshToken, userPayload);
         setLoading(false);
         return;
       } else {

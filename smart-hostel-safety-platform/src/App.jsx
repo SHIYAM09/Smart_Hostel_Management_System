@@ -45,6 +45,7 @@ const SharedNotifications = lazy(() => import("./pages/shared/SharedNotification
 import { HostelAssistantWidget } from "./components/ai/HostelAssistantWidget";
 
 import { ADMIN_NAV, WARDEN_NAV, STUDENT_NAV, ADMIN_TITLES, WARDEN_TITLES, STUDENT_TITLES } from "./routes/navigation";
+import { getSanitizedUsername } from "./utils/userUtils";
 
 import "./styles/appAnimations.css";
 
@@ -96,7 +97,7 @@ export default function App() {
   }
 
   const activeUser = (() => { try { return JSON.parse(localStorage.getItem("user")) || {}; } catch { return {}; } })();
-  const activeName = activeUser.username || activeUser.fullName || activeUser.name || userName || "User";
+  const activeName = getSanitizedUsername(activeUser, userName || "User");
 
   return (
     <div className="min-h-screen bg-[#f0f4f8] flex">
@@ -104,7 +105,8 @@ export default function App() {
       {role==="warden" && <Sidebar nav={getNavWithBadge(WARDEN_NAV)}  current={wardenS}  onNav={setWardenS}  onProfile={()=>setWardenS("profile")}  open={sidebarOpen} onClose={()=>setSidebarOpen(false)} accentClass="bg-blue-500"   tagLabel="Warden Portal"  footerName={activeName} footerSub="Chief Warden"/>}
       {role==="student"&& (() => {
         const sRoom = activeUser.roomNumber || activeUser.room || "D-214";
-        const sRoll = activeUser.rollNumber || activeUser.rollNo || activeUser.username || "717824F251";
+        const cleanSubUser = getSanitizedUsername(activeUser.username || activeUser.fullName, activeName);
+        const sRoll = (activeUser.rollNumber || activeUser.rollNo) ? (activeUser.rollNumber || activeUser.rollNo) : cleanSubUser;
         return <Sidebar nav={getNavWithBadge(STUDENT_NAV)} current={studentS} onNav={setStudentS} open={sidebarOpen} onClose={()=>setSidebarOpen(false)} accentClass="bg-cyan-500" tagLabel="Student Portal" footerName={activeName} footerSub={`Room ${sRoom} · ${sRoll}`} onProfile={()=>setStudentS("profile")}/>;
       })()}
 

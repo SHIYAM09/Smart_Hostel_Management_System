@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { authService } from "../services/api";
+import { getSanitizedUsername } from "../utils/userUtils";
 
 export function useAuth() {
   const [loggedIn, setLoggedIn] = useState(() => {
@@ -24,7 +25,7 @@ export function useAuth() {
     if (savedUser) {
       try {
         const parsed = JSON.parse(savedUser);
-        return parsed.username || parsed.fullName || parsed.name || "";
+        return getSanitizedUsername(parsed, "");
       } catch {
         // ignore
       }
@@ -43,7 +44,7 @@ export function useAuth() {
         if (savedUser) {
           try {
             const parsed = JSON.parse(savedUser);
-            const disp = parsed.username || parsed.fullName || parsed.name;
+            const disp = getSanitizedUsername(parsed, "");
             if (disp) {
               setUserName(disp);
             }
@@ -61,8 +62,9 @@ export function useAuth() {
 
   const login = (userRole, name, accessToken, refreshToken = null, userObj = null) => {
     const normalizedRole = (userRole || "student").toLowerCase().replace("role_", "");
+    const cleanName = getSanitizedUsername(userObj || name, name);
     setRole(normalizedRole);
-    setUserName(name);
+    setUserName(cleanName);
     setLoggedIn(true);
 
     if (accessToken) {
@@ -71,11 +73,14 @@ export function useAuth() {
     if (refreshToken) {
       localStorage.setItem("refreshToken", refreshToken);
     }
-    if (userObj) {
-      localStorage.setItem("user", JSON.stringify({ ...userObj, role: normalizedRole, fullName: name }));
-    } else {
-      localStorage.setItem("user", JSON.stringify({ role: normalizedRole, fullName: name }));
+
+    const storeObj = userObj ? { ...userObj } : {};
+    storeObj.role = normalizedRole;
+    storeObj.fullName = cleanName;
+    if (!storeObj.username || storeObj.username.includes("@")) {
+      storeObj.username = cleanName;
     }
+    localStorage.setItem("user", JSON.stringify(storeObj));
   };
 
   const logout = async () => {
