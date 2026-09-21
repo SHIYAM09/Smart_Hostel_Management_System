@@ -1051,6 +1051,7 @@ public class HostelManagementServiceImpl implements HostelManagementService {
                                 break;
                             }
                         }
+                    }
                     if (!matches) continue;
                 }
 

@@ -80,7 +80,7 @@ public class AuthorizationController {
                         .fullName(fullName)
                         .phone(phone)
                         .active(true)
-                        .roles(Set.of(Role.ROLE_STUDENT))
+                        .roles(Set.of(Role.builder().name("ROLE_STUDENT").build()))
                         .build();
                 user = userRepository.save(user);
             } catch (Exception e) {
@@ -157,8 +157,10 @@ public class AuthorizationController {
 
                     if (u.getRoles() != null && !u.getRoles().isEmpty()) {
                         Role r = u.getRoles().iterator().next();
-                        roleName = r.name();
-                        roleStr = r.name().replace("ROLE_", "").toLowerCase();
+                        if (r.getName() != null) {
+                            roleName = r.getName();
+                            roleStr = r.getName().replace("ROLE_", "").toLowerCase();
+                        }
                     }
                 }
             } catch (Exception e) {
