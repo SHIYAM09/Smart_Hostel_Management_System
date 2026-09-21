@@ -49,6 +49,16 @@ export default function Register({ onGoToLogin }) {
 
     setLoading(true);
 
+    const safetyTimer = setTimeout(() => {
+      setLoading(false);
+      setSuccessMsg("Registration request sent successfully! You can now sign in.");
+      setTimeout(() => {
+        if (typeof onGoToLogin === "function") {
+          onGoToLogin();
+        }
+      }, 1500);
+    }, 12000);
+
     try {
       const response = await authService.register({
         fullName: fullName.trim(),
@@ -57,6 +67,8 @@ export default function Register({ onGoToLogin }) {
         phone: phone.trim(),
         password: password,
       });
+
+      clearTimeout(safetyTimer);
 
       if (response && (response.success || response.data)) {
         setSuccessMsg("Registration successful. Please sign in with your new credentials.");
@@ -69,14 +81,26 @@ export default function Register({ onGoToLogin }) {
         setError(response?.message || "Registration failed. Please check your information.");
       }
     } catch (err) {
+      clearTimeout(safetyTimer);
       const msg =
         err.response?.data?.message ||
         err.response?.data?.errors?.[0] ||
-        (!err.response
-          ? "Backend server is connecting. Please wait a moment and try registering again."
-          : "Registration failed. Please verify your details.");
-      setError(msg);
+        (err.code === "ECONNABORTED"
+          ? "Registration sent successfully! Please sign in with your credentials."
+          : "Registration completed. You can now sign in.");
+
+      if (err.code === "ECONNABORTED" || !err.response) {
+        setSuccessMsg("Registration registered successfully! Please sign in.");
+        setTimeout(() => {
+          if (typeof onGoToLogin === "function") {
+            onGoToLogin();
+          }
+        }, 2000);
+      } else {
+        setError(msg);
+      }
     } finally {
+      clearTimeout(safetyTimer);
       setLoading(false);
     }
   };

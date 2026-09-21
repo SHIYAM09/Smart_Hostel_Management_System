@@ -7,6 +7,7 @@ const MAIN_BASE_URL = import.meta.env.VITE_MAIN_API_URL || LIVE_BACKEND_URL;
 
 export const authApi = axios.create({
   baseURL: AUTH_BASE_URL,
+  timeout: 15000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -14,6 +15,7 @@ export const authApi = axios.create({
 
 export const mainApi = axios.create({
   baseURL: MAIN_BASE_URL,
+  timeout: 15000,
   headers: {
     "Content-Type": "application/json",
   },

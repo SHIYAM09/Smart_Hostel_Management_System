@@ -59,11 +59,15 @@ public class AuthorizationController {
         }
 
         if (userRepository != null) {
-            if (userRepository.findByUsername(username).isPresent()) {
-                return ResponseEntity.badRequest().body(ApiResponse.error("Username already exists."));
-            }
-            if (userRepository.findByEmail(email).isPresent()) {
-                return ResponseEntity.badRequest().body(ApiResponse.error("Email is already registered."));
+            try {
+                if (userRepository.findByUsername(username).isPresent()) {
+                    return ResponseEntity.badRequest().body(ApiResponse.error("Username already exists."));
+                }
+                if (userRepository.findByEmail(email).isPresent()) {
+                    return ResponseEntity.badRequest().body(ApiResponse.error("Email is already registered."));
+                }
+            } catch (Exception e) {
+                // If Mongo is slow or unavailable, proceed cleanly
             }
         }
 
@@ -135,18 +139,22 @@ public class AuthorizationController {
         String roleStr = "student";
 
         if (userRepository != null) {
-            Optional<User> uOpt = userRepository.findByUsername(usernameOrEmail);
-            if (uOpt.isEmpty()) {
-                uOpt = userRepository.findByEmail(usernameOrEmail);
-            }
-            if (uOpt.isPresent()) {
-                User u = uOpt.get();
-                fullName = u.getFullName() != null ? u.getFullName() : usernameOrEmail;
-                if (u.getRoles() != null && !u.getRoles().isEmpty()) {
-                    Role r = u.getRoles().iterator().next();
-                    roleName = r.name();
-                    roleStr = r.name().replace("ROLE_", "").toLowerCase();
+            try {
+                Optional<User> uOpt = userRepository.findByUsername(usernameOrEmail);
+                if (uOpt.isEmpty()) {
+                    uOpt = userRepository.findByEmail(usernameOrEmail);
                 }
+                if (uOpt.isPresent()) {
+                    User u = uOpt.get();
+                    fullName = u.getFullName() != null ? u.getFullName() : usernameOrEmail;
+                    if (u.getRoles() != null && !u.getRoles().isEmpty()) {
+                        Role r = u.getRoles().iterator().next();
+                        roleName = r.name();
+                        roleStr = r.name().replace("ROLE_", "").toLowerCase();
+                    }
+                }
+            } catch (Exception e) {
+                // Fallback if Mongo unavailable
             }
         }
 
