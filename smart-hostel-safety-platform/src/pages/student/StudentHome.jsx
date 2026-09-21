@@ -16,6 +16,7 @@ import { Card, CardHeader, CardBody } from "../../components/common/Card";
 import { AnimatedCounter } from "../../components/common/AnimatedCounter";
 
 import { useAuth } from "../../hooks/useAuth";
+import { getSanitizedUsername } from "../../utils/userUtils";
 
 export default function StudentHome({ onNav }) {
   const {
@@ -42,7 +43,7 @@ export default function StudentHome({ onNav }) {
 
   const { userName } = useAuth();
   const activeUser = (() => { try { return JSON.parse(localStorage.getItem("user")) || {}; } catch { return {}; } })();
-  const displayUsername = activeUser.username || userName || "Student User";
+  const displayUsername = getSanitizedUsername(activeUser.username || activeUser.fullName ? activeUser : userName);
 
   const pct = attendance && attendance.length > 0
     ? Math.round((attendance.filter((r) => String(r.status).toLowerCase() === "present").length / attendance.length) * 100)
@@ -63,7 +64,7 @@ export default function StudentHome({ onNav }) {
         <div className="relative">
           <div className="text-white/70 text-sm mb-1">Welcome back,</div>
           <h2 className="text-2xl font-extrabold">{displayUsername}</h2>
-          <div className="text-blue-200 text-sm mt-0.5">Hostel Resident · Smart Hostel Safety Platform</div>
+          <div className="text-blue-200 text-sm mt-0.5">Hostel Resident</div>
           <div className="flex gap-4 mt-5">
             {[
               { value: pct, label: "Attendance", screen: "my-attendance" },

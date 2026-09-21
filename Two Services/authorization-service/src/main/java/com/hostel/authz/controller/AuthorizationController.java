@@ -166,6 +166,13 @@ public class AuthorizationController {
             }
         }
 
+        if (username.contains("@")) {
+            username = username.split("@")[0];
+        }
+        if (fullName.contains("@")) {
+            fullName = fullName.split("@")[0];
+        }
+
         if (fullName.equals(username) && !lower.contains("@")) {
             if (lower.contains("admin")) {
                 roleName = "ROLE_ADMIN";

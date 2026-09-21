@@ -7,6 +7,7 @@ import { FormField } from "../../components/common/FormField";
 import { Input } from "../../components/common/Input";
 import { Button } from "../../components/common/Button";
 import { cls } from "../../utils/classNames";
+import { getSanitizedUsername } from "../../utils/userUtils";
 import { authService } from "../../services/api";
 import { studentService } from "../../services/studentService";
 import { adminService } from "../../services/adminService";
@@ -36,7 +37,7 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
         const isAdmin = roleKey === "admin" || (parsed.role && parsed.role.toLowerCase() === "admin");
         const isWarden = roleKey === "warden" || (parsed.role && parsed.role.toLowerCase() === "warden");
         const dbWarden = isWarden ? (wardens && wardens[0] ? wardens[0] : null) : null;
-        const name = isAdmin ? "Shanavaaz A" : (parsed.username || parsed.fullName || parsed.name || (dbWarden?.name || dbWarden?.fullName || "Student User"));
+        const name = isAdmin ? "Shanavaaz A" : getSanitizedUsername(parsed, dbWarden?.name || dbWarden?.fullName || "Student User");
         return {
           id: parsed.id || parsed.studentId || "",
           name: name,
@@ -100,7 +101,7 @@ export default function ProfilePage({ roleKey = "student", gradient = "from-blue
             (s.name && currentLoggedName && s.name.toLowerCase() === currentLoggedName)
           );
 
-          const liveName = isAdmin ? (apiData.fullName || apiData.name || "Shanavaaz A") : (apiData.fullName || apiData.name || apiData.username || (matchedWarden ? (matchedWarden.name || matchedWarden.fullName) : (isWarden ? "Surya R" : "Student User")));
+          const liveName = isAdmin ? (apiData.fullName || apiData.name || "Shanavaaz A") : getSanitizedUsername(apiData, (matchedWarden ? (matchedWarden.name || matchedWarden.fullName) : (isWarden ? "Surya R" : "Student User")));
 
           const liveEmail = isAdmin
             ? (apiData.email && apiData.email.includes("@kce.ac.in") ? apiData.email : "admin@kce.ac.in")
