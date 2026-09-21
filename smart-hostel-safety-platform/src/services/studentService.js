@@ -109,7 +109,7 @@ export const studentService = {
     const targetId = getCurrentStudentId(complaintData.studentId);
     const parsedId = typeof targetId === "number" 
       ? targetId 
-      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || activeUser.id || 1;
+      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || activeUser.id || 0;
     const payload = {
       title: complaintData.subject || complaintData.title,
       subject: complaintData.subject || complaintData.title,
@@ -160,7 +160,7 @@ export const studentService = {
     const targetId = getCurrentStudentId(leaveData.studentId);
     const parsedId = typeof targetId === "number" 
       ? targetId 
-      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || activeUser.id || 1;
+      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || activeUser.id || 0;
 
     const payload = {
       studentId: parsedId,
@@ -192,7 +192,7 @@ export const studentService = {
     const targetId = getCurrentStudentId(visitorData.studentId);
     const parsedId = typeof targetId === "number" 
       ? targetId 
-      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || activeUser.id || 1;
+      : parseInt(String(targetId || "").replace(/\D/g, ""), 10) || activeUser.id || 0;
 
     const payload = {
       visitorName: visitorData.visitorName,

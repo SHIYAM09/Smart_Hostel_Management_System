@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -51,7 +52,13 @@ public class AttendanceController {
     @GetMapping("/student/{studentId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
     @Operation(summary = "Get Attendance by Student ID", description = "Retrieves attendance history for a student.")
-    public ResponseEntity<ApiResponse<List<AttendanceDto>>> getAttendanceByStudent(@PathVariable("studentId") String studentId) {
+    public ResponseEntity<ApiResponse<List<AttendanceDto>>> getAttendanceByStudent(@PathVariable("studentId") String studentId, Authentication authentication) {
+        if (authentication != null && isStudentOnly(authentication)) {
+            StudentDto currentStudent = hostelService.getStudentByUsername(authentication.getName());
+            if (currentStudent != null) {
+                return ResponseEntity.ok(ApiResponse.success("Student attendance retrieved", hostelService.getAttendanceByStudent(currentStudent.getUserId())));
+            }
+        }
         Long numericId = null;
         try { numericId = Long.parseLong(studentId); } catch (Exception ignored) {}
         return ResponseEntity.ok(ApiResponse.success("Student attendance retrieved", hostelService.getAttendanceByStudent(numericId)));
@@ -61,16 +68,35 @@ public class AttendanceController {
     @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
     @Operation(summary = "Get Monthly Attendance", description = "Retrieves student attendance for a given month and year.")
     public ResponseEntity<ApiResponse<List<AttendanceDto>>> getAttendanceByMonth(
-            @PathVariable("studentId") String studentId, @RequestParam("year") int year, @RequestParam("month") int month) {
+            @PathVariable("studentId") String studentId, @RequestParam("year") int year, @RequestParam("month") int month, Authentication authentication) {
         Long numericId = null;
-        try { numericId = Long.parseLong(studentId); } catch (Exception ignored) {}
+        if (authentication != null && isStudentOnly(authentication)) {
+            StudentDto currentStudent = hostelService.getStudentByUsername(authentication.getName());
+            if (currentStudent != null) {
+                numericId = currentStudent.getUserId();
+            }
+        }
+        if (numericId == null) {
+            try { numericId = Long.parseLong(studentId); } catch (Exception ignored) {}
+        }
         return ResponseEntity.ok(ApiResponse.success("Monthly attendance retrieved", hostelService.getAttendanceByMonth(numericId, year, month)));
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
     @Operation(summary = "Get All Attendance Records", description = "Retrieves all recorded attendance.")
-    public ResponseEntity<ApiResponse<List<AttendanceDto>>> getAllAttendance() {
+    public ResponseEntity<ApiResponse<List<AttendanceDto>>> getAllAttendance(Authentication authentication) {
+        if (authentication != null && isStudentOnly(authentication)) {
+            StudentDto currentStudent = hostelService.getStudentByUsername(authentication.getName());
+            if (currentStudent != null) {
+                return ResponseEntity.ok(ApiResponse.success("Attendance records retrieved", hostelService.getAttendanceByStudent(currentStudent.getUserId())));
+            }
+        }
         return ResponseEntity.ok(ApiResponse.success("All attendance records retrieved", hostelService.getAllAttendance()));
+    }
+
+    private boolean isStudentOnly(Authentication authentication) {
+        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_STUDENT")) &&
+               authentication.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_WARDEN"));
     }
 }

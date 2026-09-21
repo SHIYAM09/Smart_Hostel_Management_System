@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,17 @@ public class LeaveRequestController {
     @PostMapping
     @PreAuthorize("hasRole('STUDENT')")
     @Operation(summary = "Apply for Leave", description = "Submits a new leave request for warden approval.")
-    public ResponseEntity<ApiResponse<LeaveRequestDto>> applyLeave(@Valid @RequestBody LeaveRequestDto dto) {
+    public ResponseEntity<ApiResponse<LeaveRequestDto>> applyLeave(@Valid @RequestBody LeaveRequestDto dto, Authentication authentication) {
+        if (authentication != null) {
+            StudentDto currentStudent = hostelService.getStudentByUsername(authentication.getName());
+            if (currentStudent != null) {
+                dto.setStudentId(currentStudent.getUserId() != null ? currentStudent.getUserId() : currentStudent.getId() != null ? (long) Math.abs(currentStudent.getId().hashCode()) : null);
+                dto.setStudentName(currentStudent.getFullName() != null ? currentStudent.getFullName() : authentication.getName());
+                if (dto.getRoomNumber() == null || dto.getRoomNumber().isBlank()) {
+                    dto.setRoomNumber(currentStudent.getRoomNumber());
+                }
+            }
+        }
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success("Leave application submitted successfully", hostelService.applyLeave(dto)));
     }
@@ -42,7 +53,13 @@ public class LeaveRequestController {
     @GetMapping("/student/{studentId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
     @Operation(summary = "Get Leave Requests by Student", description = "Retrieves leave requests for a specific student.")
-    public ResponseEntity<ApiResponse<List<LeaveRequestDto>>> getLeaveRequestsByStudent(@PathVariable("studentId") String studentId) {
+    public ResponseEntity<ApiResponse<List<LeaveRequestDto>>> getLeaveRequestsByStudent(@PathVariable("studentId") String studentId, Authentication authentication) {
+        if (authentication != null && isStudentOnly(authentication)) {
+            StudentDto currentStudent = hostelService.getStudentByUsername(authentication.getName());
+            if (currentStudent != null) {
+                return ResponseEntity.ok(ApiResponse.success("Student leave requests retrieved", hostelService.getLeaveRequestsByStudent(currentStudent.getUserId())));
+            }
+        }
         Long numericId = null;
         try { numericId = Long.parseLong(studentId); } catch (Exception ignored) {}
         return ResponseEntity.ok(ApiResponse.success("Student leave requests retrieved", hostelService.getLeaveRequestsByStudent(numericId)));
@@ -51,7 +68,18 @@ public class LeaveRequestController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
     @Operation(summary = "Get All Leave Requests", description = "Retrieves all student leave applications.")
-    public ResponseEntity<ApiResponse<List<LeaveRequestDto>>> getAllLeaveRequests() {
+    public ResponseEntity<ApiResponse<List<LeaveRequestDto>>> getAllLeaveRequests(Authentication authentication) {
+        if (authentication != null && isStudentOnly(authentication)) {
+            StudentDto currentStudent = hostelService.getStudentByUsername(authentication.getName());
+            if (currentStudent != null) {
+                return ResponseEntity.ok(ApiResponse.success("Leave requests retrieved", hostelService.getLeaveRequestsByStudent(currentStudent.getUserId())));
+            }
+        }
         return ResponseEntity.ok(ApiResponse.success("All leave requests retrieved", hostelService.getAllLeaveRequests()));
+    }
+
+    private boolean isStudentOnly(Authentication authentication) {
+        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_STUDENT")) &&
+               authentication.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_WARDEN"));
     }
 }

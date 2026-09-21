@@ -1,6 +1,7 @@
 package com.hostel.authz.controller;
 
 import com.hostel.authz.dto.ApiResponse;
+import com.hostel.authz.dto.StudentDto;
 import com.hostel.authz.entity.Notification;
 import com.hostel.authz.service.HostelManagementService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,9 +10,11 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/notifications")
@@ -35,15 +38,33 @@ public class NotificationController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
     @Operation(summary = "Get All Notifications", description = "Retrieves all notifications.")
-    public ResponseEntity<ApiResponse<List<Notification>>> getAllNotifications() {
-        return ResponseEntity.ok(ApiResponse.success("Notifications retrieved", hostelService.getAllNotifications()));
+    public ResponseEntity<ApiResponse<List<Notification>>> getAllNotifications(Authentication authentication) {
+        List<Notification> all = hostelService.getAllNotifications();
+        if (authentication != null && isStudentOnly(authentication)) {
+            StudentDto currentStudent = hostelService.getStudentByUsername(authentication.getName());
+            Long currentUserId = currentStudent != null ? currentStudent.getUserId() : null;
+            all = all.stream().filter(n -> {
+                if (n.getForRole() == null || "all".equalsIgnoreCase(n.getForRole()) || "student".equalsIgnoreCase(n.getForRole())) {
+                    return true;
+                }
+                return n.getUserId() != null && currentUserId != null && n.getUserId().equals(currentUserId);
+            }).collect(Collectors.toList());
+        }
+        return ResponseEntity.ok(ApiResponse.success("Notifications retrieved", all));
     }
 
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'WARDEN', 'STUDENT')")
     @Operation(summary = "Get User Notifications", description = "Retrieves all notifications for a specific user ID.")
-    public ResponseEntity<ApiResponse<List<Notification>>> getNotificationsForUser(@PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(ApiResponse.success("Notifications retrieved", hostelService.getNotificationsForUser(userId)));
+    public ResponseEntity<ApiResponse<List<Notification>>> getNotificationsForUser(@PathVariable("userId") Long userId, Authentication authentication) {
+        Long targetId = userId;
+        if (authentication != null && isStudentOnly(authentication)) {
+            StudentDto currentStudent = hostelService.getStudentByUsername(authentication.getName());
+            if (currentStudent != null && currentStudent.getUserId() != null) {
+                targetId = currentStudent.getUserId();
+            }
+        }
+        return ResponseEntity.ok(ApiResponse.success("Notifications retrieved", hostelService.getNotificationsForUser(targetId)));
     }
 
     @PutMapping("/{id}/read")
@@ -68,5 +89,10 @@ public class NotificationController {
     public ResponseEntity<ApiResponse<Void>> clearAllNotifications() {
         hostelService.deleteAllNotifications();
         return ResponseEntity.ok(ApiResponse.success("All notifications cleared"));
+    }
+
+    private boolean isStudentOnly(Authentication authentication) {
+        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_STUDENT")) &&
+               authentication.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_WARDEN"));
     }
 }
