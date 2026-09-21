@@ -41,12 +41,22 @@ public class AuthorizationController {
 
     @PostMapping("/register")
     @Operation(summary = "Student Registration", description = "Registers a new student user and returns access token.")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> register(@RequestBody Map<String, String> request) {
-        String username = request.getOrDefault("username", "").trim();
-        String email = request.getOrDefault("email", "").trim();
-        String password = request.getOrDefault("password", "");
-        String fullName = request.getOrDefault("fullName", request.getOrDefault("name", username)).trim();
-        String phone = request.getOrDefault("phone", "").trim();
+    public ResponseEntity<ApiResponse<Map<String, Object>>> register(@RequestBody Map<String, Object> request) {
+        String username = String.valueOf(request.getOrDefault("username", "")).trim();
+        String email = String.valueOf(request.getOrDefault("email", "")).trim();
+        String password = String.valueOf(request.getOrDefault("password", ""));
+        String phone = String.valueOf(request.getOrDefault("phone", "")).trim();
+        String department = String.valueOf(request.getOrDefault("department", "General")).trim();
+        int yearOfStudy = 1;
+        try {
+            if (request.get("yearOfStudy") != null) {
+                yearOfStudy = Integer.parseInt(String.valueOf(request.get("yearOfStudy")));
+            }
+        } catch (Exception e) {
+            yearOfStudy = 1;
+        }
+
+        String fullName = username;
 
         if (username.isEmpty()) {
             return ResponseEntity.badRequest().body(ApiResponse.error("Username is required"));
@@ -91,11 +101,18 @@ public class AuthorizationController {
         Student student = null;
         if (studentRepository != null) {
             try {
+                Long studentUserId = user != null && user.getId() != null ? (long) Math.abs(user.getId().hashCode()) : (long) Math.abs(username.hashCode());
                 student = Student.builder()
+                        .userId(studentUserId)
                         .fullName(fullName)
+                        .rollNumber(username)
                         .email(email)
                         .phone(phone)
-                        .status("Active")
+                        .yearOfStudy(yearOfStudy)
+                        .department(department.isEmpty() ? "General" : department)
+                        .hostelBlock("Unassigned")
+                        .roomNumber("Unassigned")
+                        .status("ACTIVE")
                         .absenceStreak(0)
                         .build();
                 student = studentRepository.save(student);

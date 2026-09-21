@@ -76,11 +76,13 @@ public class AuthServiceImpl implements AuthService {
                 .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_STUDENT").description("Student Role").build()));
         Set<Role> roles = Collections.singleton(studentRole);
 
+        String name = request.getFullName() != null && !request.getFullName().isBlank() ? request.getFullName() : request.getUsername();
+
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .fullName(request.getFullName())
+                .fullName(name)
                 .phone(request.getPhone())
                 .active(true)
                 .roles(roles)

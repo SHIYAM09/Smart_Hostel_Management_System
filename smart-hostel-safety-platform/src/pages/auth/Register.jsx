@@ -8,18 +8,20 @@ import {
   Mail,
   Phone,
   Shield,
-  User,
   UserCheck,
   Utensils,
   ArrowLeft,
+  GraduationCap,
+  BookOpen,
 } from "lucide-react";
 import { authService } from "../../services/api";
 
 export default function Register({ onGoToLogin }) {
-  const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [yearOfStudy, setYearOfStudy] = useState("1");
+  const [department, setDepartment] = useState("General");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   
@@ -32,7 +34,7 @@ export default function Register({ onGoToLogin }) {
     setError("");
     setSuccessMsg("");
 
-    if (!fullName.trim() || !username.trim() || !email.trim() || !phone.trim() || !password || !confirmPassword) {
+    if (!username.trim() || !email.trim() || !phone.trim() || !password || !confirmPassword) {
       setError("Please fill in all required fields.");
       return;
     }
@@ -61,11 +63,13 @@ export default function Register({ onGoToLogin }) {
 
     try {
       const response = await authService.register({
-        fullName: fullName.trim(),
         username: username.trim(),
         email: email.trim(),
         phone: phone.trim(),
+        yearOfStudy: parseInt(yearOfStudy, 10) || 1,
+        department: department.trim() || "General",
         password: password,
+        role: "STUDENT",
       });
 
       clearTimeout(safetyTimer);
@@ -204,23 +208,6 @@ export default function Register({ onGoToLogin }) {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1.5">Full Name</label>
-                <div className="relative">
-                  <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    value={fullName}
-                    onChange={(e) => {
-                      setFullName(e.target.value);
-                      setError("");
-                    }}
-                    placeholder="Enter full name"
-                    className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-[#f4f8fc] text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                  />
-                </div>
-              </div>
-
-              <div>
                 <label className="text-xs font-bold text-gray-700 block mb-1.5">Username</label>
                 <div className="relative">
                   <UserCheck size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -268,6 +255,42 @@ export default function Register({ onGoToLogin }) {
                         setError("");
                       }}
                       placeholder="Phone number"
+                      className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-[#f4f8fc] text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-gray-700 block mb-1.5">Year of Study</label>
+                  <div className="relative">
+                    <GraduationCap size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                    <select
+                      value={yearOfStudy}
+                      onChange={(e) => setYearOfStudy(e.target.value)}
+                      className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-[#f4f8fc] text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="1">1st Year</option>
+                      <option value="2">2nd Year</option>
+                      <option value="3">3rd Year</option>
+                      <option value="4">4th Year</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs font-bold text-gray-700 block mb-1.5">Department</label>
+                  <div className="relative">
+                    <BookOpen size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="text"
+                      value={department}
+                      onChange={(e) => {
+                        setDepartment(e.target.value);
+                        setError("");
+                      }}
+                      placeholder="e.g. CSE, ECE, General"
                       className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-[#f4f8fc] text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                     />
                   </div>
