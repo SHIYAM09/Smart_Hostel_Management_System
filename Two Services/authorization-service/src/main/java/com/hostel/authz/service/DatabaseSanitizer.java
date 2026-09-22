@@ -92,6 +92,36 @@ public class DatabaseSanitizer implements CommandLineRunner {
 
         if (userRepository != null) {
             try {
+                org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+
+                if (userRepository.findByUsername("admin").isEmpty()) {
+                    com.hostel.authz.entity.User adminUser = com.hostel.authz.entity.User.builder()
+                            .username("admin")
+                            .email("admin@smart-hostel.com")
+                            .password(encoder.encode("admin123"))
+                            .fullName("System Administrator")
+                            .phone("9999999999")
+                            .active(true)
+                            .roles(java.util.Set.of(com.hostel.authz.entity.Role.builder().id("ROLE_ADMIN").name("ROLE_ADMIN").build()))
+                            .build();
+                    userRepository.save(adminUser);
+                    log.info("Seeded default system admin user into MongoDB users collection");
+                }
+
+                if (userRepository.findByUsername("warden").isEmpty()) {
+                    com.hostel.authz.entity.User wardenUser = com.hostel.authz.entity.User.builder()
+                            .username("warden")
+                            .email("warden@smart-hostel.com")
+                            .password(encoder.encode("warden123"))
+                            .fullName("John Warden (Block D)")
+                            .phone("8888888888")
+                            .active(true)
+                            .roles(java.util.Set.of(com.hostel.authz.entity.Role.builder().id("ROLE_WARDEN").name("ROLE_WARDEN").build()))
+                            .build();
+                    userRepository.save(wardenUser);
+                    log.info("Seeded default system warden user into MongoDB users collection");
+                }
+
                 List<com.hostel.authz.entity.User> users = userRepository.findAll();
                 for (com.hostel.authz.entity.User u : users) {
                     boolean dirty = false;

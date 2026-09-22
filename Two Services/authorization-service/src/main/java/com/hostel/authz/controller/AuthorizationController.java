@@ -64,22 +64,30 @@ public class AuthorizationController {
         if (email.isEmpty()) {
             return ResponseEntity.badRequest().body(ApiResponse.error("Email is required"));
         }
+
+        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        if (!email.matches(emailRegex)) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Please enter a valid email address."));
+        }
+
         if (password.length() < 6) {
             return ResponseEntity.badRequest().body(ApiResponse.error("Password must be at least 6 characters"));
         }
 
         if (userRepository != null) {
             try {
-                if (userRepository.findByUsername(username).isPresent()) {
-                    return ResponseEntity.badRequest().body(ApiResponse.error("Username already exists."));
-                }
                 if (userRepository.findByEmail(email).isPresent()) {
                     return ResponseEntity.badRequest().body(ApiResponse.error("Email is already registered."));
                 }
+                if (userRepository.findByUsername(username).isPresent()) {
+                    return ResponseEntity.badRequest().body(ApiResponse.error("Username already exists."));
+                }
             } catch (Exception e) {
-                // If Mongo is slow or unavailable, proceed cleanly
+                // Ignore transient lookup exceptions
             }
         }
+
+        org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
 
         User user = null;
         if (userRepository != null) {
@@ -87,6 +95,7 @@ public class AuthorizationController {
                 user = User.builder()
                         .username(username)
                         .email(email)
+                        .password(encoder.encode(password))
                         .fullName(fullName)
                         .phone(phone)
                         .active(true)
@@ -144,21 +153,16 @@ public class AuthorizationController {
     @PostMapping("/login")
     @Operation(summary = "User Login", description = "Authenticates user and returns a valid signed JWT Access Token and user details.")
     public ResponseEntity<ApiResponse<Map<String, Object>>> login(@RequestBody Map<String, String> request) {
-        String usernameOrEmail = request.getOrDefault("usernameOrEmail", request.getOrDefault("username", "student_alex"));
+        String usernameOrEmail = request.getOrDefault("usernameOrEmail", request.getOrDefault("username", "")).trim();
         String password = request.getOrDefault("password", "");
 
-        if (usernameOrEmail == null || usernameOrEmail.trim().isEmpty() || password.isEmpty()) {
+        if (usernameOrEmail.isEmpty() || password.isEmpty()) {
             return ResponseEntity.badRequest().body(ApiResponse.error("Username or Email and password are required"));
         }
 
-        String lower = usernameOrEmail.toLowerCase().trim();
-        String roleName = "ROLE_STUDENT";
-        String roleStr = "student";
-        String username = lower.contains("@") ? lower.split("@")[0] : usernameOrEmail;
-        String fullName = username;
-        String email = lower.contains("@") ? lower : lower + "@smart-hostel.com";
-        String phone = "";
+        org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
 
+        User user = null;
         if (userRepository != null) {
             try {
                 Optional<User> uOpt = userRepository.findByUsername(usernameOrEmail);
@@ -166,41 +170,41 @@ public class AuthorizationController {
                     uOpt = userRepository.findByEmail(usernameOrEmail);
                 }
                 if (uOpt.isPresent()) {
-                    User u = uOpt.get();
-                    if (u.getUsername() != null && !u.getUsername().isBlank()) username = u.getUsername();
-                    if (u.getFullName() != null && !u.getFullName().isBlank()) fullName = u.getFullName();
-                    if (u.getEmail() != null && !u.getEmail().isBlank()) email = u.getEmail();
-                    if (u.getPhone() != null && !u.getPhone().isBlank()) phone = u.getPhone();
-
-                    if (u.getRoles() != null && !u.getRoles().isEmpty()) {
-                        Role r = u.getRoles().iterator().next();
-                        if (r.getName() != null) {
-                            roleName = r.getName();
-                            roleStr = r.getName().replace("ROLE_", "").toLowerCase();
-                        }
-                    }
+                    user = uOpt.get();
                 }
             } catch (Exception e) {
-                // Fallback if Mongo unavailable
+                // Fallback
             }
         }
 
-        if (username.contains("@")) {
-            username = username.split("@")[0];
-        }
-        if (fullName.contains("@")) {
-            fullName = fullName.split("@")[0];
+        if (user == null) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Invalid email/username or password"));
         }
 
-        if (fullName.equals(username) && !lower.contains("@")) {
-            if (lower.contains("admin")) {
-                roleName = "ROLE_ADMIN";
-                fullName = "System Administrator";
-                roleStr = "admin";
-            } else if (lower.contains("warden") || lower.contains("john")) {
-                roleName = "ROLE_WARDEN";
-                fullName = "John Warden (Block A)";
-                roleStr = "warden";
+        boolean passwordMatches = false;
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            passwordMatches = encoder.matches(password, user.getPassword()) || password.equals(user.getPassword());
+        } else {
+            passwordMatches = true;
+        }
+
+        if (!passwordMatches) {
+            return ResponseEntity.badRequest().body(ApiResponse.error("Invalid email/username or password"));
+        }
+
+        String username = user.getUsername() != null ? user.getUsername() : usernameOrEmail;
+        String email = user.getEmail() != null ? user.getEmail() : "";
+        String fullName = user.getFullName() != null ? user.getFullName() : username;
+        String phone = user.getPhone() != null ? user.getPhone() : "";
+
+        String roleName = "ROLE_STUDENT";
+        String roleStr = "student";
+
+        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
+            Role r = user.getRoles().iterator().next();
+            if (r.getName() != null) {
+                roleName = r.getName();
+                roleStr = r.getName().replace("ROLE_", "").toLowerCase();
             }
         }
 
@@ -216,8 +220,8 @@ public class AuthorizationController {
         data.put("phone", phone);
         data.put("role", roleStr);
         data.put("roles", List.of(roleName));
-        data.put("userId", 1);
-        data.put("studentId", 1);
+        data.put("userId", user.getId() != null ? user.getId() : Math.abs(username.hashCode()));
+        data.put("studentId", user.getId() != null ? user.getId() : Math.abs(username.hashCode()));
 
         return ResponseEntity.ok(ApiResponse.success("Login successful", data));
     }
